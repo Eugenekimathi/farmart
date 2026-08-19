@@ -30,3 +30,5 @@ a {
 button {
   cursor: pointer;
 }
+
+@import './checkout.css';

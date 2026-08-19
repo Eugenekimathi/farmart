@@ -110,3 +110,5 @@ const cartSlice = createSlice({
 export const { addItem, removeItem, clearCart, clearCartError } =
   cartSlice.actions
 export default cartSlice.reducer
+// Expose clearCart for other features
+export { clearCart as clearCartAction }
