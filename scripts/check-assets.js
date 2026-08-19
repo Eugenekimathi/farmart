@@ -28,8 +28,11 @@ for (const file of files) {
     const raw = m[2];
     let candidate;
     if (raw.startsWith('/')) {
-      // public root
-      candidate = path.join(client, raw.replace(/^\//, ''));
+      // public root: check both client/<file> and client/public/<file>
+      const without = raw.replace(/^\//, '');
+      const candidatePublic = path.join(client, 'public', without);
+      const candidateRoot = path.join(client, without);
+      candidate = fs.existsSync(candidatePublic) ? candidatePublic : candidateRoot;
     } else if (raw.startsWith('..') || raw.startsWith('.')) {
       candidate = path.resolve(path.dirname(file), raw);
     } else if (raw.startsWith('src/') ) {
