@@ -34,9 +34,14 @@ const AnimalCard = ({ animal }) => {
     <div className="animal-card" onClick={handleCardClick}>
       <div className="animal-card__image-wrap">
         {primaryImage ? (
-          <img src={primaryImage.image_url} alt={animal.name} className="animal-card__image" />
+          <img
+            src={primaryImage.image_url}
+            alt={animal.name}
+            className="animal-card__image"
+            onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.svg' }}
+          />
         ) : (
-          <div className="animal-card__image-placeholder">🐄</div>
+          <img src="/placeholder.svg" alt="placeholder" className="animal-card__image" />
         )}
       </div>
 

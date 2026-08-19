@@ -111,9 +111,10 @@ const AnimalDetailPage = () => {
                 src={primaryImage.image_url}
                 alt={selectedAnimal.name}
                 className="detail-gallery__main-img"
+                onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.svg' }}
               />
             ) : (
-              <div className="detail-gallery__placeholder">🐄</div>
+              <img src="/placeholder.svg" alt="placeholder" className="detail-gallery__main-img" />
             )}
           </div>
 
