@@ -30,7 +30,7 @@ const Navbar = () => {
     <nav className="navbar">
 
       <Link to="/" className="navbar__logo">
-        <span className="navbar__logo-icon">[%]</span>
+        <img src="/logo.svg" alt="Farmart logo" className="navbar__logo-img" />
         <div>
           <span className="navbar__logo-name">Farmart Kenya</span>
           <span className="navbar__logo-tag">// BETA-DEV</span>

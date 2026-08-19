@@ -18,6 +18,8 @@
   text-decoration: none;
 }
 
+.navbar__logo-img { width: 110px; height: auto; display:block }
+
 .navbar__logo-icon {
   font-size: 1.4rem;
   font-weight: 900;
@@ -42,6 +44,11 @@
   flex: 1;
   max-width: 380px;
   margin: 0 2rem;
+}
+
+@media (max-width: 800px) {
+  .navbar { padding: 0 1rem }
+  .navbar__search { display:none }
 }
 
 .navbar__search-input {

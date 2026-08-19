@@ -59,7 +59,7 @@ const LoginPage = () => {
       <div className="auth-card">
 
         <div className="auth-card__header">
-          <span className="auth-card__logo">[%] Farmart Kenya</span>
+          <img src="/logo.svg" alt="Farmart logo" className="auth-card__logo-img" />
           <h2 className="auth-card__title">Welcome back</h2>
           <p className="auth-card__subtitle">Login to your account</p>
         </div>

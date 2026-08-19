@@ -70,7 +70,7 @@ const RegisterPage = () => {
       <div className="auth-card auth-card--wide">
 
         <div className="auth-card__header">
-          <span className="auth-card__logo">[%] Farmart Kenya</span>
+          <img src="/logo.svg" alt="Farmart logo" className="auth-card__logo-img" />
           <h2 className="auth-card__title">Create an account</h2>
           <p className="auth-card__subtitle">Join the marketplace</p>
         </div>

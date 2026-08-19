@@ -32,6 +32,8 @@
   letter-spacing: 0.05em;
 }
 
+.auth-card__logo-img { width: 120px; display:block; margin: 0 auto 8px }
+
 .auth-card__title {
   font-size: 1.5rem;
   font-weight: 700;
