@@ -1,23 +1,18 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../features/auth/authSlice'
 import { clearCart } from '../features/cart/cartSlice'
-import { setSearchQuery } from '../features/animals/animalsSlice'
 
 const Navbar = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
 
   const { user, role } = useSelector((state) => state.auth)
   const { items } = useSelector((state) => state.cart)
 
-  const handleSearch = (e) => {
-    dispatch(setSearchQuery(e.target.value))
-  }
-
-  const handleSearchSubmit = (e) => {
-    e.preventDefault()
-    navigate('/store')
+  const handleModeChange = (mode) => {
+    navigate(mode === 'farmer' ? '/farmer-portal' : '/store')
   }
 
   const handleLogout = () => {
@@ -27,59 +22,63 @@ const Navbar = () => {
   }
 
   return (
-    <nav className="navbar">
-
-      <Link to="/" className="navbar__logo">
-        <img src="/logo.svg" alt="Farmart logo" className="navbar__logo-img" />
-        <div>
-          <span className="navbar__logo-name">Farmart Kenya</span>
-          <span className="navbar__logo-tag">// BETA-DEV</span>
-        </div>
-      </Link>
-
-      <form className="navbar__search" onSubmit={handleSearchSubmit}>
-        <input
-          type="text"
-          placeholder="Tafuta mifugo hapa..."
-          onChange={handleSearch}
-          className="navbar__search-input"
-        />
-      </form>
-
-      <div className="navbar__links">
-        <Link to="/store" className="navbar__link">Store</Link>
-
-        {role === 'farmer' && (
-          <Link to="/farmer-portal" className="navbar__link">Farmer Portal</Link>
-        )}
-
-        {user && role !== 'farmer' && (
-          <Link to="/orders" className="navbar__link">Orders</Link>
-        )}
-
-        {user && role !== 'farmer' && (
-          <Link to="/cart" className="navbar__cart">
-            🛒
-            {items.length > 0 && (
-              <span className="navbar__cart-count">{items.length}</span>
-            )}
-          </Link>
-        )}
-
-        {!user ? (
-          <div className="navbar__auth">
-            <Link to="/register" className="btn btn--outline">Register</Link>
-            <Link to="/login" className="btn btn--primary">Login</Link>
+    <header className="wireframe-navbar">
+      <div className="wireframe-navbar__container">
+        <Link to="/" className="wireframe-navbar__brand">
+          <div className="wireframe-navbar__logo-box">🌿</div>
+          <div>
+            <span className="wireframe-navbar__title">Farmart Kenya</span>
+            <span className="wireframe-navbar__subtitle">// Soko la Wakulima</span>
           </div>
-        ) : (
-          <div className="navbar__auth">
-            <span className="navbar__user">Hi, {user.full_name?.split(' ')[0]}</span>
-            <button onClick={handleLogout} className="btn btn--outline">Logout</button>
+        </Link>
+
+        <nav className="wireframe-navbar__links">
+          <Link to="/" className="wireframe-navbar__link">Home Wireframe</Link>
+          <Link to="/store" className="wireframe-navbar__link">Store</Link>
+          <div className="wireframe-mode-toggle" aria-label="Choose marketplace mode">
+            <button
+              type="button"
+              className={`wireframe-mode-toggle__btn ${!location.pathname.startsWith('/farmer-portal') ? 'wireframe-mode-toggle__btn--active' : ''}`}
+              onClick={() => handleModeChange('buyer')}
+            >
+              Buyer
+            </button>
+            <button
+              type="button"
+              className={`wireframe-mode-toggle__btn ${location.pathname.startsWith('/farmer-portal') ? 'wireframe-mode-toggle__btn--active' : ''}`}
+              onClick={() => handleModeChange('farmer')}
+            >
+              Farmer
+            </button>
           </div>
-        )}
+          
+          {user && role !== 'farmer' && (
+            <Link to="/orders" className="wireframe-navbar__link">My Orders</Link>
+          )}
+
+          {role !== 'farmer' && (
+            <Link to="/cart" className="wireframe-navbar__cart-btn">
+              🛒 Cart
+              {items.length > 0 && (
+                <span className="wireframe-navbar__cart-count">{items.length}</span>
+              )}
+            </Link>
+          )}
+
+          {!user ? (
+            <div className="wireframe-navbar__auth-group">
+              <Link to="/login" className="wireframe-btn-sm wireframe-btn-sm--outline">Login</Link>
+              <Link to="/register" className="wireframe-btn-sm wireframe-btn-sm--green">Register</Link>
+            </div>
+          ) : (
+            <div className="wireframe-navbar__auth-group">
+              <span className="wireframe-navbar__user">Hi, {user.full_name?.split(' ')[0] || 'User'}</span>
+              <button onClick={handleLogout} className="wireframe-btn-sm wireframe-btn-sm--outline">Logout</button>
+            </div>
+          )}
+        </nav>
       </div>
-
-    </nav>
+    </header>
   )
 }
 

@@ -1,44 +1,25 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { fetchFarmerOrders, confirmOrder, rejectOrder } from '../features/orders/ordersSlice'
-import OrderItem from './components/OrderItem'
-import '../styles/farmerPortal.css'
+import FarmerPortalSection from '../components/FarmerPortalSection'
+import Footer from '../components/Footer'
+import { Link } from 'react-router-dom'
 
 const FarmerPortalPage = () => {
-  const dispatch = useDispatch()
-  const { farmerOrders, isLoading } = useSelector((state) => state.orders)
-
-  useEffect(() => {
-    dispatch(fetchFarmerOrders())
-  }, [dispatch])
-
-  const handleConfirm = (id) => {
-    dispatch(confirmOrder(id))
-  }
-  const handleReject = (id) => {
-    dispatch(rejectOrder(id))
-  }
-
   return (
-    <div className="farmer-portal">
-      <h1>Farmer Portal</h1>
-      <p className="muted">Manage listings and orders</p>
-
-      <section className="orders-section">
-        <h2>Incoming Orders</h2>
-        {isLoading && <div>Loading...</div>}
-        {!isLoading && farmerOrders.length === 0 && (
-          <div className="muted">No orders yet</div>
-        )}
-        <div className="orders-list">
-          {farmerOrders.map((o) => (
-            <OrderItem key={o.id} order={o} onConfirm={handleConfirm} onReject={handleReject} />
-          ))}
+    <div className="wireframe-page">
+      <div style={{ paddingTop: '2rem' }}>
+        <div className="wireframe-farmer-section__header" style={{ maxWidth: '1200px', margin: '0 auto 1.25rem', padding: '0 1.5rem' }}>
+          <div>
+            <span className="wireframe-tag-badge">// SELLER WORKSPACE</span>
+            <h1 className="wireframe-farmer-section__title">Manage your farm listings</h1>
+          </div>
+          <Link to="/farmer-portal/add-animal" className="wireframe-btn-sm wireframe-btn-sm--green">
+            + Add Animal
+          </Link>
         </div>
-      </section>
+        <FarmerPortalSection />
+      </div>
+      <Footer />
     </div>
   )
 }
 
 export default FarmerPortalPage
-

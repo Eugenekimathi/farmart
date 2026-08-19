@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
@@ -18,8 +18,9 @@ import EditAnimalPage from './pages/EditAnimalPage'
 import NotFoundPage from './pages/NotFoundPage'
 import OrdersPage from './pages/OrdersPage'
 
-const App = () => {
+const AppContent = () => {
   const dispatch = useDispatch()
+  const location = useLocation()
   const { user, role } = useSelector((state) => state.auth)
 
   // Load cart from backend whenever user logs in
@@ -30,8 +31,7 @@ const App = () => {
   }, [user, role, dispatch])
 
   return (
-    <BrowserRouter>
-      {/* Navbar renders on every page */}
+    <>
       <Navbar />
 
       <main className="main-content">
@@ -95,8 +95,14 @@ const App = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-    </BrowserRouter>
+    </>
   )
 }
+
+const App = () => (
+  <BrowserRouter>
+    <AppContent />
+  </BrowserRouter>
+)
 
 export default App

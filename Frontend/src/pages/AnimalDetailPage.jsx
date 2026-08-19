@@ -207,7 +207,7 @@ const AnimalDetailPage = () => {
               >
                 {selectedAnimal.status !== 'available'
                   ? 'Not Available'
-                  : 'Buy Direct (M-Pesa)'}
+                  : 'Buy Direct'}
               </button>
 
               <button
