@@ -29,6 +29,11 @@
     font-size: 16px;
   }
 }
+@import './styles/auth.css';
+@import './styles/navbar.css';
+@import './styles/store.css';
+@import './styles/animalDetail.css';
+@import './styles/cart.css';
 
 @media (prefers-color-scheme: dark) {
   :root {
@@ -108,4 +113,11 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+
+
+/* Main content area sits below the navbar */
+.main-content {
+  min-height: calc(100vh - 60px);
+  background-color: var(--bg);
 }
