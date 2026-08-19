@@ -233,8 +233,4 @@ const AnimalDetailPage = () => {
 }
 
 export default AnimalDetailPage
-const AnimalDetailPage = () => {
-  return <div>Animal Detail Page</div>
-}
 
-export default AnimalDetailPage
