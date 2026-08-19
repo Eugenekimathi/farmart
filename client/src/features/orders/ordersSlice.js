@@ -5,6 +5,7 @@ import {
   checkPaymentStatus,
   fetchMyOrders,
 } from '../../services/ordersService'
+import { fetchOrders, confirmOrderApi, rejectOrderApi } from '../../services/ordersService'
 
 // Create order from cart items
 export const placeOrder = createAsyncThunk(
@@ -58,6 +59,42 @@ export const getMyOrders = createAsyncThunk(
       return data
     } catch (error) {
       return rejectWithValue('Failed to load orders.')
+    }
+  }
+)
+
+export const fetchFarmerOrders = createAsyncThunk(
+  'orders/fetchFarmerOrders',
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await fetchOrders()
+      return data
+    } catch (error) {
+      return rejectWithValue('Failed to load farmer orders.')
+    }
+  }
+)
+
+export const confirmOrder = createAsyncThunk(
+  'orders/confirmOrder',
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const data = await confirmOrderApi(orderId)
+      return data
+    } catch (error) {
+      return rejectWithValue('Failed to confirm order')
+    }
+  }
+)
+
+export const rejectOrder = createAsyncThunk(
+  'orders/rejectOrder',
+  async (orderId, { rejectWithValue }) => {
+    try {
+      const data = await rejectOrderApi(orderId)
+      return data
+    } catch (error) {
+      return rejectWithValue('Failed to reject order')
     }
   }
 )
@@ -146,6 +183,29 @@ const ordersSlice = createSlice({
       .addCase(getMyOrders.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload
+      })
+
+      // Farmer orders
+      .addCase(fetchFarmerOrders.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(fetchFarmerOrders.fulfilled, (state, action) => {
+        state.isLoading = false
+        state.farmerOrders = action.payload
+      })
+      .addCase(fetchFarmerOrders.rejected, (state, action) => {
+        state.isLoading = false
+        state.error = action.payload
+      })
+
+      // confirm/reject
+      .addCase(confirmOrder.fulfilled, (state, action) => {
+        const idx = state.farmerOrders.findIndex((o) => o.id === action.payload.id)
+        if (idx !== -1) state.farmerOrders[idx] = action.payload
+      })
+      .addCase(rejectOrder.fulfilled, (state, action) => {
+        const idx = state.farmerOrders.findIndex((o) => o.id === action.payload.id)
+        if (idx !== -1) state.farmerOrders[idx] = action.payload
       })
   },
 })

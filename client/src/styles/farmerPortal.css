@@ -1,0 +1,29 @@
+.farmer-portal {
+  max-width: 980px;
+  margin: 1.5rem auto;
+  padding: 1rem;
+}
+
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.order-item {
+  border: 1px solid var(--border);
+  background: var(--white);
+  padding: 0.9rem;
+  border-radius: 8px;
+}
+.order-item__head { display:flex; justify-content:space-between; align-items:center }
+.order-status { text-transform:capitalize; padding:0.25rem 0.6rem; border-radius:6px; font-weight:700 }
+.order-status--pending { background:#fff8e1; color:#8a6d00 }
+.order-status--confirmed { background:#e8f5e9; color:#2e7d32 }
+.order-status--rejected { background:#fdecea; color:#d32f2f }
+.order-item__body { margin-top:0.6rem }
+.order-item__row { display:flex; justify-content:space-between; padding:0.25rem 0 }
+.order-item__actions { display:flex; gap:0.6rem; justify-content:flex-end; margin-top:0.6rem }
+
+.muted { color:var(--text-muted); font-size:0.9rem }

@@ -21,3 +21,18 @@ export const fetchMyOrders = async () => {
   const response = await api.get('/orders/my-orders')
   return response.data
 }
+
+export const fetchOrders = async () => {
+  const response = await api.get('/orders')
+  return response.data
+}
+
+export const confirmOrderApi = async (orderId) => {
+  const response = await api.post(`/orders/${orderId}/confirm`)
+  return response.data
+}
+
+export const rejectOrderApi = async (orderId) => {
+  const response = await api.post(`/orders/${orderId}/reject`)
+  return response.data
+}
