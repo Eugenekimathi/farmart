@@ -44,7 +44,7 @@ export const pollPaymentStatus = createAsyncThunk(
     try {
       const data = await checkPaymentStatus(orderId)
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Could not check payment status.')
     }
   }
@@ -57,7 +57,7 @@ export const getMyOrders = createAsyncThunk(
     try {
       const data = await fetchMyOrders()
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to load orders.')
     }
   }
@@ -69,7 +69,7 @@ export const fetchFarmerOrders = createAsyncThunk(
     try {
       const data = await fetchOrders()
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to load farmer orders.')
     }
   }
@@ -81,7 +81,7 @@ export const confirmOrder = createAsyncThunk(
     try {
       const data = await confirmOrderApi(orderId)
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to confirm order')
     }
   }
@@ -93,7 +93,7 @@ export const rejectOrder = createAsyncThunk(
     try {
       const data = await rejectOrderApi(orderId)
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to reject order')
     }
   }

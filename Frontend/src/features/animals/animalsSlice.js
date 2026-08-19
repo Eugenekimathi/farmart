@@ -40,7 +40,7 @@ export const getAnimalTypes = createAsyncThunk(
     try {
       const data = await fetchAnimalTypes()
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to load animal types.')
     }
   }
@@ -52,7 +52,7 @@ export const getBreeds = createAsyncThunk(
     try {
       const data = await fetchBreeds(animalTypeId)
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to load breeds.')
     }
   }
@@ -109,9 +109,9 @@ const animalsSlice = createSlice({
       })
       .addCase(getAnimals.fulfilled, (state, action) => {
         state.isLoading = false
-        state.animals = action.payload.animals
-        state.pagination.totalPages = action.payload.total_pages
-        state.pagination.totalCount = action.payload.total_count
+        state.animals = action.payload.animals || []
+        state.pagination.totalPages = action.payload.total_pages || 1
+        state.pagination.totalCount = action.payload.total_count ?? state.animals.length
       })
       .addCase(getAnimals.rejected, (state, action) => {
         state.isLoading = false
@@ -125,7 +125,10 @@ const animalsSlice = createSlice({
       })
       .addCase(getAnimalById.fulfilled, (state, action) => {
         state.isLoading = false
-        state.selectedAnimal = action.payload
+        state.selectedAnimal = {
+          ...action.payload,
+          status: action.payload.status || 'available',
+        }
       })
       .addCase(getAnimalById.rejected, (state, action) => {
         state.isLoading = false

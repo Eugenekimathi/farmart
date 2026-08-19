@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, startTransition } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { placeOrder, startPayment, pollPaymentStatus, resetCheckout } from '../features/orders/ordersSlice'
@@ -60,7 +60,7 @@ const CheckoutPage = () => {
     if (paymentStatus === 'paid') {
       // Payment confirmed — clear cart and show success
       dispatch(clearCart())
-      setStep(STEPS.SUCCESS)
+      startTransition(() => setStep(STEPS.SUCCESS))
       if (pollRef.current) clearInterval(pollRef.current)
     }
     if (paymentStatus === 'failed') {

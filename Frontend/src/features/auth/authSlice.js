@@ -1,6 +1,18 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { loginUser, registerUser } from '../../services/authService'
 
+const AUTH_STORAGE_KEY = 'farmart.auth'
+
+const getStoredAuth = () => {
+  try {
+    const stored = JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY))
+    if (stored?.user && stored?.token) return stored
+  } catch {
+    localStorage.removeItem(AUTH_STORAGE_KEY)
+  }
+  return { user: null, token: null, role: null }
+}
+
 export const login = createAsyncThunk(
   'auth/login',
   async (credentials, { rejectWithValue }) => {
@@ -30,9 +42,7 @@ export const register = createAsyncThunk(
 )
 
 const initialState = {
-  user: null,
-  token: null,
-  role: null,
+  ...getStoredAuth(),
   isLoading: false,
   error: null,
 }

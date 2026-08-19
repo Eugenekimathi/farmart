@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { addItem } from '../features/cart/cartSlice'
+import { addItem, syncAddToCart } from '../features/cart/cartSlice'
 
 const AnimalCard = ({ animal }) => {
   const navigate = useNavigate()
@@ -20,6 +20,7 @@ const AnimalCard = ({ animal }) => {
       return
     }
     dispatch(addItem(animal))
+    dispatch(syncAddToCart(animal.id))
   }
 
   const handleCardClick = () => {

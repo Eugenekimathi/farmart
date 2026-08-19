@@ -13,4 +13,17 @@ export const store = configureStore({
   },
 })
 
+let previousAuthToken = store.getState().auth.token
+
+store.subscribe(() => {
+  const { user, token, role } = store.getState().auth
+  if (token === previousAuthToken) return
+  previousAuthToken = token
+  if (user && token) {
+    localStorage.setItem('farmart.auth', JSON.stringify({ user, token, role }))
+  } else {
+    localStorage.removeItem('farmart.auth')
+  }
+})
+
 export default store

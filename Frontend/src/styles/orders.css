@@ -1,0 +1,23 @@
+.orders-page { max-width: 1040px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
+.orders-page__header { display: flex; justify-content: space-between; align-items: end; gap: 1.5rem; margin-bottom: 2rem; }
+.orders-page__eyebrow { color: var(--primary); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 0.5rem; }
+.orders-page__header h1 { color: var(--text); font-size: clamp(1.7rem, 3vw, 2.3rem); margin-bottom: 0.35rem; }
+.orders-page__header p:last-child, .orders-page__empty p { color: var(--text-muted); }
+.orders-page__count { color: var(--primary); font-size: 0.85rem; font-weight: 700; white-space: nowrap; }
+.orders-list { display: grid; gap: 1rem; }
+.order-card { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 1.25rem; }
+.order-card__topline, .order-card__details { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.order-card__label { color: var(--text-muted); font-size: 0.75rem; margin-bottom: 0.25rem; }
+.order-card h2 { color: var(--text); font-size: 1.05rem; }
+.order-card__status { border-radius: 999px; font-size: 0.75rem; font-weight: 700; padding: 0.35rem 0.65rem; text-transform: capitalize; }
+.order-card__status--paid, .order-card__status--confirmed, .order-card__status--completed { background: #e8f5e9; color: #236b2a; }
+.order-card__status--pending, .order-card__status--processing { background: #fff4e5; color: #a54b00; }
+.order-card__status--failed, .order-card__status--rejected, .order-card__status--cancelled { background: #ffebee; color: #a50e0e; }
+.order-card__details { border-top: 1px solid var(--border); color: var(--text-muted); font-size: 0.85rem; margin-top: 1rem; padding-top: 1rem; }
+.order-card__details strong { color: var(--text); font-size: 1rem; }
+.order-card__delivery { color: var(--text-muted); font-size: 0.82rem; margin-top: 0.75rem; }
+.orders-page--state, .orders-page__empty { align-items: center; display: flex; flex-direction: column; gap: 0.8rem; justify-content: center; min-height: 50vh; text-align: center; }
+.orders-page--state h1, .orders-page__empty h2 { color: var(--text); }
+.orders-page__error { color: var(--danger); }
+.orders-page__empty-icon { font-size: 2.5rem; }
+@media (max-width: 600px) { .orders-page { padding: 1.5rem 1rem 3rem; } .orders-page__header { align-items: start; flex-direction: column; } }

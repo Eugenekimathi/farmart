@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAnimalById } from '../features/animals/animalsSlice'
-import { addItem } from '../features/cart/cartSlice'
+import { addItem, syncAddToCart } from '../features/cart/cartSlice'
 import '../styles/animalDetail.css'
 
 const AnimalDetailPage = () => {
@@ -28,6 +28,7 @@ const AnimalDetailPage = () => {
       return
     }
     dispatch(addItem(selectedAnimal))
+    dispatch(syncAddToCart(selectedAnimal.id))
   }
 
   const handleBuyNow = () => {
@@ -36,6 +37,7 @@ const AnimalDetailPage = () => {
       return
     }
     dispatch(addItem(selectedAnimal))
+    dispatch(syncAddToCart(selectedAnimal.id))
     navigate('/cart')
   }
 

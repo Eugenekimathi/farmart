@@ -1,5 +1,3 @@
-import React from 'react'
-
 const OrderItem = ({ order, onConfirm, onReject }) => {
   return (
     <div className="order-item">

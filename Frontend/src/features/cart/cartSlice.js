@@ -3,7 +3,6 @@ import {
   fetchCart,
   addToCart,
   removeFromCart,
-  clearCartApi,
 } from '../../services/cartService'
 
 // Fetch cart from backend (called on app load if user is logged in)
@@ -13,7 +12,7 @@ export const getCart = createAsyncThunk(
     try {
       const data = await fetchCart()
       return data
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to load cart.')
     }
   }
@@ -26,8 +25,11 @@ export const syncAddToCart = createAsyncThunk(
     try {
       const data = await addToCart(animalId)
       return data
-    } catch (error) {
-      return rejectWithValue('Failed to add item to cart.')
+    } catch {
+      return rejectWithValue({
+        message: 'Cart sync is unavailable. Your item remains saved locally.',
+        animalId,
+      })
     }
   }
 )
@@ -39,7 +41,7 @@ export const deleteCartItem = createAsyncThunk(
     try {
       await removeFromCart(cartItemId)
       return animalId
-    } catch (error) {
+    } catch {
       return rejectWithValue('Failed to remove item.')
     }
   }
@@ -93,6 +95,10 @@ const cartSlice = createSlice({
       .addCase(getCart.rejected, (state, action) => {
         state.isLoading = false
         state.error = action.payload
+      })
+
+      .addCase(syncAddToCart.rejected, (state, action) => {
+        state.error = action.payload?.message || 'Failed to sync cart.'
       })
 
       // Delete item

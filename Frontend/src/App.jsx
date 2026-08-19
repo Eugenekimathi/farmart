@@ -16,6 +16,7 @@ import FarmerPortalPage from './pages/FarmerPortalPage'
 import AddAnimalPage from './pages/AddAnimalPage'
 import EditAnimalPage from './pages/EditAnimalPage'
 import NotFoundPage from './pages/NotFoundPage'
+import OrdersPage from './pages/OrdersPage'
 
 const App = () => {
   const dispatch = useDispatch()
@@ -40,6 +41,14 @@ const App = () => {
         <Route path="/store/:id" element={<AnimalDetailPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route
+          path="/orders"
+          element={
+            <ProtectedRoute>
+              <OrdersPage />
+            </ProtectedRoute>
+          }
+        />
 
         <Route
           path="/cart"

@@ -1,6 +1,6 @@
 # Dependencies
 node_modules/
-client/node_modules/
+Frontend/node_modules/
 
 # Environment variables
 .env
@@ -8,8 +8,8 @@ client/node_modules/
 .env.production
 
 # Build output
-client/dist/
-client/build/
+Frontend/dist/
+Frontend/build/
 
 # Python (for backend team)
 __pycache__/

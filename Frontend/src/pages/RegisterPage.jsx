@@ -61,7 +61,8 @@ const RegisterPage = () => {
       setFormErrors(errors)
       return
     }
-    const { confirmPassword, ...payload } = formData
+    const payload = { ...formData }
+    delete payload.confirmPassword
     dispatch(register(payload))
   }
 
