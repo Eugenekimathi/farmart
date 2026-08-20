@@ -861,6 +861,162 @@ body {
   color: #ffffff;
 }
 
+/* Farmart Assistant */
+.farmart-assistant {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 110;
+  font-family: var(--font-sans);
+}
+
+.farmart-assistant__launcher {
+  border: 0;
+  border-radius: 999px;
+  background: var(--primary-green);
+  color: #ffffff;
+  padding: 0.75rem 1.1rem;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.2);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.farmart-assistant__launcher:hover {
+  background: var(--primary-green-hover);
+}
+
+.farmart-assistant__panel {
+  width: min(360px, calc(100vw - 2rem));
+  height: min(520px, calc(100vh - 7rem));
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  box-shadow: 0 16px 40px rgba(15, 23, 42, 0.2);
+}
+
+.farmart-assistant__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1rem;
+  background: var(--bg-dark);
+  color: #ffffff;
+}
+
+.farmart-assistant__header div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.farmart-assistant__header span {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.farmart-assistant__header button {
+  border: 0;
+  background: transparent;
+  color: #cbd5e1;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.farmart-assistant__messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+  background: #f8fafc;
+}
+
+.farmart-assistant__message {
+  width: fit-content;
+  max-width: 88%;
+  margin-bottom: 0.7rem;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+
+.farmart-assistant__message--assistant {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: var(--text-main);
+}
+
+.farmart-assistant__message--user {
+  margin-left: auto;
+  background: var(--primary-green);
+  color: #ffffff;
+}
+
+.farmart-assistant__quick-actions {
+  display: flex;
+  gap: 0.4rem;
+  padding: 0 0.75rem 0.75rem;
+  overflow-x: auto;
+}
+
+.farmart-assistant__quick-actions button {
+  flex: 0 0 auto;
+  border: 1px solid #cbd5e1;
+  border-radius: 999px;
+  background: #ffffff;
+  color: var(--text-muted);
+  padding: 0.4rem 0.6rem;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+
+.farmart-assistant__form {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.farmart-assistant__form input {
+  min-width: 0;
+  flex: 1;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.65rem;
+  font: inherit;
+  font-size: 0.82rem;
+}
+
+.farmart-assistant__form button {
+  width: 38px;
+  border: 0;
+  border-radius: 6px;
+  background: var(--primary-green);
+  color: #ffffff;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.farmart-assistant__form button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .farmart-assistant {
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .farmart-assistant__launcher {
+    padding: 0.7rem 0.9rem;
+  }
+}
+
 /* Helpers */
 .font-bold { font-weight: 700; }
 .font-medium { font-weight: 500; }

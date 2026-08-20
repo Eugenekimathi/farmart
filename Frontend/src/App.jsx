@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
+import FarmartAssistant from './components/FarmartAssistant'
 import { getCart } from './features/cart/cartSlice'
 
 import HomePage from './pages/HomePage'
@@ -95,6 +96,7 @@ const AppContent = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
+      <FarmartAssistant />
     </>
   )
 }
