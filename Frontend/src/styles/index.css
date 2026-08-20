@@ -2,6 +2,7 @@
 @import './animalForm.css';
 @import './farmerPortal.css';
 @import './checkout.css';
+@import './responsive.css';
 
 *, *::before, *::after {
   box-sizing: border-box;
