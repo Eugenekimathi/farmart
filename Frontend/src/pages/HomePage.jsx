@@ -76,7 +76,6 @@ const HomePage = () => {
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero__inner">
-          <p className="hero__tag">// HERO AREA</p>
           <h1 className="hero__title">
             Nunua Mifugo Moja Kwa Moja <br />
             <span className="hero__title-highlight">
@@ -138,36 +137,11 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ── Stats bar ── */}
-      <section className="stats-bar">
-        <div className="stats-bar__inner">
-          <div className="stat-item">
-            <span className="stat-item__number">500+</span>
-            <span className="stat-item__label">Active Listings</span>
-          </div>
-          <div className="stat-item__divider" />
-          <div className="stat-item">
-            <span className="stat-item__number">200+</span>
-            <span className="stat-item__label">Verified Farmers</span>
-          </div>
-          <div className="stat-item__divider" />
-          <div className="stat-item">
-            <span className="stat-item__number">20%</span>
-            <span className="stat-item__label">Average Savings</span>
-          </div>
-          <div className="stat-item__divider" />
-          <div className="stat-item">
-            <span className="stat-item__number">47</span>
-            <span className="stat-item__label">Counties Covered</span>
-          </div>
-        </div>
-      </section>
 
       {/* ── Features ── */}
       <section className="features">
         <div className="features__inner">
           <div className="section-header">
-            <p className="section-header__tag">// WHY FARMART</p>
             <h2 className="section-header__title">
               A better way to buy and sell livestock
             </h2>
@@ -193,7 +167,6 @@ const HomePage = () => {
       <section className="how-it-works">
         <div className="how-it-works__inner">
           <div className="section-header">
-            <p className="section-header__tag">// HOW IT WORKS</p>
             <h2 className="section-header__title">
               From browser to farm in 4 steps
             </h2>
@@ -247,10 +220,6 @@ const HomePage = () => {
         <div className="footer__inner">
           <div className="footer__brand">
             <span className="footer__logo">[%] Farmart Kenya</span>
-            <p className="footer__tagline">
-              Soko la Wakulima — directly connecting Kenyan livestock
-              farmers with verified buyers. Zero middlemen margins.
-            </p>
           </div>
 
           <div className="footer__links">
