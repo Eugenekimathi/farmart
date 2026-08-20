@@ -1,29 +1,255 @@
 .farmer-portal {
-  max-width: 980px;
-  margin: 1.5rem auto;
-  padding: 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem;
 }
 
-.orders-list {
+/* Header */
+.farmer-portal__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.farmer-portal__tag {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.4rem;
+}
+
+.farmer-portal__title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 0.3rem;
+}
+
+.farmer-portal__subtitle {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+/* Body */
+.farmer-portal__body {
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
-  margin-top: 1rem;
+  gap: 2.5rem;
 }
 
-.order-item {
-  border: 1px solid var(--border);
+/* Section */
+.portal-section {
   background: var(--white);
-  padding: 0.9rem;
+  border: 1px solid var(--border);
   border-radius: 8px;
+  overflow: hidden;
 }
-.order-item__head { display:flex; justify-content:space-between; align-items:center }
-.order-status { text-transform:capitalize; padding:0.25rem 0.6rem; border-radius:6px; font-weight:700 }
-.order-status--pending { background:#fff8e1; color:#8a6d00 }
-.order-status--confirmed { background:#e8f5e9; color:#2e7d32 }
-.order-status--rejected { background:#fdecea; color:#d32f2f }
-.order-item__body { margin-top:0.6rem }
-.order-item__row { display:flex; justify-content:space-between; padding:0.25rem 0 }
-.order-item__actions { display:flex; gap:0.6rem; justify-content:flex-end; margin-top:0.6rem }
 
-.muted { color:var(--text-muted); font-size:0.9rem }
+.portal-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: #fafafa;
+}
+
+.portal-section__title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.portal-section__tag {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+}
+
+/* Table */
+.portal-table-wrap {
+  overflow-x: auto;
+}
+
+.portal-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.portal-table thead tr {
+  background: #f5f5f5;
+}
+
+.portal-table th {
+  padding: 0.75rem 1.25rem;
+  text-align: left;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+}
+
+.portal-table td {
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.portal-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.portal-table tbody tr:hover {
+  background-color: #fafafa;
+}
+
+.portal-table__name {
+  font-weight: 600;
+}
+
+.portal-table__price {
+  font-weight: 700;
+}
+
+.portal-table__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.portal-table__buyer {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.portal-table__buyer-name {
+  font-weight: 600;
+}
+
+.portal-table__buyer-phone {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.portal-table__animal {
+  font-size: 0.85rem;
+}
+
+.portal-table__actioned {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* Action buttons */
+.portal-action-btn {
+  padding: 0.3rem 0.7rem;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.portal-action-btn--edit {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.portal-action-btn--edit:hover {
+  background: #bbdefb;
+}
+
+.portal-action-btn--delete {
+  background: #fdecea;
+  color: var(--danger);
+}
+
+.portal-action-btn--delete:hover {
+  background: #ffcdd2;
+}
+
+.portal-action-btn--confirm {
+  background: #e8f5e9;
+  color: var(--primary);
+}
+
+.portal-action-btn--confirm:hover {
+  background: #c8e6c9;
+}
+
+.portal-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
+.badge--green {
+  background: #e8f5e9;
+  color: var(--primary);
+}
+
+.badge--yellow {
+  background: #fff8e1;
+  color: #f57f17;
+}
+
+.badge--red {
+  background: #fdecea;
+  color: var(--danger);
+}
+
+.badge--gray {
+  background: #f5f5f5;
+  color: var(--text-muted);
+}
+
+.badge--blue {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+/* Loading / error / empty */
+.portal-loading {
+  display: flex;
+  justify-content: center;
+  padding: 3rem;
+}
+
+.portal-error {
+  margin: 1rem 1.5rem;
+  padding: 0.75rem 1rem;
+  background: #fdecea;
+  border: 1px solid #f5c6cb;
+  color: var(--danger);
+  border-radius: 4px;
+  font-size: 0.875rem;
+}
+
+.portal-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}

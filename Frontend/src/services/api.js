@@ -1,8 +1,19 @@
 import axios from 'axios'
 import { store } from '../app/store'
 
+const getApiBaseUrl = () => {
+  if (typeof process !== 'undefined' && process.env && process.env.NODE_ENV === 'test') {
+    return process.env.VITE_API_URL || 'http://localhost:5000/api'
+  }
+  try {
+    return (0, eval)('import.meta.env.VITE_API_URL') || 'http://localhost:5000/api'
+  } catch {
+    return 'http://localhost:5000/api'
+  }
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: getApiBaseUrl(),
 })
 
 api.interceptors.request.use((config) => {

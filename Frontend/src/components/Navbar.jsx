@@ -33,7 +33,7 @@ const Navbar = () => {
         </Link>
 
         <nav className="wireframe-navbar__links">
-          <Link to="/" className="wireframe-navbar__link">Home Wireframe</Link>
+          <Link to="/" className="wireframe-navbar__link">Home</Link>
           <Link to="/store" className="wireframe-navbar__link">Store</Link>
           <div className="wireframe-mode-toggle" aria-label="Choose marketplace mode">
             <button

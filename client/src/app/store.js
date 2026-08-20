@@ -3,7 +3,6 @@ import authReducer from '../features/auth/authSlice'
 import animalsReducer from '../features/animals/animalsSlice'
 import cartReducer from '../features/cart/cartSlice'
 import ordersReducer from '../features/orders/ordersSlice'
-import farmerReducer from '../features/farmer/farmerSlice'
 
 export const store = configureStore({
   reducer: {
@@ -11,15 +10,15 @@ export const store = configureStore({
     animals: animalsReducer,
     cart: cartReducer,
     orders: ordersReducer,
-    farmer: farmerReducer,
   },
 })
 
-let previousAuthToken = store.getState().auth?.token
+let previousAuthToken = store.getState().auth.token
 
 store.subscribe(() => {
-  const { user, token, role } = store.getState().auth || {}
+  const { user, token, role } = store.getState().auth
   if (token === previousAuthToken) return
+
   previousAuthToken = token
   if (user && token) {
     localStorage.setItem('farmart.auth', JSON.stringify({ user, token, role }))

@@ -1,39 +1,70 @@
-import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import { updateLocalAnimal } from '../features/animals/animalsSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { editFarmerAnimal } from '../features/farmer/farmerSlice'
+import { getAnimalById } from '../features/animals/animalsSlice'
+import { getAnimalTypes, getBreeds } from '../features/animals/animalsSlice'
+import AnimalForm from '../components/AnimalForm'
+import '../styles/animalForm.css'
 
 const EditAnimalPage = () => {
   const { id } = useParams()
-  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const animal = useSelector((state) => state.animals.animals.find((item) => item.id === id))
-  const [name, setName] = useState(animal?.name || '')
-  const [price, setPrice] = useState(animal?.price || '')
+  const navigate = useNavigate()
 
-  if (!animal) return <div className="wireframe-empty">Animal listing not found.</div>
+  const { isSubmitting, submitError } = useSelector((state) => state.farmer)
+  const { selectedAnimal, isLoading } = useSelector((state) => state.animals)
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    dispatch(updateLocalAnimal({ ...animal, name, price: Number(price) }))
-    navigate('/farmer-portal')
+  // Load the animal's current data and form dropdowns
+  useEffect(() => {
+    dispatch(getAnimalById(id))
+    dispatch(getAnimalTypes())
+    dispatch(getBreeds())
+  }, [dispatch, id])
+
+  const handleSubmit = async (formData) => {
+    const result = await dispatch(
+      editFarmerAnimal({ id, formData })
+    )
+    if (result.meta.requestStatus === 'fulfilled') {
+      navigate('/farmer-portal')
+    }
+  }
+
+  if (isLoading) {
+    return (
+      <div className="animal-form-page">
+        <div className="animal-form-page__loading">
+          <div className="spinner" />
+          <p>Loading animal data...</p>
+        </div>
+      </div>
+    )
   }
 
   return (
-    <div className="auth-page">
-      <form className="auth-card auth-form" onSubmit={handleSubmit}>
-        <span className="wireframe-tag-badge">// EDIT LISTING</span>
-        <h1 className="auth-card__title">Edit animal</h1>
-        <div className="form-group">
-          <label className="form-label" htmlFor="animal-name">Name</label>
-          <input id="animal-name" className="form-input" value={name} onChange={(event) => setName(event.target.value)} required />
-        </div>
-        <div className="form-group">
-          <label className="form-label" htmlFor="animal-price">Price</label>
-          <input id="animal-price" type="number" className="form-input" value={price} onChange={(event) => setPrice(event.target.value)} required />
-        </div>
-        <button type="submit" className="btn btn--primary btn--full">Save Changes</button>
-      </form>
+    <div className="animal-form-page">
+      <div className="animal-form-page__header">
+        <button
+          className="animal-form-page__back"
+          onClick={() => navigate('/farmer-portal')}
+        >
+          ← Back to Portal
+        </button>
+        <h1 className="animal-form-page__title">Edit Listing</h1>
+        <p className="animal-form-page__subtitle">
+          Update the details for{' '}
+          <strong>{selectedAnimal?.name}</strong>
+        </p>
+      </div>
+
+      {/* Pass existing animal data to pre-fill the form */}
+      <AnimalForm
+        initialData={selectedAnimal}
+        onSubmit={handleSubmit}
+        isLoading={isSubmitting}
+        error={submitError}
+      />
     </div>
   )
 }

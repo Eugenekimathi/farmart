@@ -1,65 +1,50 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { addLocalAnimal } from '../features/animals/animalsSlice'
-import '../styles/farmerPortal.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { addFarmerAnimal } from '../features/farmer/farmerSlice'
+import { getAnimalTypes, getBreeds } from '../features/animals/animalsSlice'
+import AnimalForm from '../components/AnimalForm'
+import '../styles/animalForm.css'
 
 const AddAnimalPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ name: '', breed: '', location: '', weight: '', age: '', price: '', image: '' })
 
-  const handleChange = (event) => {
-    const { name, value } = event.target
-    setForm((current) => ({ ...current, [name]: value }))
-  }
+  const { isSubmitting, submitError } = useSelector((state) => state.farmer)
 
-  const handleImageChange = (event) => {
-    const file = event.target.files?.[0]
-    if (!file) return
-    const reader = new FileReader()
-    reader.onload = () => setForm((current) => ({ ...current, image: reader.result }))
-    reader.readAsDataURL(file)
-  }
+  // Load types and breeds for the form dropdowns
+  useEffect(() => {
+    dispatch(getAnimalTypes())
+    dispatch(getBreeds())
+  }, [dispatch])
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    dispatch(addLocalAnimal({
-      id: `local-${Date.now()}`,
-      name: form.name,
-      breed: { id: `local-${form.breed}`, name: form.breed },
-      animal_type: { id: 't1', name: 'Cattle' },
-      location: form.location,
-      weight: form.weight,
-      age: Number(form.age),
-      price: Number(form.price),
-      images: form.image ? [{ image_url: form.image, is_primary: true }] : [],
-      savings: 0,
-      kvb_certified: false,
-      pasture_raised: false,
-      direct_delivery: false,
-    }))
-    navigate('/farmer-portal')
+  const handleSubmit = async (formData) => {
+    const result = await dispatch(addFarmerAnimal(formData))
+    if (result.meta.requestStatus === 'fulfilled') {
+      navigate('/farmer-portal')
+    }
   }
 
   return (
-    <div className="auth-page">
-      <form className="auth-card auth-card--wide auth-form" onSubmit={handleSubmit}>
-        <span className="wireframe-tag-badge">// NEW LISTING</span>
-        <h1 className="auth-card__title">Add an animal</h1>
-        <p className="auth-card__subtitle">Publish a listing with a real farm photo.</p>
-        {['name', 'breed', 'location', 'weight', 'age', 'price'].map((field) => (
-          <div className="form-group" key={field}>
-            <label className="form-label" htmlFor={field}>{field.replace('_', ' ')}</label>
-            <input id={field} name={field} type={['age', 'price'].includes(field) ? 'number' : 'text'} value={form[field]} onChange={handleChange} className="form-input" required />
-          </div>
-        ))}
-        <div className="form-group">
-          <label className="form-label" htmlFor="animal-image">Animal photo</label>
-          <input id="animal-image" type="file" accept="image/*" onChange={handleImageChange} className="form-input" />
-        </div>
-        <button type="submit" className="btn btn--primary btn--full">Publish Listing</button>
-      </form>
+    <div className="animal-form-page">
+      <div className="animal-form-page__header">
+        <button
+          className="animal-form-page__back"
+          onClick={() => navigate('/farmer-portal')}
+        >
+          ← Back to Portal
+        </button>
+        <h1 className="animal-form-page__title">Add New Animal</h1>
+        <p className="animal-form-page__subtitle">
+          Fill in the details below to list your animal for sale
+        </p>
+      </div>
+
+      <AnimalForm
+        onSubmit={handleSubmit}
+        isLoading={isSubmitting}
+        error={submitError}
+      />
     </div>
   )
 }

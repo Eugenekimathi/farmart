@@ -5,19 +5,15 @@ import {
   checkPaymentStatus,
   fetchMyOrders,
 } from '../../services/ordersService'
-import {
-  fetchFarmerOrders,
-  confirmOrder,
-  rejectOrder,
-} from '../../services/farmerService'
+import { fetchOrders, confirmOrderApi, rejectOrderApi } from '../../services/ordersService'
 
-// ── Buyer thunks ─────────────────────────────────────────────
-
+// Create order from cart items
 export const placeOrder = createAsyncThunk(
   'orders/placeOrder',
   async (orderData, { rejectWithValue }) => {
     try {
-      return await createOrder(orderData)
+      const data = await createOrder(orderData)
+      return data
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Failed to place order.'
@@ -26,11 +22,13 @@ export const placeOrder = createAsyncThunk(
   }
 )
 
+// Initiate M-Pesa STK push
 export const startPayment = createAsyncThunk(
   'orders/startPayment',
   async (paymentData, { rejectWithValue }) => {
     try {
-      return await initiatePayment(paymentData)
+      const data = await initiatePayment(paymentData)
+      return data
     } catch (error) {
       return rejectWithValue(
         error.response?.data?.message || 'Payment initiation failed.'
@@ -39,66 +37,67 @@ export const startPayment = createAsyncThunk(
   }
 )
 
+// Poll payment status after STK push
 export const pollPaymentStatus = createAsyncThunk(
   'orders/pollPaymentStatus',
   async (orderId, { rejectWithValue }) => {
     try {
-      return await checkPaymentStatus(orderId)
-    } catch (error) {
+      const data = await checkPaymentStatus(orderId)
+      return data
+    } catch {
       return rejectWithValue('Could not check payment status.')
     }
   }
 )
 
+// Fetch buyer's order history
 export const getMyOrders = createAsyncThunk(
   'orders/getMyOrders',
   async (_, { rejectWithValue }) => {
     try {
-      return await fetchMyOrders()
-    } catch (error) {
+      const data = await fetchMyOrders()
+      return data
+    } catch {
       return rejectWithValue('Failed to load orders.')
     }
   }
 )
 
-// ── Farmer thunks ─────────────────────────────────────────────
-
-export const getFarmerOrders = createAsyncThunk(
-  'orders/getFarmerOrders',
+export const fetchFarmerOrders = createAsyncThunk(
+  'orders/fetchFarmerOrders',
   async (_, { rejectWithValue }) => {
     try {
-      return await fetchFarmerOrders()
-    } catch (error) {
+      const data = await fetchOrders()
+      return data
+    } catch {
       return rejectWithValue('Failed to load farmer orders.')
     }
   }
 )
 
-export const confirmFarmerOrder = createAsyncThunk(
+export const confirmOrder = createAsyncThunk(
   'orders/confirmOrder',
   async (orderId, { rejectWithValue }) => {
     try {
-      const data = await confirmOrder(orderId)
-      return { orderId, ...data }
-    } catch (error) {
-      return rejectWithValue('Failed to confirm order.')
+      const data = await confirmOrderApi(orderId)
+      return data
+    } catch {
+      return rejectWithValue('Failed to confirm order')
     }
   }
 )
 
-export const rejectFarmerOrder = createAsyncThunk(
+export const rejectOrder = createAsyncThunk(
   'orders/rejectOrder',
   async (orderId, { rejectWithValue }) => {
     try {
-      const data = await rejectOrder(orderId)
-      return { orderId, ...data }
-    } catch (error) {
-      return rejectWithValue('Failed to reject order.')
+      const data = await rejectOrderApi(orderId)
+      return data
+    } catch {
+      return rejectWithValue('Failed to reject order')
     }
   }
 )
-
-// ── Slice ──────────────────────────────────────────────────────
 
 const initialState = {
   orders: [],
@@ -106,7 +105,6 @@ const initialState = {
   currentOrder: null,
   paymentStatus: null,
   isLoading: false,
-  isFarmerOrdersLoading: false,
   isPaymentLoading: false,
   error: null,
   paymentError: null,
@@ -116,6 +114,15 @@ const ordersSlice = createSlice({
   name: 'orders',
   initialState,
   reducers: {
+    setFarmerOrders: (state, action) => {
+      state.farmerOrders = action.payload
+    },
+    updateOrderStatus: (state, action) => {
+      const order = state.farmerOrders.find(
+        (o) => o.id === action.payload.orderId
+      )
+      if (order) order.status = action.payload.status
+    },
     resetCheckout: (state) => {
       state.currentOrder = null
       state.paymentStatus = null
@@ -125,6 +132,11 @@ const ordersSlice = createSlice({
     clearOrderError: (state) => {
       state.error = null
       state.paymentError = null
+    },
+    markPaymentFailed: (state, action) => {
+      state.paymentStatus = 'failed'
+      state.paymentError = action.payload
+      state.isPaymentLoading = false
     },
   },
   extraReducers: (builder) => {
@@ -151,6 +163,7 @@ const ordersSlice = createSlice({
       })
       .addCase(startPayment.fulfilled, (state) => {
         state.isPaymentLoading = false
+        // STK push sent — still waiting for user to confirm on phone
         state.paymentStatus = 'stk_sent'
       })
       .addCase(startPayment.rejected, (state, action) => {
@@ -163,8 +176,11 @@ const ordersSlice = createSlice({
       .addCase(pollPaymentStatus.fulfilled, (state, action) => {
         state.paymentStatus = action.payload.status
       })
+      .addCase(pollPaymentStatus.rejected, (state, action) => {
+        state.paymentError = action.payload
+      })
 
-      // My orders (buyer)
+      // My orders
       .addCase(getMyOrders.pending, (state) => {
         state.isLoading = true
       })
@@ -178,35 +194,35 @@ const ordersSlice = createSlice({
       })
 
       // Farmer orders
-      .addCase(getFarmerOrders.pending, (state) => {
-        state.isFarmerOrdersLoading = true
+      .addCase(fetchFarmerOrders.pending, (state) => {
+        state.isLoading = true
       })
-      .addCase(getFarmerOrders.fulfilled, (state, action) => {
-        state.isFarmerOrdersLoading = false
+      .addCase(fetchFarmerOrders.fulfilled, (state, action) => {
+        state.isLoading = false
         state.farmerOrders = action.payload
       })
-      .addCase(getFarmerOrders.rejected, (state, action) => {
-        state.isFarmerOrdersLoading = false
+      .addCase(fetchFarmerOrders.rejected, (state, action) => {
+        state.isLoading = false
         state.error = action.payload
       })
 
-      // Confirm order — update status locally immediately
-      .addCase(confirmFarmerOrder.fulfilled, (state, action) => {
-        const order = state.farmerOrders.find(
-          (o) => o.id === action.payload.orderId
-        )
-        if (order) order.status = 'confirmed'
+      // confirm/reject
+      .addCase(confirmOrder.fulfilled, (state, action) => {
+        const idx = state.farmerOrders.findIndex((o) => o.id === action.payload.id)
+        if (idx !== -1) state.farmerOrders[idx] = action.payload
       })
-
-      // Reject order — update status locally immediately
-      .addCase(rejectFarmerOrder.fulfilled, (state, action) => {
-        const order = state.farmerOrders.find(
-          (o) => o.id === action.payload.orderId
-        )
-        if (order) order.status = 'rejected'
+      .addCase(rejectOrder.fulfilled, (state, action) => {
+        const idx = state.farmerOrders.findIndex((o) => o.id === action.payload.id)
+        if (idx !== -1) state.farmerOrders[idx] = action.payload
       })
   },
 })
 
-export const { resetCheckout, clearOrderError } = ordersSlice.actions
+export const {
+  setFarmerOrders,
+  updateOrderStatus,
+  resetCheckout,
+  clearOrderError,
+  markPaymentFailed,
+} = ordersSlice.actions
 export default ordersSlice.reducer

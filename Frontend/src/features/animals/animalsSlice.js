@@ -281,7 +281,8 @@ const animalsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getAnimals.pending, (state) => {
-        state.isLoading = false
+        state.isLoading = true
+        state.error = null
       })
       .addCase(getAnimals.fulfilled, (state, action) => {
         state.isLoading = false
@@ -291,8 +292,9 @@ const animalsSlice = createSlice({
           state.pagination.totalCount = action.payload.total_count ?? action.payload.animals.length
         }
       })
-      .addCase(getAnimals.rejected, (state) => {
+      .addCase(getAnimals.rejected, (state, action) => {
         state.isLoading = false
+        state.error = action.payload || 'Failed to load animals.'
       })
       .addCase(getAnimalById.fulfilled, (state, action) => {
         state.isLoading = false
