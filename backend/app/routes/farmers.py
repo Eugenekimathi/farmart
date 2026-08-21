@@ -61,20 +61,6 @@ def get_farmer(farmer_id):
         farmer_response_schema.dump(farmer)
     ), 200
 
-@farmer_bp.route("/<int:farmer_id>", methods=["GET"])
-def get_farmer(farmer_id):
-
-    farmer = db.session.get(Farmer, farmer_id)
-
-    if not farmer:
-        return jsonify({
-            "error": "Farmer not found"
-        }), 404
-
-    return jsonify(
-        farmer_response_schema.dump(farmer)
-    ), 200
-
 
 @farmer_bp.route("/<int:farmer_id>", methods=["PUT"])
 def update_farmer(farmer_id):
