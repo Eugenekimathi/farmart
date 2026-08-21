@@ -60,3 +60,57 @@ def get_farmer(farmer_id):
     return jsonify(
         farmer_response_schema.dump(farmer)
     ), 200
+
+@farmer_bp.route("/<int:farmer_id>", methods=["GET"])
+def get_farmer(farmer_id):
+
+    farmer = db.session.get(Farmer, farmer_id)
+
+    if not farmer:
+        return jsonify({
+            "error": "Farmer not found"
+        }), 404
+
+    return jsonify(
+        response_schema.dump(farmer)
+    ), 200
+
+
+@farmer_bp.route("/<int:farmer_id>", methods=["PUT"])
+def update_farmer(farmer_id):
+
+    farmer = db.session.get(Farmer, farmer_id)
+
+    if not farmer:
+        return jsonify({
+            "error": "Farmer not found"
+        }), 404
+
+    data = schema.load(request.get_json())
+
+    for key, value in data.items():
+        setattr(farmer, key, value)
+
+    db.session.commit()
+
+    return jsonify(
+        response_schema.dump(farmer)
+    ), 200
+
+
+@farmer_bp.route("/<int:farmer_id>", methods=["DELETE"])
+def delete_farmer(farmer_id):
+
+    farmer = db.session.get(Farmer, farmer_id)
+
+    if not farmer:
+        return jsonify({
+            "error": "Farmer not found"
+        }), 404
+
+    db.session.delete(farmer)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Farmer deleted successfully"
+    }), 200
