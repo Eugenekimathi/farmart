@@ -58,3 +58,42 @@ def get_breed(breed_id):
     return jsonify(
         response_schema.dump(breed)
     ), 200
+
+@breed_bp.route("/<int:breed_id>", methods=["PUT"])
+def update_breed(breed_id):
+
+    breed = db.session.get(Breed, breed_id)
+
+    if not breed:
+        return jsonify({
+            "error": "Breed not found"
+        }), 404
+
+    data = schema.load(request.get_json())
+
+    for key, value in data.items():
+        setattr(breed, key, value)
+
+    db.session.commit()
+
+    return jsonify(
+        response_schema.dump(breed)
+    ), 200
+
+
+@breed_bp.route("/<int:breed_id>", methods=["DELETE"])
+def delete_breed(breed_id):
+
+    breed = db.session.get(Breed, breed_id)
+
+    if not breed:
+        return jsonify({
+            "error": "Breed not found"
+        }), 404
+
+    db.session.delete(breed)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Breed deleted successfully"
+    }), 200
