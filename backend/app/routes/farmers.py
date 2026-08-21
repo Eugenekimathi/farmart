@@ -72,7 +72,7 @@ def get_farmer(farmer_id):
         }), 404
 
     return jsonify(
-        response_schema.dump(farmer)
+        farmer_response_schema.dump(farmer)
     ), 200
 
 
@@ -86,7 +86,7 @@ def update_farmer(farmer_id):
             "error": "Farmer not found"
         }), 404
 
-    data = schema.load(request.get_json())
+    data = farmer_response_schema.load(request.get_json())
 
     for key, value in data.items():
         setattr(farmer, key, value)
@@ -94,7 +94,7 @@ def update_farmer(farmer_id):
     db.session.commit()
 
     return jsonify(
-        response_schema.dump(farmer)
+        farmer_response_schema.dump(farmer)
     ), 200
 
 
