@@ -155,9 +155,9 @@ def update_cart_item(cart_id, item_id):
 
 @cart_item_bp.route(
     "/<int:cart_id>/items/<int:item_id>",
-    methods=["PUT"]
+    methods=["DELETE"]
 )
-def update_cart_item(cart_id, item_id):
+def delete_cart_item(cart_id, item_id):
 
     item = CartItem.query.filter_by(
         id=item_id,
@@ -169,28 +169,9 @@ def update_cart_item(cart_id, item_id):
             "error": "Cart item not found"
         }), 404
 
-    data = schema.load(request.get_json())
-
-    animal = db.session.get(
-        Animal,
-        data["animal_id"]
-    )
-
-    if not animal:
-        return jsonify({
-            "error": "Animal not found"
-        }), 404
-
-    if animal.status != "AVAILABLE":
-        return jsonify({
-            "error": "Animal is not available"
-        }), 400
-
-    item.animal_id = data["animal_id"]
-
+    db.session.delete(item)
     db.session.commit()
 
-    return jsonify(
-        response_schema.dump(item)
-    ), 200
-
+    return jsonify({
+        "message": "Cart item removed successfully"
+    }), 200
