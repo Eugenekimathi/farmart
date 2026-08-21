@@ -16,6 +16,7 @@ payment_bp = Blueprint(
 
 schema = PaymentSchema()
 response_schema = PaymentResponseSchema()
+many_response_schema = PaymentResponseSchema(many=True)
 
 @payment_bp.route("", methods=["POST"])
 def create_payment():
@@ -49,6 +50,34 @@ def create_payment():
     return jsonify(
         response_schema.dump(payment)
     ), 201
+
+
+@payment_bp.route("", methods=["GET"])
+def get_payments():
+
+    payments = Payment.query.all()
+
+    return jsonify(
+        many_response_schema.dump(payments)
+    ), 200
+
+
+@payment_bp.route("/<int:payment_id>", methods=["GET"])
+def get_payment(payment_id):
+
+    payment = db.session.get(
+        Payment,
+        payment_id
+    )
+
+    if not payment:
+        return jsonify({
+            "error": "Payment not found"
+        }), 404
+
+    return jsonify(
+        response_schema.dump(payment)
+    ), 200
 
 @payment_bp.route(
     "/<int:payment_id>/status",
