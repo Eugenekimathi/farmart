@@ -43,3 +43,55 @@ def get_animal_types():
     return jsonify(
         many_response_schema.dump(animal_types)
     ), 200
+
+@animal_type_bp.route("/<int:animal_type_id>", methods=["GET"])
+def get_animal_type(animal_type_id):
+
+    animal_type = db.session.get(AnimalType, animal_type_id)
+
+    if not animal_type:
+        return jsonify({
+            "error": "Animal type not found"
+        }), 404
+
+    return jsonify(
+        response_schema.dump(animal_type)
+    ), 200
+
+@animal_type_bp.route("/<int:animal_type_id>", methods=["PUT"])
+def update_animal_type(animal_type_id):
+
+    animal_type = db.session.get(AnimalType, animal_type_id)
+
+    if not animal_type:
+        return jsonify({
+            "error": "Animal type not found"
+        }), 404
+
+    data = schema.load(request.get_json())
+
+    for key, value in data.items():
+        setattr(animal_type, key, value)
+
+    db.session.commit()
+
+    return jsonify(
+        response_schema.dump(animal_type)
+    ), 200
+
+@animal_type_bp.route("/<int:animal_type_id>", methods=["DELETE"])
+def delete_animal_type(animal_type_id):
+
+    animal_type = db.session.get(AnimalType, animal_type_id)
+
+    if not animal_type:
+        return jsonify({
+            "error": "Animal type not found"
+        }), 404
+
+    db.session.delete(animal_type)
+    db.session.commit()
+
+    return jsonify({
+        "message": "Animal type deleted successfully"
+    }), 200
