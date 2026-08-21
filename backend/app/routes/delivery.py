@@ -16,6 +16,7 @@ delivery_bp = Blueprint(
 
 schema = DeliverySchema()
 response_schema = DeliveryResponseSchema()
+many_response_schema = DeliveryResponseSchema(many=True)
 
 @delivery_bp.route("", methods=["POST"])
 def create_delivery():
@@ -42,6 +43,36 @@ def create_delivery():
     return jsonify(
         response_schema.dump(delivery)
     ), 201
+
+@delivery_bp.route("", methods=["GET"])
+def get_deliveries():
+
+    deliveries = Delivery.query.all()
+
+    return jsonify(
+        many_response_schema.dump(deliveries)
+    ), 200
+
+
+@delivery_bp.route(
+    "/<int:delivery_id>",
+    methods=["GET"]
+)
+def get_delivery(delivery_id):
+
+    delivery = db.session.get(
+        Delivery,
+        delivery_id
+    )
+
+    if not delivery:
+        return jsonify({
+            "error": "Delivery not found"
+        }), 404
+
+    return jsonify(
+        response_schema.dump(delivery)
+    ), 200
 
 @delivery_bp.route(
     "/<int:delivery_id>/status",
