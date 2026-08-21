@@ -101,6 +101,11 @@ def update_order_item(order_id, item_id):
             "error": "Order item not found"
         }), 404
 
+    if item.order.status in ["CONFIRMED", "PAID"]:
+        return jsonify({
+            "error": "Order items cannot be changed after order confirmation"
+        }), 400
+
     data = schema.load(request.get_json())
 
     data["order_id"] = order_id
@@ -129,6 +134,11 @@ def delete_order_item(order_id, item_id):
         return jsonify({
             "error": "Order item not found"
         }), 404
+
+    if item.order.status in ["CONFIRMED", "PAID"]:
+        return jsonify({
+            "error": "Order items cannot be deleted after order confirmation"
+        }), 400
 
     db.session.delete(item)
     db.session.commit()
