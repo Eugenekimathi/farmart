@@ -1,2 +1,8 @@
-venv
+venv/
 .env
+# Python
+__pycache__/
+*.py[cod]
+
+# Local database
+backend/instance/*.db
