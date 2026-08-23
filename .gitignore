@@ -3,6 +3,7 @@ venv/
 # Python
 __pycache__/
 *.py[cod]
+*.pyc
 
 # Local database
 backend/instance/*.db
