@@ -177,3 +177,20 @@ def order_item(session, order, animal, farmer):
     session.commit()
 
     return order_item
+
+@pytest.fixture
+def payment(session, order):
+    from app.models.payment import Payment
+
+    payment = Payment(
+        order_id=order.id,
+        amount=100000,
+        payment_method="MPESA",
+        transaction_reference="TEST-TXN-001",
+        status="PENDING"
+    )
+
+    session.add(payment)
+    session.commit()
+
+    return payment
