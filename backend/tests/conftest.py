@@ -160,3 +160,20 @@ def order(session, user):
     session.commit()
 
     return order
+
+@pytest.fixture
+def order_item(session, order, animal, farmer):
+    from app.models.order_item import OrderItem
+
+    order_item = OrderItem(
+        order_id=order.id,
+        animal_id=animal.id,
+        farmer_id=farmer.id,
+        price=100000,
+        quantity=1
+    )
+
+    session.add(order_item)
+    session.commit()
+
+    return order_item
