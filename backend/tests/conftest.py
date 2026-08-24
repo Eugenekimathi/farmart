@@ -94,3 +94,25 @@ def breed(session, animal_type):
     session.commit()
 
     return breed
+
+@pytest.fixture
+def animal(session, farmer, animal_type, breed):
+    from app.models.animals import Animal
+
+    animal = Animal(
+        farmer_id=farmer.id,
+        animal_type_id=animal_type.id,
+        breed_id=breed.id,
+        name="Cow 001",
+        gender="FEMALE",
+        age=3,
+        price=100000,
+        description="Test Friesian cow",
+        location="Nairobi",
+        status="AVAILABLE"
+    )
+
+    session.add(animal)
+    session.commit()
+
+    return animal
