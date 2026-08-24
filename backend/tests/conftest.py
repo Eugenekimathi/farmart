@@ -116,3 +116,16 @@ def animal(session, farmer, animal_type, breed):
     session.commit()
 
     return animal
+
+@pytest.fixture
+def cart(session, user):
+    from app.models.cart import Cart
+
+    cart = Cart(
+        user_id=user.id
+    )
+
+    session.add(cart)
+    session.commit()
+
+    return cart
