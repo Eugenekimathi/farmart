@@ -143,3 +143,20 @@ def cart_item(session, cart, animal):
     session.commit()
 
     return cart_item
+
+@pytest.fixture
+def order(session, user):
+    from app.models.order import Order
+
+    order = Order(
+        buyer_id=user.id,
+        total_amount=100000,
+        status="PENDING",
+        delivery_address="Nairobi",
+        delivery_phone="0712345678"
+    )
+
+    session.add(order)
+    session.commit()
+
+    return order
