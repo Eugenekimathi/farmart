@@ -194,3 +194,20 @@ def payment(session, order):
     session.commit()
 
     return payment
+
+@pytest.fixture
+def delivery(session, order):
+    from app.models.delivery import Delivery
+
+    delivery = Delivery(
+        order_id=order.id,
+        delivery_address="Nairobi",
+        delivery_phone="0712345678",
+        status="PENDING",
+        tracking_reference="TRACK-001"
+    )
+
+    session.add(delivery)
+    session.commit()
+
+    return delivery
