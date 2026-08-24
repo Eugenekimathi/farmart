@@ -99,3 +99,65 @@ def test_delete_animal(client, animal):
     data = response.get_json()
 
     assert data["message"] == "Animal deleted successfully"
+
+def test_search_animals_returns_available_animals(client, animal):
+    response = client.get(
+        "/api/animals/search"
+    )
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert len(data) == 1
+    assert data[0]["id"] == animal.id
+
+
+def test_search_animals_by_animal_type(
+    client,
+    animal,
+    animal_type
+):
+    response = client.get(
+        f"/api/animals/search?animal_type_id={animal_type.id}"
+    )
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert len(data) == 1
+    assert data[0]["animal_type_id"] == animal_type.id
+
+
+def test_search_animals_by_breed(
+    client,
+    animal,
+    breed
+):
+    response = client.get(
+        f"/api/animals/search?breed_id={breed.id}"
+    )
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert len(data) == 1
+    assert data[0]["breed_id"] == breed.id
+
+
+def test_search_animals_by_age(
+    client,
+    animal
+):
+    response = client.get(
+        "/api/animals/search?min_age=2&max_age=5"
+    )
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert len(data) == 1
+    assert data[0]["id"] == animal.id    
