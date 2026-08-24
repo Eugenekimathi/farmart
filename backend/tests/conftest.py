@@ -129,3 +129,17 @@ def cart(session, user):
     session.commit()
 
     return cart
+
+@pytest.fixture
+def cart_item(session, cart, animal):
+    from app.models.cart_item import CartItem
+
+    cart_item = CartItem(
+        cart_id=cart.id,
+        animal_id=animal.id
+    )
+
+    session.add(cart_item)
+    session.commit()
+
+    return cart_item
