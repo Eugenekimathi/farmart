@@ -2,6 +2,7 @@ import os
 from flask_migrate import Migrate
 from flask import Flask
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 from app.extensions import db
 load_dotenv()
@@ -14,6 +15,8 @@ def create_app(config=None):
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     if config:
         app.config.update(config)
+    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-change-me")
+    JWTManager(app)
 
     # Allow the Vite React frontend to call the API
     frontend_origins = os.getenv(
