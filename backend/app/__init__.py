@@ -1,23 +1,31 @@
 import os
 from flask_migrate import Migrate
 from flask import Flask
+from flask_cors import CORS
 from dotenv import load_dotenv
-
 from app.extensions import db
-
 load_dotenv()
 
-def create_app():
+def create_app(config=None):
 
     app = Flask(__name__)
 
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL") 
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    if config:
+        app.config.update(config)
+
+    # Allow the Vite React frontend to call the API
+    frontend_origins = os.getenv(
+        "CORS_ORIGINS",
+        "http://localhost:5173,http://127.0.0.1:5173"
+    ).split(",")
+    CORS(app, resources={r"/api/*": {"origins": frontend_origins}}, supports_credentials=True)
 
     db.init_app(app)
     migrate = Migrate(app, db)
 
-    from app import models    
+    from app import models
 
     from app.routes.auth import auth_bp
     from app.routes.farmers import farmer_bp
@@ -45,5 +53,5 @@ def create_app():
     app.register_blueprint(order_item_bp)
     app.register_blueprint(payment_bp)
     app.register_blueprint(delivery_bp)
-    
+
     return app
