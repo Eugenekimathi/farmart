@@ -22,6 +22,9 @@ def create_app(config=None):
     ).split(",")
     CORS(app, resources={r"/api/*": {"origins": frontend_origins}}, supports_credentials=True)
 
+    if config:
+        app.config.update(config)
+
     db.init_app(app)
     migrate = Migrate(app, db)
 

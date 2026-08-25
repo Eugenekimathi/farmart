@@ -3,6 +3,7 @@ from app.models.farmer import Farmer
 from app.models.animal_type import AnimalType
 from app.models.breed import Breed
 from app.models.animals import Animal
+from app.models.animal_image import AnimalImage
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
 from app.models.order import Order

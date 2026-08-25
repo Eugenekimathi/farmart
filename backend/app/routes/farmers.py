@@ -72,7 +72,7 @@ def update_farmer(farmer_id):
             "error": "Farmer not found"
         }), 404
 
-    data = farmer_response_schema.load(request.get_json())
+    data = farmer_schema.load(request.get_json())
 
     for key, value in data.items():
         setattr(farmer, key, value)
