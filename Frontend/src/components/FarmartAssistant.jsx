@@ -24,13 +24,18 @@ const FarmartAssistant = () => {
     setIsLoading(true)
 
     try {
-      const { data } = await api.post('/ai/ask', { message: trimmedQuestion })
-      setMessages((current) => [...current, { role: 'assistant', content: data.answer }])
-    } catch {
-      setMessages((current) => [
-        ...current,
-        { role: 'assistant', content: 'I am unavailable right now. Please try again shortly.' },
-      ])
+      // The Flask API has no AI route. Keep the assistant useful without
+      // making a request that is guaranteed to return 404.
+      const lowerQuestion = trimmedQuestion.toLowerCase()
+      let answer = 'Browse the Store to compare available livestock, then sign in to add an animal to your cart.'
+      if (lowerQuestion.includes('buy') || lowerQuestion.includes('order')) {
+        answer = 'Choose an available animal, add it to your cart, complete delivery details, and pay from Checkout.'
+      } else if (lowerQuestion.includes('check')) {
+        answer = 'Before buying, check the breed, age, health records, location, price, and farmer details.'
+      } else if (lowerQuestion.includes('available')) {
+        answer = 'Open the Store page to see the latest available animals and use the search and filters.'
+      }
+      setMessages((current) => [...current, { role: 'assistant', content: answer }])
     } finally {
       setIsLoading(false)
     }
