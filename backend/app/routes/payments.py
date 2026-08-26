@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from marshmallow import ValidationError
 
 from app.extensions import db
 from app.models.payment import Payment
@@ -21,9 +22,15 @@ many_response_schema = PaymentResponseSchema(many=True)
 @payment_bp.route("", methods=["POST"])
 def create_payment():
 
-    data = schema.load(
-        request.get_json()
-    )
+    try:
+        data = schema.load(
+            request.get_json()
+        )
+
+    except ValidationError as err:
+        return jsonify({
+            "errors": err.messages
+        }), 400
 
     order = db.session.get(
         Order,
