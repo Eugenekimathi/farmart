@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import require_role
 from app.models.animals import Animal
 from app.schemas.animal_schema import (
     AnimalSchema,
@@ -20,6 +21,7 @@ many_response_schema = AnimalResponseSchema(
 )
 
 @animal_bp.route("", methods=["POST"])
+@require_role("FARMER", "farmer")
 def create_animal():
 
     data = schema.load(
@@ -62,6 +64,7 @@ def get_animal(animal_id):
     ), 200
 
 @animal_bp.route("/<int:animal_id>", methods=["PUT"])
+@require_role("FARMER", "farmer")
 def update_animal(animal_id):
 
     animal = db.session.get(
@@ -88,6 +91,7 @@ def update_animal(animal_id):
     ), 200
 
 @animal_bp.route("/<int:animal_id>", methods=["DELETE"])
+@require_role("FARMER", "farmer")
 def delete_animal(animal_id):
 
     animal = db.session.get(

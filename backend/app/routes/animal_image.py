@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import authenticated
 from app.models.animal_image import AnimalImage
 from app.schemas.animal_image_schema import (
     AnimalImageSchema,
@@ -10,7 +11,7 @@ from app.schemas.animal_image_schema import (
 animal_image_bp = Blueprint(
     "animal_images",
     __name__,
-    url_prefix="/api/animals"    
+    url_prefix="/api/animals"
 )
 
 schema = AnimalImageSchema()
@@ -19,6 +20,7 @@ many_response_schema = AnimalImageResponseSchema(many=True)
 
 
 @animal_image_bp.route("/<int:animal_id>/images", methods=["POST"])
+@authenticated
 def add_animal_image(animal_id):
 
     data = schema.load(request.get_json())
@@ -51,6 +53,7 @@ def get_animal_images(animal_id):
     "/<int:animal_id>/images/<int:image_id>",
     methods=["DELETE"]
 )
+@authenticated
 def delete_animal_image(animal_id, image_id):
 
     image = AnimalImage.query.filter_by(

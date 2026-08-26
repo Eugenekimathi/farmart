@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import authenticated
 from app.models.delivery import Delivery
 from app.models.order import Order
 from app.schemas.delivery_schema import (
@@ -19,6 +20,7 @@ response_schema = DeliveryResponseSchema()
 many_response_schema = DeliveryResponseSchema(many=True)
 
 @delivery_bp.route("", methods=["POST"])
+@authenticated
 def create_delivery():
 
     data = schema.load(
@@ -45,6 +47,7 @@ def create_delivery():
     ), 201
 
 @delivery_bp.route("", methods=["GET"])
+@authenticated
 def get_deliveries():
 
     deliveries = Delivery.query.all()
@@ -58,6 +61,7 @@ def get_deliveries():
     "/<int:delivery_id>",
     methods=["GET"]
 )
+@authenticated
 def get_delivery(delivery_id):
 
     delivery = db.session.get(
@@ -78,6 +82,7 @@ def get_delivery(delivery_id):
     "/<int:delivery_id>/status",
     methods=["PATCH"]
 )
+@authenticated
 def update_delivery_status(delivery_id):
 
     delivery = db.session.get(

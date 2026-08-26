@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import authenticated
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
 from app.models.animals import Animal
@@ -23,6 +24,7 @@ many_schema = CartItemResponseSchema(many=True)
     "/<int:cart_id>/items",
     methods=["POST"]
 )
+@authenticated
 def add_cart_item(cart_id):
 
     cart = db.session.get(Cart, cart_id)
@@ -75,6 +77,7 @@ def add_cart_item(cart_id):
     "/<int:cart_id>/items",
     methods=["GET"]
 )
+@authenticated
 def get_cart_items(cart_id):
 
     cart = db.session.get(Cart, cart_id)
@@ -96,6 +99,7 @@ def get_cart_items(cart_id):
     "/<int:cart_id>/items/<int:item_id>",
     methods=["GET"]
 )
+@authenticated
 def get_cart_item(cart_id, item_id):
 
     item = CartItem.query.filter_by(
@@ -116,6 +120,7 @@ def get_cart_item(cart_id, item_id):
     "/<int:cart_id>/items/<int:item_id>",
     methods=["PUT"]
 )
+@authenticated
 def update_cart_item(cart_id, item_id):
 
     item = CartItem.query.filter_by(
@@ -157,6 +162,7 @@ def update_cart_item(cart_id, item_id):
     "/<int:cart_id>/items/<int:item_id>",
     methods=["DELETE"]
 )
+@authenticated
 def delete_cart_item(cart_id, item_id):
 
     item = CartItem.query.filter_by(

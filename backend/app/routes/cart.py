@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import authenticated
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
 from app.models.animals import Animal
@@ -17,6 +18,7 @@ cart_bp = Blueprint(
 cart_response_schema = CartResponseSchema()
 
 @cart_bp.route("", methods=["POST"])
+@authenticated
 def create_cart():
 
     data = request.get_json()
@@ -50,6 +52,7 @@ def create_cart():
     "/<int:cart_id>/items",
     methods=["POST"]
 )
+@authenticated
 def add_to_cart(cart_id):
 
     data = request.get_json()

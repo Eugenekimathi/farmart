@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import authenticated
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.schemas.order_item_schema import (
@@ -22,6 +23,7 @@ many_schema = OrderItemResponseSchema(many=True)
     "/<int:order_id>/items",
     methods=["POST"]
 )
+@authenticated
 def create_order_item(order_id):
 
     order = db.session.get(Order, order_id)
@@ -48,6 +50,7 @@ def create_order_item(order_id):
     "/<int:order_id>/items",
     methods=["GET"]
 )
+@authenticated
 def get_order_items(order_id):
 
     order = db.session.get(Order, order_id)
@@ -69,6 +72,7 @@ def get_order_items(order_id):
     "/<int:order_id>/items/<int:item_id>",
     methods=["GET"]
 )
+@authenticated
 def get_order_item(order_id, item_id):
 
     item = OrderItem.query.filter_by(
@@ -89,6 +93,7 @@ def get_order_item(order_id, item_id):
     "/<int:order_id>/items/<int:item_id>",
     methods=["PUT"]
 )
+@authenticated
 def update_order_item(order_id, item_id):
 
     item = OrderItem.query.filter_by(
@@ -123,6 +128,7 @@ def update_order_item(order_id, item_id):
     "/<int:order_id>/items/<int:item_id>",
     methods=["DELETE"]
 )
+@authenticated
 def delete_order_item(order_id, item_id):
 
     item = OrderItem.query.filter_by(

@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import require_role
 from app.models.farmer import Farmer
 from app.schemas.farmer_schema import (
     FarmerSchema,
@@ -21,6 +22,7 @@ farmers_response_schema = FarmerResponseSchema(
 
 
 @farmer_bp.route("", methods=["POST"])
+@require_role("FARMER", "farmer")
 def create_farmer():
 
     data = farmer_schema.load(
@@ -63,6 +65,7 @@ def get_farmer(farmer_id):
 
 
 @farmer_bp.route("/<int:farmer_id>", methods=["PUT"])
+@require_role("FARMER", "farmer")
 def update_farmer(farmer_id):
 
     farmer = db.session.get(Farmer, farmer_id)
@@ -85,6 +88,7 @@ def update_farmer(farmer_id):
 
 
 @farmer_bp.route("/<int:farmer_id>", methods=["DELETE"])
+@require_role("FARMER", "farmer")
 def delete_farmer(farmer_id):
 
     farmer = db.session.get(Farmer, farmer_id)

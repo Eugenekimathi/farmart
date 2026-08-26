@@ -90,3 +90,4 @@ def login():
             "message": "Invalid email or password"
         }), 401
     return _auth_payload(user)
+

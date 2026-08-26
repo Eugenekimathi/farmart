@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
+from app.authz import authenticated
 from app.models.payment import Payment
 from app.models.order import Order
 from app.schemas.payment_schema import (
@@ -19,6 +20,7 @@ response_schema = PaymentResponseSchema()
 many_response_schema = PaymentResponseSchema(many=True)
 
 @payment_bp.route("", methods=["POST"])
+@authenticated
 def create_payment():
 
     data = schema.load(
@@ -53,6 +55,7 @@ def create_payment():
 
 
 @payment_bp.route("", methods=["GET"])
+@authenticated
 def get_payments():
 
     payments = Payment.query.all()
@@ -63,6 +66,7 @@ def get_payments():
 
 
 @payment_bp.route("/<int:payment_id>", methods=["GET"])
+@authenticated
 def get_payment(payment_id):
 
     payment = db.session.get(
@@ -83,6 +87,7 @@ def get_payment(payment_id):
     "/<int:payment_id>/status",
     methods=["PATCH"]
 )
+@authenticated
 def update_payment_status(payment_id):
 
     payment = db.session.get(
