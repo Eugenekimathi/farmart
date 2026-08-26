@@ -45,8 +45,10 @@ def test_get_orders(client, user):
 
     data = response.get_json()
 
-    assert isinstance(data, list)
-    assert len(data) >= 1
+    assert isinstance(data, dict)
+    assert len(data["orders"]) >= 1
+    assert data["current_page"] == 1
+    assert data["total_count"] >= 1
 
 
 def test_get_order(client, user):
@@ -155,9 +157,9 @@ def test_update_order_status_to_rejected(client, user):
     assert data["status"] == "REJECTED"
 
 
-def test_update_order_status_to_cancelled(client, user):
+def test_update_order_status_to_cancelled(buyer_client, user):
 
-    create_response = client.post(
+    create_response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -171,7 +173,7 @@ def test_update_order_status_to_cancelled(client, user):
 
     order_id = create_response.get_json()["id"]
 
-    response = client.patch(
+    response = buyer_client.patch(
         f"/api/orders/{order_id}/status",
         json={
             "status": "CANCELLED"

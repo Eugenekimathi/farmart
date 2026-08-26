@@ -119,11 +119,11 @@ def test_pending_order_can_be_rejected(
 
 
 def test_pending_order_can_be_cancelled(
-    client,
+    buyer_client,
     order
 ):
 
-    response = client.patch(
+    response = buyer_client.patch(
         f"/api/orders/{order.id}/status",
         json={
             "status": "CANCELLED"
@@ -169,4 +169,3 @@ def test_completed_order_cannot_be_confirmed(
     )
 
     assert response.status_code == 409
-
