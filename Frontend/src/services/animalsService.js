@@ -7,9 +7,14 @@ export const fetchAnimals = async ({ page = 1, search = '', filters = {} }) => {
     ...(filters.min_age && { min_age: filters.min_age }),
     ...(filters.max_age && { max_age: filters.max_age }),
   }
-  const response = await api.get(search || Object.keys(params).length ? '/animals/search' : '/animals', { params })
+  const response = await api.get(search || Object.keys(params).length ? '/animals/search' : '/animals', { params: { ...params, page, per_page: 9 } })
   const animals = Array.isArray(response.data) ? response.data : response.data.animals || []
-  return { animals, total_pages: 1, total_count: animals.length }
+  return {
+    animals,
+    total_pages: response.data.total_pages || 1,
+    total_count: response.data.total_count ?? animals.length,
+    current_page: response.data.current_page || page,
+  }
 }
 
 export const fetchAnimalById = async (id) => {

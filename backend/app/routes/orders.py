@@ -42,11 +42,15 @@ def create_order():
 @authenticated
 def get_orders():
 
-    orders = Order.query.all()
-
-    return jsonify(
-        many_response_schema.dump(orders)
-    ), 200
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 20, type=int), 1), 100)
+    pagination = Order.query.paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "orders": many_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200
 
 @order_bp.route("/<int:order_id>", methods=["GET"])
 @authenticated

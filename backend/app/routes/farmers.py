@@ -41,12 +41,15 @@ def create_farmer():
 
 @farmer_bp.route("", methods=["GET"])
 def get_farmers():
-
-    farmers = Farmer.query.all()
-
-    return jsonify(
-        farmers_response_schema.dump(farmers)
-    ), 200
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 20, type=int), 1), 100)
+    pagination = Farmer.query.paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "farmers": farmers_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200
 
 
 @farmer_bp.route("/<int:farmer_id>", methods=["GET"])

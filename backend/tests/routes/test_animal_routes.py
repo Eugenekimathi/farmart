@@ -36,8 +36,8 @@ def test_get_animals(client, animal):
 
     data = response.get_json()
 
-    assert len(data) == 1
-    assert data[0]["id"] == animal.id
+    assert len(data["animals"]) == 1
+    assert data["animals"][0]["id"] == animal.id
 
 
 def test_get_animal(client, animal):
@@ -109,8 +109,8 @@ def test_search_animals_returns_available_animals(client, animal):
 
     data = response.get_json()
 
-    assert len(data) == 1
-    assert data[0]["id"] == animal.id
+    assert len(data["animals"]) == 1
+    assert data["animals"][0]["id"] == animal.id
 
 
 def test_search_animals_by_animal_type(
@@ -126,8 +126,8 @@ def test_search_animals_by_animal_type(
 
     data = response.get_json()
 
-    assert len(data) == 1
-    assert data[0]["animal_type_id"] == animal_type.id
+    assert len(data["animals"]) == 1
+    assert data["animals"][0]["animal_type_id"] == animal_type.id
 
 
 def test_search_animals_by_breed(
@@ -143,8 +143,8 @@ def test_search_animals_by_breed(
 
     data = response.get_json()
 
-    assert len(data) == 1
-    assert data[0]["breed_id"] == breed.id
+    assert len(data["animals"]) == 1
+    assert data["animals"][0]["breed_id"] == breed.id
 
 
 def test_search_animals_by_age(
@@ -159,5 +159,5 @@ def test_search_animals_by_age(
 
     data = response.get_json()
 
-    assert len(data) == 1
-    assert data[0]["id"] == animal.id    
+    assert len(data["animals"]) == 1
+    assert data["animals"][0]["id"] == animal.id

@@ -44,8 +44,8 @@ def test_get_farmers(client, farmer):
 
     data = response.get_json()
 
-    assert len(data) == 1
-    assert data[0]["id"] == farmer.id
+    assert len(data["farmers"]) == 1
+    assert data["farmers"][0]["id"] == farmer.id
 
 
 def test_get_farmer(client, farmer):
