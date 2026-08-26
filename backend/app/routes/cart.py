@@ -8,18 +8,21 @@ from app.schemas.cart_schema import (
     CartResponseSchema
 )
 
+
 cart_bp = Blueprint(
     "carts",
     __name__,
     url_prefix="/api/carts"
 )
 
+
 cart_response_schema = CartResponseSchema()
+
 
 @cart_bp.route("", methods=["POST"])
 def create_cart():
 
-    data = request.get_json()
+    data = request.get_json() or {}
 
     user_id = data.get("user_id")
 
@@ -37,7 +40,9 @@ def create_cart():
             cart_response_schema.dump(existing_cart)
         ), 200
 
-    cart = Cart(user_id=user_id)
+    cart = Cart(
+        user_id=user_id
+    )
 
     db.session.add(cart)
     db.session.commit()
@@ -46,23 +51,55 @@ def create_cart():
         cart_response_schema.dump(cart)
     ), 201
 
+
 @cart_bp.route(
-    "/<int:cart_id>/items",
-    methods=["POST"]
+    "/<int:cart_id>",
+    methods=["GET"]
 )
-def add_to_cart(cart_id):
+def get_cart(cart_id):
 
-    data = request.get_json()
-
-    animal_id = data.get("animal_id")
-
-    cart = db.session.get(Cart, cart_id)
+    cart = db.session.get(
+        Cart,
+        cart_id
+    )
 
     if not cart:
         return jsonify({
             "error": "Cart not found"
         }), 404
 
+    return jsonify(
+        cart_response_schema.dump(cart)
+    ), 200
+
+
+@cart_bp.route(
+    "/<int:cart_id>/items",
+    methods=["POST"]
+)
+def add_to_cart(cart_id):
+
+    data = request.get_json() or {}
+
+    animal_id = data.get("animal_id")
+
+    if not animal_id:
+        return jsonify({
+            "error": "animal_id is required"
+        }), 400
+
+    # Check if cart exists
+    cart = db.session.get(
+        Cart,
+        cart_id
+    )
+
+    if not cart:
+        return jsonify({
+            "error": "Cart not found"
+        }), 404
+
+    # Check if animal exists
     animal = db.session.get(
         Animal,
         animal_id
@@ -73,11 +110,13 @@ def add_to_cart(cart_id):
             "error": "Animal not found"
         }), 404
 
+    # Check if animal is available
     if animal.status != "AVAILABLE":
         return jsonify({
             "error": "Animal is not available"
         }), 400
 
+    # Check if animal already exists in cart
     existing_item = CartItem.query.filter_by(
         cart_id=cart_id,
         animal_id=animal_id
@@ -85,9 +124,10 @@ def add_to_cart(cart_id):
 
     if existing_item:
         return jsonify({
-            "error": "Animal already in cart"
+            "error": "Animal already exists in cart"
         }), 409
 
+    # Create cart item
     item = CartItem(
         cart_id=cart_id,
         animal_id=animal_id
@@ -100,4 +140,3 @@ def add_to_cart(cart_id):
         "message": "Animal added to cart",
         "cart_item_id": item.id
     }), 201
-
