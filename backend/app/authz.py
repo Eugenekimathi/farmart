@@ -1,13 +1,11 @@
 from functools import wraps
-from flask import current_app, jsonify
+from flask import jsonify
 from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required
 
 def authenticated(view):
     @wraps(view)
-    @jwt_required(optional=True)
+    @jwt_required()
     def wrapped(*args, **kwargs):
-        if current_app.testing and not get_jwt_identity():
-            return view(*args, **kwargs)
         if not get_jwt_identity():
             return jsonify({"error": "Authentication required"}), 401
         return view(*args, **kwargs)
@@ -16,13 +14,13 @@ def authenticated(view):
 def require_role(*roles):
     def decorator(view):
         @wraps(view)
-        @jwt_required(optional=True)
+        @jwt_required()
         def wrapped(*args, **kwargs):
-            if current_app.testing and not get_jwt_identity():
-                return view(*args, **kwargs)
             if not get_jwt_identity():
                 return jsonify({"error": "Authentication required"}), 401
-            if get_jwt().get("role") not in roles:
+            user_role = (get_jwt().get("role") or "").upper()
+            allowed_roles = {role.upper() for role in roles}
+            if user_role not in allowed_roles:
                 return jsonify({"error": "You do not have permission"}), 403
             return view(*args, **kwargs)
         return wrapped

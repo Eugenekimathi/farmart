@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
-from app.authz import authenticated
+from app.authz import authenticated, current_user_id
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
 from app.models.animals import Animal
@@ -29,6 +29,8 @@ def create_cart():
         return jsonify({
             "error": "user_id is required"
         }), 400
+    if int(user_id) != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
 
     existing_cart = Cart.query.filter_by(
         user_id=user_id
@@ -65,6 +67,8 @@ def add_to_cart(cart_id):
         return jsonify({
             "error": "Cart not found"
         }), 404
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
 
     animal = db.session.get(
         Animal,

@@ -10,6 +10,7 @@ def app():
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
+        "JWT_SECRET_KEY": "test-secret-key-that-is-long-enough",
     })
 
     with app.app_context():
@@ -23,7 +24,22 @@ def app():
 
 @pytest.fixture
 def client(app):
-    return app.test_client()
+    from flask_jwt_extended import create_access_token
+    with app.app_context():
+        token = create_access_token(
+            identity="1",
+            additional_claims={"role": "FARMER", "email": "test@example.com"}
+        )
+
+    test_client = app.test_client()
+    original_open = test_client.open
+    def open_with_auth(*args, **kwargs):
+        headers = kwargs.setdefault("headers", {})
+        headers.setdefault("Authorization", f"Bearer {token}")
+        return original_open(*args, **kwargs)
+
+    test_client.open = open_with_auth
+    return test_client
 
 
 @pytest.fixture

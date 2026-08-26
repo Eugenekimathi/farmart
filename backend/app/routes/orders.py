@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 
 from flask_jwt_extended import get_jwt
 from app.extensions import db
-from app.authz import authenticated
+from app.authz import authenticated, current_user_id
 from app.models.order import Order
 from app.schemas.order_schema import (
     OrderSchema,
@@ -61,7 +61,9 @@ def get_order(order_id):
         return jsonify({
             "error": "Order not found"
         }), 404
-
+    role = (get_jwt().get("role") or "").upper()
+    if role != "FARMER" and order.buyer_id != current_user_id():
+        return jsonify({"error": "You can only view your own orders"}), 403
     return jsonify(
         response_schema.dump(order)
     ), 200
@@ -82,7 +84,9 @@ def update_order_status(order_id):
         return jsonify({
             "error": "Order not found"
         }), 404
-
+    role = (get_jwt().get("role") or "").upper()
+    if role != "FARMER" and order.buyer_id != current_user_id():
+        return jsonify({"error": "You can only update your own orders"}), 403
     data = request.get_json()
 
     status = data.get("status")

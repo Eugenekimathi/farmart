@@ -21,7 +21,7 @@ many_response_schema = AnimalResponseSchema(
 )
 
 @animal_bp.route("", methods=["POST"])
-@require_role("FARMER", "farmer")
+@require_role("USER", "BUYER", "FARMER", "farmer")
 def create_animal():
 
     data = schema.load(
