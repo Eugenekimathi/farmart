@@ -67,10 +67,7 @@ def get_order(order_id):
 )
 def update_order_status(order_id):
 
-    order = db.session.get(
-        Order,
-        order_id
-    )
+    order = db.session.get(Order, order_id)
 
     if not order:
         return jsonify({
@@ -79,20 +76,48 @@ def update_order_status(order_id):
 
     data = request.get_json()
 
-    status = data.get("status")
+    new_status = data.get("status")
 
     allowed_statuses = [
+        "PENDING",
         "CONFIRMED",
         "REJECTED",
-        "CANCELLED"
+        "CANCELLED",
+        "COMPLETED"
     ]
 
-    if status not in allowed_statuses:
+    if new_status not in allowed_statuses:
         return jsonify({
             "error": "Invalid order status"
         }), 400
 
-    order.status = status
+    allowed_transitions = {
+        "PENDING": [
+            "CONFIRMED",
+            "REJECTED",
+            "CANCELLED"
+        ],
+        "CONFIRMED": [
+            "COMPLETED",
+            "CANCELLED"
+        ],
+        "REJECTED": [],
+        "CANCELLED": [],
+        "COMPLETED": []
+    }
+
+    if new_status not in allowed_transitions.get(
+        order.status,
+        []
+    ):
+        return jsonify({
+            "error": (
+                f"Cannot change order status "
+                f"from {order.status} to {new_status}"
+            )
+        }), 409
+
+    order.status = new_status
 
     db.session.commit()
 
