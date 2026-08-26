@@ -1,5 +1,6 @@
 import os
 from flask import Blueprint, request, jsonify
+from marshmallow import ValidationError
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 from app.extensions import db
@@ -33,13 +34,17 @@ def _auth_payload(user):
 
 @auth_bp.route("/register", methods=["POST"])
 def register():
+    payload = request.get_json(silent=True) or {}
+    # The API stores roles as uppercase; accept either frontend casing.
+    if isinstance(payload.get("role"), str):
+        payload["role"] = payload["role"].upper()
+    try:
+        data = register_schema.load(payload)
+    except ValidationError as error:
+        return jsonify({"message": "Invalid registration data", "errors": error.messages}), 400
 
-    data = register_schema.load(
-        request.get_json()
-    )
-
-    existing_user = User.query.filter_by(
-        email=data["email"]
+    existing_user = User.query.filter(
+        db.func.lower(User.email) == data["email"].lower()
     ).first()
 
     if existing_user:
@@ -58,8 +63,11 @@ def register():
     )
 
     db.session.add(user)
-    db.session.commit()
-
+    try:
+        db.session.commit()
+    except Exception:
+        db.session.rollback()
+        return jsonify({"message": "Email or phone number already exists"}), 409
     # Auto-login after registration: return { user, token }
     body, status = _auth_payload(user)
     return body, 201

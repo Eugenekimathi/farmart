@@ -48,7 +48,7 @@ const RegisterPage = () => {
     if (!formData.phone.trim()) errors.phone = 'Phone number is required'
     else if (!/^(\+254|0)[17]\d{7,8}$/.test(formData.phone)) errors.phone = 'Enter a valid Kenyan phone number'
     if (!formData.password) errors.password = 'Password is required'
-    else if (formData.password.length < 6) errors.password = 'At least 6 characters'
+    else if (formData.password.length < 8) errors.password = 'At least 8 characters'
     if (formData.confirmPassword !== formData.password) errors.confirmPassword = 'Passwords do not match'
     if (!formData.location.trim()) errors.location = 'Location is required'
     return errors
@@ -61,7 +61,14 @@ const RegisterPage = () => {
       setFormErrors(errors)
       return
     }
-    const payload = { ...formData }
+    const payload = {
+      ...formData,
+      role: formData.role.toUpperCase(),
+      email: formData.email.trim().toLowerCase(),
+      phone: formData.phone.trim(),
+      full_name: formData.full_name.trim(),
+      location: formData.location.trim(),
+    }
     delete payload.confirmPassword
     dispatch(register(payload))
   }

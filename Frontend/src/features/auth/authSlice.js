@@ -55,12 +55,14 @@ const authSlice = createSlice({
       state.user = action.payload.user
       state.token = action.payload.token
       state.role = action.payload.user.role
+      localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user: state.user, token: state.token, role: state.role }))
     },
     logout: (state) => {
       state.user = null
       state.token = null
       state.role = null
       state.error = null
+      localStorage.removeItem(AUTH_STORAGE_KEY)
     },
     clearError: (state) => {
       state.error = null
@@ -77,6 +79,7 @@ const authSlice = createSlice({
         state.user = action.payload.user
         state.token = action.payload.token
         state.role = action.payload.user.role
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user: state.user, token: state.token, role: state.role }))
       })
       .addCase(login.rejected, (state, action) => {
         state.isLoading = false
@@ -92,6 +95,7 @@ const authSlice = createSlice({
         state.user = action.payload.user
         state.token = action.payload.token
         state.role = action.payload.user.role
+        localStorage.setItem(AUTH_STORAGE_KEY, JSON.stringify({ user: state.user, token: state.token, role: state.role }))
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false

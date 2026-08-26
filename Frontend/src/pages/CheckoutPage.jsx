@@ -98,12 +98,10 @@ const CheckoutPage = () => {
     // Create the order on the backend
     const result = await dispatch(
       placeOrder({
-        ...deliveryForm,
-        items: items.map((item) => ({
-          animal_id: item.id,
-          farmer_id: item.farmer_id,
-          price: item.price,
-        })),
+        buyer_id: user.id,
+        total_amount: subtotal,
+        delivery_address: deliveryForm.delivery_address,
+        delivery_phone: deliveryForm.delivery_phone,
       })
     )
     if (result.meta.requestStatus === 'fulfilled') {

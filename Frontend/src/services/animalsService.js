@@ -2,15 +2,14 @@ import api from './api'
 
 export const fetchAnimals = async ({ page = 1, search = '', filters = {} }) => {
   const params = {
-    page,
-    per_page: 9,
-    ...(search && { search }),
     ...(filters.breed && { breed_id: filters.breed }),
-    ...(filters.age && { age: filters.age }),
     ...(filters.animal_type && { animal_type_id: filters.animal_type }),
+    ...(filters.min_age && { min_age: filters.min_age }),
+    ...(filters.max_age && { max_age: filters.max_age }),
   }
-  const response = await api.get('/animals', { params })
-  return response.data
+  const response = await api.get(search || Object.keys(params).length ? '/animals/search' : '/animals', { params })
+  const animals = Array.isArray(response.data) ? response.data : response.data.animals || []
+  return { animals, total_pages: 1, total_count: animals.length }
 }
 
 export const fetchAnimalById = async (id) => {

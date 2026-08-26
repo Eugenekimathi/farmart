@@ -1,21 +1,36 @@
 import api from './api'
+import { store } from '../app/store'
+
+const getCartId = () => localStorage.getItem('farmart.cartId')
 
 export const fetchCart = async () => {
-  const response = await api.get('/cart')
+  const cartId = getCartId()
+  if (!cartId) return { cart_items: [] }
+  const response = await api.get(`/carts/${cartId}/items`)
+  return { cart_items: response.data }
+}
+
+export const createCart = async (userId) => {
+  const response = await api.post('/carts', { user_id: userId })
+  localStorage.setItem('farmart.cartId', response.data.id)
   return response.data
 }
 
 export const addToCart = async (animalId) => {
-  const response = await api.post('/cart/items', { animal_id: animalId })
+  let cartId = getCartId()
+  if (!cartId) {
+    const userId = store.getState().auth.user?.id
+    if (!userId) throw new Error('You must be logged in')
+    const cart = await createCart(userId)
+    cartId = cart.id
+  }
+  const response = await api.post(`/carts/${cartId}/items`, { animal_id: animalId })
   return response.data
 }
 
 export const removeFromCart = async (cartItemId) => {
-  const response = await api.delete(`/cart/items/${cartItemId}`)
-  return response.data
-}
-
-export const clearCartApi = async () => {
-  const response = await api.delete('/cart')
+  const cartId = getCartId()
+  if (!cartId) return null
+  const response = await api.delete(`/carts/${cartId}/items/${cartItemId}`)
   return response.data
 }

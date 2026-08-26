@@ -8,9 +8,9 @@ import {
 
 export const getFarmerAnimals = createAsyncThunk(
   'farmer/getAnimals',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      return await fetchFarmerAnimals()
+      return await fetchFarmerAnimals(getState().auth.user?.id)
     } catch (error) {
       return rejectWithValue('Failed to load your listings.')
     }

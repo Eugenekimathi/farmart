@@ -52,9 +52,9 @@ export const pollPaymentStatus = createAsyncThunk(
 
 export const getMyOrders = createAsyncThunk(
   'orders/getMyOrders',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
-      return await fetchMyOrders()
+      return await fetchMyOrders(getState().auth.user?.id)
     } catch (error) {
       return rejectWithValue('Failed to load orders.')
     }
@@ -65,7 +65,7 @@ export const getMyOrders = createAsyncThunk(
 
 export const getFarmerOrders = createAsyncThunk(
   'orders/getFarmerOrders',
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, getState }) => {
     try {
       return await fetchFarmerOrders()
     } catch (error) {
@@ -170,7 +170,7 @@ const ordersSlice = createSlice({
       })
       .addCase(getMyOrders.fulfilled, (state, action) => {
         state.isLoading = false
-        state.orders = action.payload
+        state.orders = Array.isArray(action.payload) ? action.payload : action.payload.orders || []
       })
       .addCase(getMyOrders.rejected, (state, action) => {
         state.isLoading = false
