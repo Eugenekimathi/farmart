@@ -3,9 +3,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addItem, syncAddToCart } from '../features/cart/cartSlice'
 
 const FALLBACK_IMAGES = {
-  cattle: 'https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?auto=format&fit=crop&w=600&q=80',
-  sheep: 'https://images.unsplash.com/photo-1551884831-bbf3cdc6469e?auto=format&fit=crop&w=600&q=80',
-  goat: 'https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=600&q=80',
+  cattle: '/placeholder.svg',
+  sheep: '/placeholder.svg',
+  goat: '/placeholder.svg',
 }
 
 const AnimalCard = ({ animal }) => {
