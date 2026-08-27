@@ -22,7 +22,7 @@ export const INITIAL_MOCK_ANIMALS = [
     kvb_certified: true,
     pasture_raised: true,
     direct_delivery: false,
-    images: [{ image_url: 'https://images.unsplash.com/photo-1546445317-29f4545f9d52?auto=format&fit=crop&w=600&q=80', is_primary: true }],
+    images: [{ image_url: '/placeholder.svg', is_primary: true }],
     description: 'Purebred Boran bull raised in Naivasha. High resistance to drought and tropical diseases. KVB vet certified with full immunization records.',
   },
   {
@@ -70,7 +70,7 @@ export const INITIAL_MOCK_ANIMALS = [
     kvb_certified: true,
     pasture_raised: true,
     direct_delivery: true,
-    images: [{ image_url: 'https://images.unsplash.com/photo-1516467508483-a7212febe31a?auto=format&fit=crop&w=600&q=80', is_primary: true }],
+    images: [{ image_url: '/placeholder.svg', is_primary: true }],
     description: 'Resilient indigenous Red Maasai ewe raised in Kajiado. High parasite tolerance.',
   },
   {
@@ -86,7 +86,7 @@ export const INITIAL_MOCK_ANIMALS = [
     kvb_certified: true,
     pasture_raised: true,
     direct_delivery: true,
-    images: [{ image_url: 'https://images.unsplash.com/photo-1524024973431-2ad916746881?auto=format&fit=crop&w=600&q=80', is_primary: true }],
+    images: [{ image_url: '/placeholder.svg', is_primary: true }],
     description: 'White Galla goat (Milk Queen) from Isiolo. Excellent milk producer in dry rangelands.',
   },
   {
@@ -102,7 +102,7 @@ export const INITIAL_MOCK_ANIMALS = [
     kvb_certified: true,
     pasture_raised: true,
     direct_delivery: false,
-    images: [{ image_url: 'https://images.unsplash.com/photo-1527153857715-3908f2bae5e8?auto=format&fit=crop&w=600&q=80', is_primary: true }],
+    images: [{ image_url: '/placeholder.svg', is_primary: true }],
     description: 'Pure Friesian cow in Nyandarua producing over 30 liters daily. Healthy and vaccinated.',
   },
 ]
