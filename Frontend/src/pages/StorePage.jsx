@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setSearchQuery } from '../features/animals/animalsSlice'
+import { getAnimals, setSearchQuery } from '../features/animals/animalsSlice'
 import FilterSidebar from '../components/FilterSidebar'
 import AnimalCard from '../components/AnimalCard'
 import Footer from '../components/Footer'
@@ -8,7 +8,11 @@ import Footer from '../components/Footer'
 const StorePage = () => {
   const dispatch = useDispatch()
   const [localSearch, setLocalSearch] = useState('')
-  const { animals, searchQuery, isLoading } = useSelector((state) => state.animals)
+  const { animals, searchQuery, filters, isLoading } = useSelector((state) => state.animals)
+
+  useEffect(() => {
+    dispatch(getAnimals({ page: 1, search: searchQuery, filters }))
+  }, [dispatch, searchQuery, filters])
 
   const handleSearchSubmit = (e) => {
     e.preventDefault()
