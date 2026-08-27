@@ -1,12 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import placeholderImage from '../assets/placeholder.svg'
 import { addItem, syncAddToCart } from '../features/cart/cartSlice'
 
 const FALLBACK_IMAGES = {
-  cattle: placeholderImage,
-  sheep: placeholderImage,
-  goat: placeholderImage,
+  cattle: '/placeholder.svg',
+  sheep: '/placeholder.svg',
+  goat: '/placeholder.svg',
 }
 
 const AnimalCard = ({ animal }) => {
