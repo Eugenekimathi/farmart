@@ -43,6 +43,27 @@ def client(app):
 
 
 @pytest.fixture
+def buyer_client(app):
+    from flask_jwt_extended import create_access_token
+    with app.app_context():
+        token = create_access_token(
+            identity="1",
+            additional_claims={"role": "BUYER", "email": "buyer@example.com"}
+        )
+
+    test_client = app.test_client()
+    original_open = test_client.open
+
+    def open_with_auth(*args, **kwargs):
+        headers = kwargs.setdefault("headers", {})
+        headers.setdefault("Authorization", f"Bearer {token}")
+        return original_open(*args, **kwargs)
+
+    test_client.open = open_with_auth
+    return test_client
+
+
+@pytest.fixture
 def session(app):
     with app.app_context():
         yield db.session

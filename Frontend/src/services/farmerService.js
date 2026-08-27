@@ -1,8 +1,9 @@
 import api from './api'
 
 export const fetchFarmerAnimals = async (farmerId) => {
-  const response = await api.get('/animals')
-  return response.data.filter((animal) => !farmerId || String(animal.farmer_id) === String(farmerId))
+  const response = await api.get('/animals', { params: { page: 1, per_page: 100 } })
+  const animals = Array.isArray(response.data) ? response.data : response.data.animals || []
+  return animals.filter((animal) => !farmerId || String(animal.farmer_id) === String(farmerId))
 }
 
 export const createAnimal = async (formData) => {
@@ -22,7 +23,7 @@ export const deleteAnimal = async (id) => {
 
 export const fetchFarmerOrders = async (farmerId) => {
   const response = await api.get('/orders')
-  return Array.isArray(response.data) ? response.data : []
+  return Array.isArray(response.data) ? response.data : response.data.orders || []
 }
 
 export const confirmOrder = async (orderId) => {

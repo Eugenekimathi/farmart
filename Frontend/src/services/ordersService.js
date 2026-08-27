@@ -41,14 +41,13 @@ export const checkPaymentStatus = async (paymentId) => {
 export const fetchMyOrders = async (buyerId) => {
   if (!buyerId) return []
   const response = await api.get('/orders')
-  return (Array.isArray(response.data) ? response.data : []).filter(
-    (order) => String(order.buyer_id) === String(buyerId)
-  )
+  const orders = Array.isArray(response.data) ? response.data : response.data.orders || []
+  return orders.filter((order) => String(order.buyer_id) === String(buyerId))
 }
 
 export const fetchOrders = async () => {
   const response = await api.get('/orders')
-  return response.data
+  return Array.isArray(response.data) ? response.data : response.data.orders || []
 }
 
 export const updateOrderStatus = async (orderId, status) => {

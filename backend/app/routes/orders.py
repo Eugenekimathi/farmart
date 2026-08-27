@@ -42,11 +42,15 @@ def create_order():
 @authenticated
 def get_orders():
 
-    orders = Order.query.all()
-
-    return jsonify(
-        many_response_schema.dump(orders)
-    ), 200
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 20, type=int), 1), 100)
+    pagination = Order.query.paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "orders": many_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200
 
 @order_bp.route("/<int:order_id>", methods=["GET"])
 @authenticated
@@ -75,10 +79,7 @@ def get_order(order_id):
 @authenticated
 def update_order_status(order_id):
 
-    order = db.session.get(
-        Order,
-        order_id
-    )
+    order = db.session.get(Order, order_id)
 
     if not order:
         return jsonify({
@@ -89,25 +90,54 @@ def update_order_status(order_id):
         return jsonify({"error": "You can only update your own orders"}), 403
     data = request.get_json()
 
-    status = data.get("status")
+    new_status = data.get("status")
 
     allowed_statuses = [
+        "PENDING",
         "CONFIRMED",
         "REJECTED",
-        "CANCELLED"
+        "CANCELLED",
+        "COMPLETED"
     ]
 
-    if status not in allowed_statuses:
+    if new_status not in allowed_statuses:
         return jsonify({
             "error": "Invalid order status"
         }), 400
 
     role = (get_jwt().get("role") or "").upper()
-    if status in {"CONFIRMED", "REJECTED"} and role != "FARMER":
+    if new_status in {"CONFIRMED", "REJECTED"} and role != "FARMER":
         return jsonify({"error": "Only farmers may confirm or reject orders"}), 403
-    if status == "CANCELLED" and role != "BUYER":
+    if new_status == "CANCELLED" and role != "BUYER":
         return jsonify({"error": "Only buyers may cancel orders"}), 403
-    order.status = status
+
+    allowed_transitions = {
+        "PENDING": [
+            "CONFIRMED",
+            "REJECTED",
+            "CANCELLED"
+        ],
+        "CONFIRMED": [
+            "COMPLETED",
+            "CANCELLED"
+        ],
+        "REJECTED": [],
+        "CANCELLED": [],
+        "COMPLETED": []
+    }
+
+    if new_status not in allowed_transitions.get(
+        order.status,
+        []
+    ):
+        return jsonify({
+            "error": (
+                f"Cannot change order status "
+                f"from {order.status} to {new_status}"
+            )
+        }), 409
+
+    order.status = new_status
 
     db.session.commit()
 

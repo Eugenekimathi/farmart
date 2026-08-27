@@ -39,12 +39,15 @@ def create_animal():
 
 @animal_bp.route("", methods=["GET"])
 def get_animals():
-
-    animals = Animal.query.all()
-
-    return jsonify(
-        many_response_schema.dump(animals)
-    ), 200
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 9, type=int), 1), 100)
+    pagination = Animal.query.paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "animals": many_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200
 
 @animal_bp.route("/<int:animal_id>", methods=["GET"])
 def get_animal(animal_id):
@@ -156,11 +159,15 @@ def search_animals():
             Animal.age <= max_age
         )
 
-    animals = query.filter_by(
-        status="AVAILABLE"
-    ).all()
-
-    return jsonify(
-        many_response_schema.dump(animals)
-    ), 200
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 9, type=int), 1), 100)
+    pagination = query.filter_by(status="AVAILABLE").paginate(
+        page=page, per_page=per_page, error_out=False
+    )
+    return jsonify({
+        "animals": many_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200
 
