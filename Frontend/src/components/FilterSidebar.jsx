@@ -18,6 +18,10 @@ const FilterSidebar = () => {
     dispatch(setFilters({ breed: e.target.value }))
   }
 
+  const handleAgeChange = (e) => {
+    dispatch(setFilters({ max_age: e.target.value }))
+  }
+
   const handleClear = () => {
     dispatch(clearFilters())
   }
@@ -94,6 +98,24 @@ const FilterSidebar = () => {
         </label>
       </div>
 
+      {/* Age Dropdown */}
+      <div className="wireframe-filter-group" style={{ marginTop: '1.2rem' }}>
+        <label htmlFor="ageSelect" className="wireframe-filter-group__label">Maximum age</label>
+        <select
+          id="ageSelect"
+          name="max_age"
+          value={filters.max_age || ''}
+          onChange={handleAgeChange}
+          className="wireframe-select"
+        >
+          <option value="">Any age</option>
+          <option value="12">Up to 12 months</option>
+          <option value="24">Up to 24 months</option>
+          <option value="36">Up to 36 months</option>
+          <option value="48">Up to 48 months</option>
+        </select>
+      </div>
+
       {/* Breed Dropdown */}
       <div className="wireframe-filter-group" style={{ marginTop: '1.2rem' }}>
         <label htmlFor="breedSelect" className="wireframe-filter-group__label">Breed</label>
@@ -113,7 +135,7 @@ const FilterSidebar = () => {
         </select>
       </div>
 
-      {(filters.breed || filters.max_price < 300000 || filters.direct_delivery) && (
+      {(filters.breed || filters.max_age || filters.max_price < 300000 || filters.direct_delivery) && (
         <button className="wireframe-clear-btn" onClick={handleClear}>
           Clear all filters
         </button>

@@ -14,6 +14,7 @@ const AnimalCard = ({ animal }) => {
 
   const { items } = useSelector((state) => state.cart)
   const isInCart = items.some((item) => item.id === animal.id)
+  const isAvailable = animal.status?.toUpperCase() === 'AVAILABLE'
 
   const primaryImage =
     animal.images?.find((img) => img.is_primary) || animal.images?.[0]
@@ -23,6 +24,7 @@ const AnimalCard = ({ animal }) => {
 
   const handleBuyDirect = (e) => {
     e.stopPropagation()
+    if (!isAvailable) return
     dispatch(addItem(animal))
     dispatch(syncAddToCart(animal.id))
   }
@@ -75,8 +77,9 @@ const AnimalCard = ({ animal }) => {
         <button
           className={`wireframe-btn-buy ${isInCart ? 'wireframe-btn-buy--added' : ''}`}
           onClick={handleBuyDirect}
+          disabled={!isAvailable}
         >
-          {isInCart ? '✓ Added to Cart' : 'Buy Direct'}
+          {isInCart ? '✓ Added to Cart' : isAvailable ? 'Buy Direct' : 'Not Available'}
         </button>
       </div>
     </div>
