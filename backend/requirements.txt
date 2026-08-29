@@ -1,4 +1,3 @@
-uvicorn[standard]
 pytest
 httpx
 flask
@@ -12,5 +11,5 @@ marshmallow
 flask_marshmallow
 marshmallow-sqlalchemy
 cloudinary
-flask-login 
+flask-login
 python-dotenv

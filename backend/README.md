@@ -16,6 +16,7 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 # Edit .env with your local values
 flask db upgrade
+python seed.py
 python run.py
 ```
 
