@@ -17,6 +17,7 @@ const AnimalDetailPage = () => {
   const { items } = useSelector((state) => state.cart)
 
   const isInCart = items.some((item) => item.id === selectedAnimal?.id)
+  const isAvailable = selectedAnimal?.status?.toUpperCase() === 'AVAILABLE'
 
   useEffect(() => {
     dispatch(getAnimalById(id))
@@ -203,9 +204,9 @@ const AnimalDetailPage = () => {
               <button
                 className="btn btn--primary btn--full"
                 onClick={handleBuyNow}
-                disabled={selectedAnimal.status !== 'available'}
+                disabled={!isAvailable}
               >
-                {selectedAnimal.status !== 'available'
+                {!isAvailable
                   ? 'Not Available'
                   : 'Buy Direct'}
               </button>
@@ -214,7 +215,7 @@ const AnimalDetailPage = () => {
                 className={`btn btn--outline btn--full ${isInCart ? 'btn--in-cart' : ''}`}
                 onClick={handleAddToCart}
                 disabled={
-                  isInCart || selectedAnimal.status !== 'available'
+                  isInCart || !isAvailable
                 }
               >
                 {isInCart ? '✓ Added to Cart' : 'Add to Cart'}

@@ -9,13 +9,12 @@ const FilterSidebar = () => {
     dispatch(setFilters({ max_price: Number(e.target.value) }))
   }
 
-  const handleCheckboxChange = (e) => {
-    const { name, checked } = e.target
-    dispatch(setFilters({ [name]: checked }))
-  }
-
   const handleBreedChange = (e) => {
     dispatch(setFilters({ breed: e.target.value }))
+  }
+
+  const handleAgeChange = (e) => {
+    dispatch(setFilters({ max_age: e.target.value }))
   }
 
   const handleClear = () => {
@@ -52,46 +51,22 @@ const FilterSidebar = () => {
         </div>
       </div>
 
-      {/* Checkboxes */}
-      <div className="wireframe-checkboxes">
-        <label className="wireframe-checkbox">
-          <input
-            type="checkbox"
-            name="kvb_certified"
-            checked={!!filters.kvb_certified}
-            onChange={handleCheckboxChange}
-          />
-          <span className="wireframe-checkbox__box" />
-          <span className="wireframe-checkbox__label">
-            <span className="wireframe-tag-box">KVB</span> Vet Certified
-          </span>
-        </label>
-
-        <label className="wireframe-checkbox">
-          <input
-            type="checkbox"
-            name="pasture_raised"
-            checked={!!filters.pasture_raised}
-            onChange={handleCheckboxChange}
-          />
-          <span className="wireframe-checkbox__box" />
-          <span className="wireframe-checkbox__label">
-            <span className="wireframe-tag-box">🌿</span> Pasture Raised
-          </span>
-        </label>
-
-        <label className="wireframe-checkbox">
-          <input
-            type="checkbox"
-            name="direct_delivery"
-            checked={!!filters.direct_delivery}
-            onChange={handleCheckboxChange}
-          />
-          <span className="wireframe-checkbox__box" />
-          <span className="wireframe-checkbox__label">
-            Direct Delivery
-          </span>
-        </label>
+      {/* Age Dropdown */}
+      <div className="wireframe-filter-group" style={{ marginTop: '1.2rem' }}>
+        <label htmlFor="ageSelect" className="wireframe-filter-group__label">Maximum age</label>
+        <select
+          id="ageSelect"
+          name="max_age"
+          value={filters.max_age || ''}
+          onChange={handleAgeChange}
+          className="wireframe-select"
+        >
+          <option value="">Any age</option>
+          <option value="12">Up to 12 months</option>
+          <option value="24">Up to 24 months</option>
+          <option value="36">Up to 36 months</option>
+          <option value="48">Up to 48 months</option>
+        </select>
       </div>
 
       {/* Breed Dropdown */}
@@ -113,7 +88,7 @@ const FilterSidebar = () => {
         </select>
       </div>
 
-      {(filters.breed || filters.max_price < 300000 || filters.direct_delivery) && (
+      {(filters.breed || filters.max_age || filters.max_price < 300000) && (
         <button className="wireframe-clear-btn" onClick={handleClear}>
           Clear all filters
         </button>

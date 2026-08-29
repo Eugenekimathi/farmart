@@ -17,7 +17,7 @@ describe('animalsSlice', () => {
     selectedAnimal: null,
     animalTypes: [],
     breeds: [],
-    filters: { breed: '', age: '', animal_type: '' },
+    filters: { breed: '', max_age: '', animal_type: '' },
     searchQuery: '',
     pagination: { currentPage: 1, totalPages: 1, totalCount: 0 },
     isLoading: false,
@@ -55,18 +55,18 @@ describe('animalsSlice', () => {
     )
 
     expect(state.filters.breed).toBe('2')
-    expect(state.filters.age).toBe('')
+    expect(state.filters.max_age).toBe('')
     expect(state.filters.animal_type).toBe('')
   })
 
   it('should update multiple filters at once', () => {
     const state = animalsReducer(
       initialState,
-      setFilters({ breed: '2', age: '24' })
+      setFilters({ breed: '2', max_age: '24' })
     )
 
     expect(state.filters.breed).toBe('2')
-    expect(state.filters.age).toBe('24')
+    expect(state.filters.max_age).toBe('24')
   })
 
   it('should reset page to 1 when filters change', () => {
@@ -89,14 +89,14 @@ describe('animalsSlice', () => {
     const dirtyState = {
       ...initialState,
       searchQuery: 'bull',
-      filters: { breed: '1', age: '24', animal_type: '2' },
+      filters: { breed: '1', max_age: '24', animal_type: '2' },
       pagination: { ...initialState.pagination, currentPage: 5 },
     }
     const state = animalsReducer(dirtyState, clearFilters())
 
     expect(state.searchQuery).toBe('')
     expect(state.filters.breed).toBe('')
-    expect(state.filters.age).toBe('')
+    expect(state.filters.max_age).toBe('')
     expect(state.pagination.currentPage).toBe(1)
   })
 

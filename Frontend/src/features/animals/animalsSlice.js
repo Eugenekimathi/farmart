@@ -222,10 +222,7 @@ const initialState = {
   filters: {
     breed: '',
     max_price: 300000,
-    kvb_certified: true,
-    pasture_raised: true,
-    direct_delivery: false,
-    age: '',
+    max_age: '',
     animal_type: '',
   },
   searchQuery: '',
@@ -267,10 +264,7 @@ const animalsSlice = createSlice({
       state.filters = {
         breed: '',
         max_price: 300000,
-        kvb_certified: false,
-        pasture_raised: false,
-        direct_delivery: false,
-        age: '',
+        max_age: '',
         animal_type: '',
       }
       state.searchQuery = ''
