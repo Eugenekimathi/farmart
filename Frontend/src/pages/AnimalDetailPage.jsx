@@ -317,7 +317,7 @@ const AnimalDetailPage = () => {
           {role !== 'farmer' && (
             <div className="detail-actions">
               <button
-                className="btn btn--primary btn--full"
+                className="btn btn--accent btn--full"
                 onClick={handleBuyNow}
                 disabled={!isAvailable}
               >
@@ -327,7 +327,7 @@ const AnimalDetailPage = () => {
               </button>
 
               <button
-                className={`btn btn--outline btn--full ${isInCart ? 'btn--in-cart' : ''}`}
+                className={`btn btn--primary btn--full ${isInCart ? 'btn--in-cart' : ''}`}
                 onClick={handleAddToCart}
                 disabled={
                   isInCart || !isAvailable

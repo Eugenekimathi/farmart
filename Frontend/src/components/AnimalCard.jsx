@@ -130,7 +130,7 @@ const AnimalCard = ({ animal }) => {
         </div>
 
         <button
-          className={`btn btn--primary btn--full btn--sm ${isInCart ? 'btn--in-cart' : ''}`}
+          className={`btn btn--accent btn--full btn--sm ${isInCart ? 'btn--in-cart' : ''}`}
           onClick={handleBuyDirect}
           disabled={!isAvailable}
         >

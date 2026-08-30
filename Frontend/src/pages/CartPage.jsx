@@ -237,7 +237,7 @@ const CartPage = () => {
           </div>
 
           <button
-            className="btn btn--primary btn--full btn--lg"
+            className="btn btn--accent btn--full btn--lg"
             onClick={() => navigate('/checkout')}
           >
             Proceed to Checkout
