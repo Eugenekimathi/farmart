@@ -1,4 +1,4 @@
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+﻿import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from '../features/auth/authSlice'
 import { clearCart } from '../features/cart/cartSlice'
@@ -25,7 +25,7 @@ const Navbar = () => {
     <header className="navbar">
       <div className="navbar__inner">
         <Link to="/" className="navbar__logo">
-          <div className="navbar__logo-icon">🌿</div>
+          <div className="navbar__logo-icon"></div>
           <div>
             <span className="navbar__logo-name">Farmart Kenya</span>
             <span className="navbar__logo-tag">// Soko la Wakulima</span>
@@ -58,7 +58,7 @@ const Navbar = () => {
 
           {role !== 'farmer' && (
             <Link to="/cart" className="navbar__cart">
-              🛒 Cart
+              
               {items.length > 0 && (
                 <span className="navbar__cart-count">{items.length}</span>
               )}
@@ -83,3 +83,5 @@ const Navbar = () => {
 }
 
 export default Navbar
+
+

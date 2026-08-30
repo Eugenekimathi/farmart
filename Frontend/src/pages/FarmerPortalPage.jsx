@@ -30,11 +30,11 @@ const FarmerPortalPage = () => {
 
   const handleDelete = async (id) => {
     if (deleteConfirmId !== id) {
-      // First click â€” ask for confirmation
+      // First click  ask for confirmation
       setDeleteConfirmId(id)
       return
     }
-    // Second click â€” confirmed
+    // Second click  confirmed
     setDeletingId(id)
     setDeleteConfirmId(null)
     await dispatch(removeFarmerAnimal(id))
@@ -73,7 +73,7 @@ const FarmerPortalPage = () => {
         <div className="farmer-portal__header-inner">
           <p className="farmer-portal__tag">// FARMER PORTAL</p>
           <h1 className="farmer-portal__title">
-            ðŸŒ¾ Farmer Portal
+            
           </h1>
           <p className="farmer-portal__subtitle">
             Welcome back, {user?.full_name?.split(' ')[0] || user?.username || 'Farmer'}. Manage your
@@ -97,7 +97,7 @@ const FarmerPortalPage = () => {
 
       <div className="farmer-portal__body">
 
-        {/* â”€â”€ My Active Listings â”€â”€ */}
+        {/*  My Active Listings  */}
         <section className="portal-section">
           <div className="portal-section__header">
             <h2 className="portal-section__title">My Active Listings</h2>
@@ -143,7 +143,7 @@ const FarmerPortalPage = () => {
                         <td className="portal-table__name" data-label="Animal">
                           {animal.name}
                         </td>
-                        <td>{animal.breed?.name || 'â€”'}</td>
+                        <td>{animal.breed?.name || ''}</td>
                         <td data-label="Age">{animal.age} mo</td>
                         <td className="portal-table__price" data-label="Price">
                           KSh {Number(animal.price).toLocaleString()}
@@ -187,7 +187,7 @@ const FarmerPortalPage = () => {
           )}
         </section>
 
-        {/* â”€â”€ Incoming Orders â”€â”€ */}
+        {/*  Incoming Orders  */}
         <section className="portal-section">
           <div className="portal-section__header">
             <h2 className="portal-section__title">Incoming Orders</h2>
@@ -260,21 +260,21 @@ const FarmerPortalPage = () => {
                                 onClick={() => handleConfirm(order.id)}
                                 disabled={isActioning}
                               >
-                                {isActioning ? '...' : 'âœ“ Confirm'}
+                                {isActioning ? '...' : ' Confirm'}
                               </button>
                               <button
                                 className="portal-action-btn portal-action-btn--delete"
                                 onClick={() => handleReject(order.id)}
                                 disabled={isActioning}
                               >
-                                {isActioning ? '...' : 'âœ— Reject'}
+                                {isActioning ? '...' : ' Reject'}
                               </button>
                             </div>
                           ) : (
                             <span className="portal-table__actioned">
-                              {order.status === 'confirmed' && 'âœ“ Confirmed'}
-                              {order.status === 'rejected' && 'âœ— Rejected'}
-                              {order.status === 'completed' && 'âœ“ Completed'}
+                              {order.status === 'confirmed' && ' Confirmed'}
+                              {order.status === 'rejected' && ' Rejected'}
+                              {order.status === 'completed' && ' Completed'}
                             </span>
                           )}
                         </td>
@@ -293,4 +293,6 @@ const FarmerPortalPage = () => {
 }
 
 export default FarmerPortalPage
+
+
 
