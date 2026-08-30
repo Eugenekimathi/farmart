@@ -1,36 +1,37 @@
 ﻿import heroImage from '../assets/Images/pure-sahiwal-cow-649.jpg'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import Footer from '../components/Footer'
 import '../styles/home.css'
 
 const features = [
   {
-    icon: 'N',
+    icon: '🛡️',
     title: 'No Middlemen',
     desc: 'Buy directly from verified farmers. Zero broker fees, zero hidden charges.',
   },
   {
-    icon: 'M',
+    icon: '📱',
     title: 'Pay via M-Pesa',
     desc: 'Instant mobile payments directly to the farmer. Safe, fast, and reliable.',
   },
   {
-    icon: 'V',
+    icon: '✅',
     title: 'Verified Listings',
     desc: 'Every farmer and animal listing is verified before going live on the platform.',
   },
   {
-    icon: 'S',
+    icon: '🔍',
     title: 'Search & Filter',
     desc: 'Find exactly what you need by animal type, breed, age, and location.',
   },
   {
-    icon: 'F',
+    icon: '🚜',
     title: 'For Farmers',
     desc: 'List your animals for free. Reach buyers across Kenya without leaving your farm.',
   },
   {
-    icon: 'D',
+    icon: '🚚',
     title: 'Direct Delivery',
     desc: 'Arrange delivery directly with the farmer. No third-party logistics markup.',
   },
@@ -45,7 +46,7 @@ const steps = [
   {
     step: '02',
     title: 'Browse Listings',
-    desc: 'Search and filter thousands of verified livestock listings.',
+    desc: 'Search and filter livestock by type, breed, age, and location.',
   },
   {
     step: '03',
@@ -86,12 +87,12 @@ const HomePage = () => {
           </h1>
           <p className="hero__subtitle">
             Where buyers meet sellers without the need for brokers.
-            Save up to 20% by buying directly from verified Kenyan farmers.
+            Buy directly from verified Kenyan farmers.
           </p>
 
           <div className="hero__actions">
             <button
-              className="btn btn--primary hero__btn"
+              className="btn btn--primary"
               onClick={handleCTA}
             >
               {user && role === 'farmer'
@@ -101,7 +102,7 @@ const HomePage = () => {
 
             {!user && (
               <button
-                className="btn btn--outline hero__btn"
+                className="btn btn--outline"
                 onClick={() => navigate('/register')}
               >
                 Create Free Account
@@ -127,7 +128,7 @@ const HomePage = () => {
             <div className="hero__visual-name">Sahiwal Cow</div>
             <div className="hero__visual-meta">Naivasha, Nakuru County | 24 months</div>
             <div className="hero__visual-savings">
-              Save KSh 19,000 | No broker cut
+              No broker cut
             </div>
             <button className="btn btn--primary" style={{ width: '100%', marginTop: '0.75rem' }} onClick={() => navigate('/store')}>
               Buy Direct (M-Pesa)
@@ -145,6 +146,7 @@ const HomePage = () => {
       <section className="features">
         <div className="features__inner">
           <div className="section-header">
+            <span className="section-header__tag">Why Farmart?</span>
             <h2 className="section-header__title">
               A better way to buy and sell livestock
             </h2>
@@ -157,11 +159,36 @@ const HomePage = () => {
           <div className="features__grid">
             {features.map((f) => (
               <div key={f.title} className="feature-card">
-                <span className="feature-card__icon-wrap" aria-hidden="true">{f.title.slice(0, 1)}</span>
+                <span className="feature-card__icon-wrap" aria-hidden="true">{f.icon}</span>
                 <h3 className="feature-card__title">{f.title}</h3>
                 <p className="feature-card__desc">{f.desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/*  Stats bar  */}
+      <section className="stats-bar">
+        <div className="stats-bar__inner">
+          <div className="stat-item">
+            <span className="stat-item__number">500+</span>
+            <span className="stat-item__label">Verified Farmers</span>
+          </div>
+          <div className="stat-item__divider"></div>
+          <div className="stat-item">
+            <span className="stat-item__number">1,200+</span>
+            <span className="stat-item__label">Livestock Listed</span>
+          </div>
+          <div className="stat-item__divider"></div>
+          <div className="stat-item">
+            <span className="stat-item__number">47</span>
+            <span className="stat-item__label">Counties Covered</span>
+          </div>
+          <div className="stat-item__divider"></div>
+          <div className="stat-item">
+            <span className="stat-item__number">KSh 25M+</span>
+            <span className="stat-item__label">Transaction Value</span>
           </div>
         </div>
       </section>
@@ -197,7 +224,7 @@ const HomePage = () => {
             Ready to buy or sell livestock?
           </h2>
           <p className="cta-banner__sub">
-            Join hundreds of Kenyan farmers and buyers already on the platform.
+            Buy directly from verified Kenyan farmers. Browse livestock by type, breed, age and location.
           </p>
           <div className="cta-banner__actions">
             <button
@@ -219,47 +246,7 @@ const HomePage = () => {
       </section>
 
       {/*  Footer  */}
-      <footer className="footer">
-        <div className="footer__inner">
-          <div className="footer__brand">
-            <span className="footer__logo">Farmart Kenya</span>
-          </div>
-
-          <div className="footer__links">
-            <span className="footer__links-title">LINKS</span>
-            <span
-              className="footer__link"
-              onClick={() => navigate('/store')}
-            >
-              Store
-            </span>
-            <span
-              className="footer__link"
-              onClick={() => navigate('/farmer-portal')}
-            >
-              Farmer Portal
-            </span>
-            <span
-              className="footer__link"
-              onClick={() => navigate('/register')}
-            >
-              Donors
-            </span>
-            <span
-              className="footer__link"
-              onClick={() => navigate('/')}
-            >
-              About Project
-            </span>
-          </div>
-        </div>
-
-        <div className="footer__bottom">
-          <span>Farmart Kenya</span>
-          <span>All rights reserved</span>
-          <span>Copyright 2026</span>
-        </div>
-      </footer>
+      <Footer />
 
     </div>
   )

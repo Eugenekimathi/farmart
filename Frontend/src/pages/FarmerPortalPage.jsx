@@ -70,10 +70,10 @@ const FarmerPortalPage = () => {
 
       {/* Portal header */}
       <div className="farmer-portal__header">
-        <div className="farmer-portal__header-inner">
-          <p className="farmer-portal__tag">// FARMER PORTAL</p>
+        <div>
+          <p className="farmer-portal__tag">FARMER PORTAL</p>
           <h1 className="farmer-portal__title">
-            
+            Manage Your Farm
           </h1>
           <p className="farmer-portal__subtitle">
             Welcome back, {user?.full_name?.split(' ')[0] || user?.username || 'Farmer'}. Manage your
@@ -81,7 +81,7 @@ const FarmerPortalPage = () => {
           </p>
         </div>
         <button
-          className="btn btn--primary"
+          className="btn btn--accent"
           onClick={() => navigate('/farmer-portal/add-animal')}
         >
           + Add New Animal
@@ -101,7 +101,7 @@ const FarmerPortalPage = () => {
         <section className="portal-section">
           <div className="portal-section__header">
             <h2 className="portal-section__title">My Active Listings</h2>
-            <span className="portal-section__tag">// LISTINGS</span>
+            <span className="portal-section__tag">LISTINGS</span>
           </div>
 
           {listingsError && (
@@ -191,7 +191,7 @@ const FarmerPortalPage = () => {
         <section className="portal-section">
           <div className="portal-section__header">
             <h2 className="portal-section__title">Incoming Orders</h2>
-            <span className="portal-section__tag">// ORDERS</span>
+            <span className="portal-section__tag">ORDERS</span>
           </div>
 
           {ordersError && (

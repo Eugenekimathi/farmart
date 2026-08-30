@@ -24,20 +24,20 @@ const FilterSidebar = () => {
   const formattedMaxPrice = `KSh ${Number(filters.max_price || 300000).toLocaleString()}`
 
   return (
-    <aside className="wireframe-filters">
-      <div className="wireframe-filters__header">
-        <h3 className="wireframe-filters__title">Filters</h3>
-        <span className="wireframe-filters__badge">// WIREFRAME</span>
+    <aside className="filter-sidebar">
+      <div className="filter-sidebar__header">
+        <h3 className="filter-sidebar__title">Filters</h3>
+        <button className="filter-sidebar__clear" onClick={handleClear}>Clear all</button>
       </div>
 
       {/* Bei (KSh) Range Slider */}
-      <div className="wireframe-filter-group">
-        <div className="wireframe-filter-group__label-row">
+      <div className="filter-group">
+        <div className="filter-group__label-row">
           <label htmlFor="priceRange">Bei (KSh)</label>
-          <span className="wireframe-filters__price-val">{formattedMaxPrice}</span>
+          <span className="filter-group__price-val">{formattedMaxPrice}</span>
         </div>
-        <div className="wireframe-slider-container">
-          <span className="wireframe-slider-min">0</span>
+        <div className="filter-group__slider-container">
+          <span className="filter-group__slider-min">0</span>
           <input
             id="priceRange"
             type="range"
@@ -46,20 +46,20 @@ const FilterSidebar = () => {
             step="5000"
             value={filters.max_price || 300000}
             onChange={handlePriceChange}
-            className="wireframe-range-slider"
+            className="filter-group__range-slider"
           />
         </div>
       </div>
 
       {/* Age Dropdown */}
-      <div className="wireframe-filter-group" style={{ marginTop: '1.2rem' }}>
-        <label htmlFor="ageSelect" className="wireframe-filter-group__label">Maximum age</label>
+      <div className="filter-group">
+        <label htmlFor="ageSelect" className="filter-group__label">Maximum age</label>
         <select
           id="ageSelect"
           name="max_age"
           value={filters.max_age || ''}
           onChange={handleAgeChange}
-          className="wireframe-select"
+          className="filter-group__select"
         >
           <option value="">Any age</option>
           <option value="12">Up to 12 months</option>
@@ -70,14 +70,14 @@ const FilterSidebar = () => {
       </div>
 
       {/* Breed Dropdown */}
-      <div className="wireframe-filter-group" style={{ marginTop: '1.2rem' }}>
-        <label htmlFor="breedSelect" className="wireframe-filter-group__label">Breed</label>
+      <div className="filter-group">
+        <label htmlFor="breedSelect" className="filter-group__label">Breed</label>
         <select
           id="breedSelect"
           name="breed"
           value={filters.breed || ''}
           onChange={handleBreedChange}
-          className="wireframe-select"
+          className="filter-group__select"
         >
           <option value="">Select breed...</option>
           {breeds.map((b) => (
@@ -87,12 +87,6 @@ const FilterSidebar = () => {
           ))}
         </select>
       </div>
-
-      {(filters.breed || filters.max_age || filters.max_price < 300000) && (
-        <button className="wireframe-clear-btn" onClick={handleClear}>
-          Clear all filters
-        </button>
-      )}
     </aside>
   )
 }

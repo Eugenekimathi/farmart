@@ -1,79 +1,53 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAnimals, setSearchQuery } from '../features/animals/animalsSlice'
+import { getAnimals } from '../features/animals/animalsSlice'
 import FilterSidebar from '../components/FilterSidebar'
 import AnimalCard from '../components/AnimalCard'
 import Footer from '../components/Footer'
 
 const StorePage = () => {
   const dispatch = useDispatch()
-  const [localSearch, setLocalSearch] = useState('')
   const { animals, searchQuery, filters, isLoading } = useSelector((state) => state.animals)
 
   useEffect(() => {
     dispatch(getAnimals({ page: 1, search: searchQuery, filters }))
   }, [dispatch, searchQuery, filters])
 
-  const handleSearchSubmit = (e) => {
-    e.preventDefault()
-    dispatch(setSearchQuery(localSearch))
-  }
-
-  const handleInputChange = (e) => {
-    setLocalSearch(e.target.value)
-    dispatch(setSearchQuery(e.target.value))
-  }
-
   return (
-    <div className="wireframe-page">
-      <section className="wireframe-hero">
-        <div className="wireframe-hero__container">
-          <span className="wireframe-tag-badge">// HERO AREA</span>
-          <h1 className="wireframe-hero__title">
+    <div className="store-page">
+      <div className="store-page__header">
+        <div className="store-page__header-inner">
+          <span className="store-page__area-tag">MARKETPLACE</span>
+          <h1 className="store-page__title">
             Nunua Mifugo Moja Kwa Moja Kutoka Kwa Wakulima
           </h1>
-          <p className="wireframe-hero__subtitle">
-            Where buyers meet sellers without the need for brokers
+          <p className="store-page__subtitle">
+            Browse verified livestock from Kenyan farmers
           </p>
-          <form className="wireframe-hero__search-form" onSubmit={handleSearchSubmit}>
-            <div className="wireframe-hero__search-input-wrap">
-              <span className="wireframe-hero__search-icon">🔍</span>
-              <input
-                type="text"
-                placeholder="Tafuta ng'ombe, mbuzi, kondoo..."
-                value={localSearch || searchQuery}
-                onChange={handleInputChange}
-                className="wireframe-hero__search-input"
-              />
-            </div>
-            <button type="submit" className="wireframe-hero__search-btn">
-              Tafuta
-            </button>
-          </form>
         </div>
-      </section>
+      </div>
 
-      <div className="wireframe-main-layout">
+      <div className="store-page__body">
         <FilterSidebar />
-        <main className="wireframe-products-area">
-          <div className="wireframe-products-header">
-            <span className="wireframe-products-count">
-              Showing {animals.length} matching livestock list(s)
+        <main>
+          <div className="store-page__results-bar">
+            <span className="store-page__count">
+              Showing {animals.length} livestock
             </span>
-            <span className="wireframe-tag-badge">// PRODUCT GRID</span>
           </div>
 
           {isLoading ? (
-            <div className="wireframe-loading">
-              <div className="wireframe-spinner" />
+            <div className="store-page__loading">
+              <div className="spinner" />
               <p>Loading matching livestock...</p>
             </div>
           ) : animals.length === 0 ? (
-            <div className="wireframe-empty">
-              <p>🐄 No livestock found matching your filters.</p>
+            <div className="store-page__empty">
+              <span className="store-page__empty-icon">🐄</span>
+              <p>No livestock found matching your filters.</p>
             </div>
           ) : (
-            <div className="wireframe-grid">
+            <div className="animal-grid">
               {animals.map((animal) => (
                 <AnimalCard key={animal.id} animal={animal} />
               ))}

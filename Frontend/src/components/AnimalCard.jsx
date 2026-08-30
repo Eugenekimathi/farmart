@@ -43,39 +43,39 @@ const AnimalCard = ({ animal }) => {
   const weightText = animal.weight || `${animal.age || 24} mo`
 
   return (
-    <div className="wireframe-card" onClick={handleCardClick}>
-      <div className="wireframe-card__image-container">
+    <div className="animal-card" onClick={handleCardClick}>
+      <div className="animal-card__image-wrap">
         {imageUrl ? (
           <img
             src={imageUrl}
             alt={animal.name}
-            className="wireframe-card__image"
+            className="animal-card__image"
             onError={(e) => {
               e.target.onerror = null
               e.target.src = fallbackImage
             }}
           />
         ) : (
-          <div className="wireframe-card__placeholder">🐄 Livestock Photo</div>
+          <div className="animal-card__image-placeholder">🐄 Livestock Photo</div>
         )}
       </div>
 
-      <div className="wireframe-card__body">
-        <h3 className="wireframe-card__title">{animal.name}</h3>
+      <div className="animal-card__body">
+        <h3 className="animal-card__name">{animal.name}</h3>
 
-        <div className="wireframe-card__meta">
-          <span className="wireframe-card__location">📍 {locationText}</span>
-          <span className="wireframe-card__weight">⚖️ {weightText}</span>
+        <div className="animal-card__meta">
+          <span className="animal-card__location">📍 {locationText}</span>
+          <span className="animal-card__weight">⚖️ {weightText}</span>
         </div>
 
-        <div className="wireframe-card__price">{formattedPrice}</div>
+        <div className="animal-card__price">{formattedPrice}</div>
 
-        <div className="wireframe-card__savings-badge">
+        <div className="animal-card__savings">
           {formattedSavings}
         </div>
 
         <button
-          className={`wireframe-btn-buy ${isInCart ? 'wireframe-btn-buy--added' : ''}`}
+          className={`btn btn--primary btn--full ${isInCart ? 'btn--in-cart' : ''}`}
           onClick={handleBuyDirect}
           disabled={!isAvailable}
         >

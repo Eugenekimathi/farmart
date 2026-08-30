@@ -98,8 +98,8 @@ const AnimalDetailPage = () => {
         >
           Store
         </span>
-        <span> / </span>
-        <span>{selectedAnimal.name}</span>
+        <span className="detail-page__breadcrumb-sep">/</span>
+        <span className="detail-page__breadcrumb-current">{selectedAnimal.name}</span>
       </div>
 
       <div className="detail-page__body">
@@ -163,7 +163,7 @@ const AnimalDetailPage = () => {
             <div className="detail-stat">
               <span className="detail-stat__label">Gender</span>
               <span className="detail-stat__value">
-                {selectedAnimal.gender === 'male' ? '♂ Male' : '♀ Female'}
+                {selectedAnimal.gender === 'male' ? 'Male' : 'Female'}
               </span>
             </div>
             <div className="detail-stat">
@@ -172,18 +172,28 @@ const AnimalDetailPage = () => {
             </div>
             <div className="detail-stat">
               <span className="detail-stat__label">Location</span>
-              <span className="detail-stat__value">📍 {selectedAnimal.location}</span>
+              <span className="detail-stat__value">{selectedAnimal.location}</span>
             </div>
             <div className="detail-stat">
               <span className="detail-stat__label">Listed by</span>
               <span className="detail-stat__value">
-                🌾 {selectedAnimal.farmer?.farm_name || 'Verified Farmer'}
+                {selectedAnimal.farmer?.farm_name || 'Verified Farmer'}
               </span>
             </div>
           </div>
 
           <div className="detail-trust-badges">
-            <span className="detail-trust-badge">Health checked</span>`r`n            {healthSignals.map((signal) => <span key={signal} className="detail-trust-badge">{signal}</span>)}`r`n            <span className="detail-trust-badge">Verified farmer</span>`r`n            <span className="detail-trust-badge">Direct delivery</span>`r`n          </div>
+            <span className="detail-trust-badge">Health checked</span>
+            <span className="detail-trust-badge">Verified farmer</span>
+            <span className="detail-trust-badge">Direct delivery</span>
+          </div>
+
+          {/* Tabs */}
+          <div className="detail-tabs">
+            <button className="detail-tab detail-tab--active">Details</button>
+            <button className="detail-tab">Seller</button>
+            <button className="detail-tab">Delivery</button>
+          </div>
 
           {/* Description */}
           {selectedAnimal.description && (
@@ -192,6 +202,16 @@ const AnimalDetailPage = () => {
               <p className="detail-info__desc-text">{selectedAnimal.description}</p>
             </div>
           )}
+
+          {/* Farmer card */}
+          <div className="detail-farmer-card">
+            <div className="detail-farmer-avatar">👨‍🌾</div>
+            <div className="detail-farmer-info">
+              <div className="detail-farmer-name">{selectedAnimal.farmer?.farm_name || 'Verified Farmer'}</div>
+              <div className="detail-farmer-verified">✓ Verified Farmer</div>
+              <div className="detail-farmer-meta">{selectedAnimal.location}</div>
+            </div>
+          </div>
 
           {/* Price block */}
           <div className="detail-price-block">
@@ -221,7 +241,7 @@ const AnimalDetailPage = () => {
                   isInCart || !isAvailable
                 }
               >
-                {isInCart ? '✓ Added to Cart' : 'Add to Cart'}
+                {isInCart ? 'Added to Cart' : 'Add to Cart'}
               </button>
             </div>
           )}
