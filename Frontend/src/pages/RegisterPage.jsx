@@ -4,6 +4,31 @@ import { useDispatch, useSelector } from 'react-redux'
 import { register, clearError } from '../features/auth/authSlice'
 import '../styles/auth.css'
 
+// SVG Icons
+const ShoppingBagIcon = () => (
+  <svg className="icon icon--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+    <path d="M3 6h18" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
+  </svg>
+)
+
+const UserIcon = () => (
+  <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+)
+
+const SproutIcon = () => (
+  <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M7 20h10" />
+    <path d="M10 20c5.5-2.5.8-6.4 3-10" />
+    <path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2" />
+    <path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6" />
+  </svg>
+)
+
 const RegisterPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -78,9 +103,11 @@ const RegisterPage = () => {
       <div className="auth-card auth-card--wide">
 
         <div className="auth-card__header">
-          <img src="/logo.svg" alt="Farmart logo" className="auth-card__logo-img" />
+          <div className="auth-card__logo-mark">
+            <ShoppingBagIcon />
+          </div>
           <h2 className="auth-card__title">Create an account</h2>
-          <p className="auth-card__subtitle">Join the marketplace</p>
+          <p className="auth-card__subtitle">Join the Farmart marketplace</p>
         </div>
 
         {error && (
@@ -96,14 +123,20 @@ const RegisterPage = () => {
                 className={`role-toggle__btn ${formData.role === 'buyer' ? 'role-toggle__btn--active' : ''}`}
                 onClick={() => setFormData((prev) => ({ ...prev, role: 'buyer' }))}
               >
-                🛒 Buyer
+                <span className="role-toggle__btn-icon">
+                  <UserIcon />
+                </span>
+                <span className="role-toggle__btn-label">Buyer</span>
               </button>
               <button
                 type="button"
                 className={`role-toggle__btn ${formData.role === 'farmer' ? 'role-toggle__btn--active' : ''}`}
                 onClick={() => setFormData((prev) => ({ ...prev, role: 'farmer' }))}
               >
-                🌾 Farmer
+                <span className="role-toggle__btn-icon">
+                  <SproutIcon />
+                </span>
+                <span className="role-toggle__btn-label">Farmer</span>
               </button>
             </div>
           </div>
@@ -204,7 +237,7 @@ const RegisterPage = () => {
 
           <button
             type="submit"
-            className="btn btn--primary btn--full"
+            className="btn btn--primary btn--full btn--lg"
             disabled={isLoading}
           >
             {isLoading ? 'Creating account...' : 'Create Account'}

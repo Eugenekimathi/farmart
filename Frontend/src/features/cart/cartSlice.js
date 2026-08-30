@@ -78,6 +78,13 @@ const cartSlice = createSlice({
     clearCartError: (state) => {
       state.error = null
     },
+    updateQuantity: (state, action) => {
+      const { itemId, quantity } = action.payload
+      const item = state.items.find((item) => item.id === itemId)
+      if (item) {
+        item.quantity = quantity
+      }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -113,7 +120,7 @@ const cartSlice = createSlice({
   },
 })
 
-export const { addItem, removeItem, clearCart, clearCartError } =
+export const { addItem, removeItem, clearCart, clearCartError, updateQuantity } =
   cartSlice.actions
 export default cartSlice.reducer
 // Expose clearCart for other features

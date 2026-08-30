@@ -2,6 +2,45 @@ import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { addItem, syncAddToCart } from '../features/cart/cartSlice'
 
+// SVG Icons
+const MapPinIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+)
+
+const ScaleIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+    <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+    <path d="M7 21h10" />
+    <path d="M12 3v18" />
+    <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+  </svg>
+)
+
+const ShieldCheckIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+)
+
+const ShoppingBagIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+    <path d="M3 6h18" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
+  </svg>
+)
+
+const CheckIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+)
+
 const FALLBACK_IMAGES = {
   cattle: '/placeholder.svg',
   sheep: '/placeholder.svg',
@@ -56,7 +95,17 @@ const AnimalCard = ({ animal }) => {
             }}
           />
         ) : (
-          <div className="animal-card__image-placeholder">🐄 Livestock Photo</div>
+          <div className="animal-card__image-placeholder">
+            <span style={{ fontSize: '3rem' }}>🐄</span>
+          </div>
+        )}
+        
+        {/* Verified badge overlay */}
+        {animal.farmer?.verified && (
+          <div className="animal-card__verified-badge">
+            <ShieldCheckIcon />
+            <span>Verified</span>
+          </div>
         )}
       </div>
 
@@ -64,8 +113,14 @@ const AnimalCard = ({ animal }) => {
         <h3 className="animal-card__name">{animal.name}</h3>
 
         <div className="animal-card__meta">
-          <span className="animal-card__location">📍 {locationText}</span>
-          <span className="animal-card__weight">⚖️ {weightText}</span>
+          <span className="animal-card__meta-item">
+            <MapPinIcon />
+            {locationText}
+          </span>
+          <span className="animal-card__meta-item">
+            <ScaleIcon />
+            {weightText}
+          </span>
         </div>
 
         <div className="animal-card__price">{formattedPrice}</div>
@@ -75,11 +130,23 @@ const AnimalCard = ({ animal }) => {
         </div>
 
         <button
-          className={`btn btn--primary btn--full ${isInCart ? 'btn--in-cart' : ''}`}
+          className={`btn btn--primary btn--full btn--sm ${isInCart ? 'btn--in-cart' : ''}`}
           onClick={handleBuyDirect}
           disabled={!isAvailable}
         >
-          {isInCart ? '✓ Added to Cart' : isAvailable ? 'Buy Direct' : 'Not Available'}
+          {isInCart ? (
+            <>
+              <CheckIcon />
+              Added to Cart
+            </>
+          ) : isAvailable ? (
+            <>
+              <ShoppingBagIcon />
+              Buy Direct
+            </>
+          ) : (
+            'Not Available'
+          )}
         </button>
       </div>
     </div>

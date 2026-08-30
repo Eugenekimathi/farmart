@@ -5,7 +5,35 @@ import { placeOrder, startPayment, pollPaymentStatus, resetCheckout } from '../f
 import { clearCart } from '../features/cart/cartSlice'
 import '../styles/checkout.css'
 
-// Checkout has three steps
+// SVG Icons
+const MapPinIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+)
+
+const UserIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+)
+
+const SparklesIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+  </svg>
+)
+
+const CheckCircleIcon = () => (
+  <svg className="icon icon--xl" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+    <polyline points="22 4 12 14.01 9 11.01" />
+  </svg>
+)
+
+// Checkout has four steps
 const STEPS = {
   REVIEW: 'review',
   DELIVERY: 'delivery',
@@ -142,7 +170,9 @@ const CheckoutPage = () => {
   if (step === STEPS.SUCCESS) {
     return (
       <div className="checkout-success">
-        <div className="checkout-success__icon">✅</div>
+        <div className="checkout-success__icon">
+          <CheckCircleIcon />
+        </div>
         <h2 className="checkout-success__title">Order Placed!</h2>
         <p className="checkout-success__subtitle">
           Payment confirmed via M-Pesa. The farmer will be notified
@@ -155,13 +185,13 @@ const CheckoutPage = () => {
         )}
         <div className="checkout-success__actions">
           <button
-            className="btn btn--primary"
+            className="btn btn--primary btn--lg"
             onClick={() => navigate('/store')}
           >
             Continue Shopping
           </button>
           <button
-            className="btn btn--outline"
+            className="btn btn--outline btn--lg"
             onClick={() => navigate('/orders')}
           >
             View My Orders
@@ -225,10 +255,12 @@ const CheckoutPage = () => {
                           {item.name}
                         </p>
                         <p className="checkout-review-item__meta">
-                          📍 {item.location} · {item.age} months
+                          <MapPinIcon />
+                          {item.location} · {item.age} months
                         </p>
                         <p className="checkout-review-item__farmer">
-                          🌾 {item.farmer?.farm_name || 'Verified Farmer'}
+                          <UserIcon />
+                          {item.farmer?.farm_name || 'Verified Farmer'}
                         </p>
                       </div>
                       <p className="checkout-review-item__price">
@@ -240,9 +272,9 @@ const CheckoutPage = () => {
               </div>
 
               <button
-                className="btn btn--primary btn--full"
+                className="btn btn--primary btn--full btn--lg"
                 onClick={handleReviewNext}
-                style={{ marginTop: '1.5rem' }}
+                style={{ marginTop: 'var(--space-xl)' }}
               >
                 Continue to Delivery →
               </button>
@@ -356,7 +388,7 @@ const CheckoutPage = () => {
                   </span>
                 </div>
 
-                <div className="form-group" style={{ marginTop: '1rem' }}>
+                <div className="form-group" style={{ marginTop: 'var(--space-lg)' }}>
                   <label className="form-label">M-Pesa Phone Number</label>
                   <input
                     type="tel"
@@ -394,12 +426,12 @@ const CheckoutPage = () => {
                 )}
 
                 {paymentStatus === 'failed' && (
-                  <div className="checkout-error" style={{ marginTop: '1rem' }}>
+                  <div className="checkout-error" style={{ marginTop: 'var(--space-lg)' }}>
                     Payment failed or timed out. Please try again.
                   </div>
                 )}
 
-                <div className="checkout-form__actions" style={{ marginTop: '1.25rem' }}>
+                <div className="checkout-form__actions" style={{ marginTop: 'var(--space-lg)' }}>
                   <button
                     className="btn btn--outline"
                     onClick={() => setStep(STEPS.DELIVERY)}
@@ -454,7 +486,10 @@ const CheckoutPage = () => {
             <span>KSh {subtotal.toLocaleString()}</span>
           </div>
           <div className="checkout-summary__row checkout-summary__row--savings">
-            <span>💚 Broker savings</span>
+            <span>
+              <SparklesIcon />
+              Broker savings
+            </span>
             <span>- KSh {totalSavings.toLocaleString()}</span>
           </div>
 

@@ -4,6 +4,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { login, clearError } from '../features/auth/authSlice'
 import '../styles/auth.css'
 
+// SVG Icons
+const ShoppingBagIcon = () => (
+  <svg className="icon icon--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+    <path d="M3 6h18" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
+  </svg>
+)
+
 const LoginPage = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -59,9 +68,11 @@ const LoginPage = () => {
       <div className="auth-card">
 
         <div className="auth-card__header">
-          <img src="/logo.svg" alt="Farmart logo" className="auth-card__logo-img" />
+          <div className="auth-card__logo-mark">
+            <ShoppingBagIcon />
+          </div>
           <h2 className="auth-card__title">Welcome back</h2>
-          <p className="auth-card__subtitle">Login to your account</p>
+          <p className="auth-card__subtitle">Login to your Farmart account</p>
         </div>
 
         {error && (
@@ -101,7 +112,7 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="btn btn--primary btn--full"
+            className="btn btn--primary btn--full btn--lg"
             disabled={isLoading}
           >
             {isLoading ? 'Logging in...' : 'Login'}

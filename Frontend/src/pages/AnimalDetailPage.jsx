@@ -5,6 +5,49 @@ import { getAnimalById } from '../features/animals/animalsSlice'
 import { addItem, syncAddToCart } from '../features/cart/cartSlice'
 import '../styles/animalDetail.css'
 
+// SVG Icons
+const MapPinIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+    <circle cx="12" cy="10" r="3" />
+  </svg>
+)
+
+const ScaleIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+    <path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z" />
+    <path d="M7 21h10" />
+    <path d="M12 3v18" />
+    <path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2" />
+  </svg>
+)
+
+const ShieldCheckIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10" />
+    <path d="m9 12 2 2 4-4" />
+  </svg>
+)
+
+const StarIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+  </svg>
+)
+
+const PhoneIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+  </svg>
+)
+
+const MessageIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+  </svg>
+)
+
 const AnimalDetailPage = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -117,7 +160,9 @@ const AnimalDetailPage = () => {
                 onError={(e) => { e.target.onerror = null; e.target.src = '/placeholder.svg' }}
               />
             ) : (
-              <img src="/placeholder.svg" alt="placeholder" className="detail-gallery__main-img" />
+              <div className="detail-gallery__placeholder">
+                <span style={{ fontSize: '5rem' }}>🐄</span>
+              </div>
             )}
           </div>
 
@@ -183,9 +228,18 @@ const AnimalDetailPage = () => {
           </div>
 
           <div className="detail-trust-badges">
-            <span className="detail-trust-badge">Health checked</span>
-            <span className="detail-trust-badge">Verified farmer</span>
-            <span className="detail-trust-badge">Direct delivery</span>
+            <span className="detail-trust-badge">
+              <ShieldCheckIcon />
+              Health checked
+            </span>
+            <span className="detail-trust-badge">
+              <ShieldCheckIcon />
+              Verified farmer
+            </span>
+            <span className="detail-trust-badge">
+              <ShieldCheckIcon />
+              Direct delivery
+            </span>
           </div>
 
           {/* Tabs */}
@@ -193,6 +247,7 @@ const AnimalDetailPage = () => {
             <button className="detail-tab detail-tab--active">Details</button>
             <button className="detail-tab">Seller</button>
             <button className="detail-tab">Delivery</button>
+            <button className="detail-tab">Reviews</button>
           </div>
 
           {/* Description */}
@@ -208,16 +263,41 @@ const AnimalDetailPage = () => {
             <div className="detail-farmer-avatar">👨‍🌾</div>
             <div className="detail-farmer-info">
               <div className="detail-farmer-name">{selectedAnimal.farmer?.farm_name || 'Verified Farmer'}</div>
-              <div className="detail-farmer-verified">✓ Verified Farmer</div>
+              <div className="detail-farmer-verified">
+                <ShieldCheckIcon />
+                Verified Farmer
+              </div>
               <div className="detail-farmer-meta">{selectedAnimal.location}</div>
+              <div className="detail-farmer-rating">
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <StarIcon />
+                <span style={{ marginLeft: '0.5rem', color: 'var(--text-secondary)' }}>
+                  5.0 (12 sales)
+                </span>
+              </div>
             </div>
+          </div>
+
+          <div className="detail-farmer-actions">
+            <button className="detail-farmer-action-btn">
+              <PhoneIcon />
+              Call Farmer
+            </button>
+            <button className="detail-farmer-action-btn detail-farmer-action-btn--whatsapp">
+              <MessageIcon />
+              WhatsApp
+            </button>
           </div>
 
           {/* Price block */}
           <div className="detail-price-block">
             <p className="detail-price-block__price">{formattedPrice}</p>
             <p className="detail-price-block__savings">
-              💚 Save KSh {savings.toLocaleString()} — No Broker Cut!
+              <ShieldCheckIcon />
+              Save KSh {savings.toLocaleString()} — No Broker Cut!
             </p>
           </div>
 
@@ -260,4 +340,3 @@ const AnimalDetailPage = () => {
 }
 
 export default AnimalDetailPage
-
