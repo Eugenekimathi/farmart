@@ -27,6 +27,12 @@ See `.env.example`:
 - `DATABASE_URL` — database connection string
 - `JWT_SECRET_KEY` — secret used to sign JWTs
 - `CORS_ORIGINS` — comma-separated frontend origins
+- `MPESA_CONSUMER_KEY` — M-Pesa API consumer key (optional)
+- `MPESA_CONSUMER_SECRET` — M-Pesa API consumer secret (optional)
+- `MPESA_PASSKEY` — M-Pesa passkey for STK Push (optional)
+- `MPESA_SHORTCODE` — M-Pesa business shortcode (optional)
+- `MPESA_ENVIRONMENT` — M-Pesa environment: sandbox or live (optional)
+- `MPESA_CALLBACK_URL` — M-Pesa callback URL (optional)
 ## Authentication
 | Method | URL | Description |
 |---|---|---|
@@ -61,3 +67,21 @@ This application does not use seed data. All marketplace data should be created 
 2. Create farmer profile
 3. Add animals with real images
 4. Buyers can then browse and purchase real listings
+
+## M-Pesa Payment Integration
+The application includes M-Pesa STK Push payment integration. To enable:
+
+1. Get M-Pesa API credentials from Safaricom Developer Portal
+2. Add the following to your `.env` file:
+   ```
+   MPESA_CONSUMER_KEY=your-consumer-key
+   MPESA_CONSUMER_SECRET=your-consumer-secret
+   MPESA_PASSKEY=your-passkey
+   MPESA_SHORTCODE=your-shortcode
+   MPESA_ENVIRONMENT=sandbox
+   MPESA_CALLBACK_URL=http://localhost:5000/api/payments/callback
+   ```
+3. Install the requests library: `pip install requests`
+4. Use the `/api/payments/stkpush` endpoint to initiate payments
+
+Note: Without M-Pesa credentials, the application will use a manual payment recording system where users can record payments manually.

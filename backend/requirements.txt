@@ -13,3 +13,4 @@ marshmallow-sqlalchemy
 cloudinary
 flask-login
 python-dotenv
+requests

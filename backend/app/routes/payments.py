@@ -9,6 +9,7 @@ from app.schemas.payment_schema import (
     PaymentSchema,
     PaymentResponseSchema
 )
+from app.services.mpesa_service import mpesa_service
 
 payment_bp = Blueprint(
     "payments",
@@ -19,6 +20,58 @@ payment_bp = Blueprint(
 schema = PaymentSchema()
 response_schema = PaymentResponseSchema()
 many_response_schema = PaymentResponseSchema(many=True)
+
+@payment_bp.route("/stkpush", methods=["POST"])
+@authenticated
+def initiate_stk_push():
+    """Initiate M-Pesa STK Push payment"""
+    data = request.get_json()
+
+    order_id = data.get("order_id")
+    phone_number = data.get("phone_number")
+
+    if not order_id or not phone_number:
+        return jsonify({
+            "error": "order_id and phone_number are required"
+        }), 400
+
+    order = db.session.get(Order, order_id)
+    if not order:
+        return jsonify({"error": "Order not found"}), 404
+
+    # Format phone number
+    formatted_phone = mpesa_service.format_phone_number(phone_number)
+
+    # Initiate STK Push
+    result = mpesa_service.initiate_stk_push(
+        phone_number=formatted_phone,
+        amount=float(order.total_amount),
+        account_reference=f"Order-{order.id}",
+        transaction_desc=f"Payment for Order {order.id}"
+    )
+
+    if result.get('success'):
+        return jsonify({
+            "message": "STK Push initiated successfully",
+            "data": result.get('data')
+        }), 200
+    else:
+        return jsonify({
+            "error": result.get('message'),
+            "details": result.get('error')
+        }), 400
+
+@payment_bp.route("/callback", methods=["POST"])
+def mpesa_callback():
+    """Handle M-Pesa payment callback"""
+    try:
+        data = request.get_json()
+        # Process callback and update payment status
+        # This would parse the M-Pesa callback response
+        # and update the payment record accordingly
+        return jsonify({"message": "Callback received"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 @payment_bp.route("", methods=["POST"])
 @authenticated
