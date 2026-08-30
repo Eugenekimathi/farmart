@@ -51,6 +51,15 @@ def create_payment():
             "error": "Payment amount does not match order total"
         }), 400
 
+    existing_payment = Payment.query.filter_by(
+        order_id=data["order_id"]
+    ).first()
+
+    if existing_payment:
+        return jsonify({
+            "error": "Payment already exists for this order"
+        }), 409
+
     payment = Payment(**data)
 
     db.session.add(payment)

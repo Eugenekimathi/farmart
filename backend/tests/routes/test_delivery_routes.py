@@ -188,3 +188,51 @@ def test_update_delivery_status_not_found(client):
     data = response.get_json()
 
     assert data["error"] == "Delivery not found"
+
+
+def test_create_duplicate_delivery_for_same_order_is_rejected(
+    client,
+    order
+):
+    first = client.post(
+        "/api/deliveries",
+        json={
+            "order_id": order.id,
+            "delivery_address": "123 Nairobi Road",
+            "delivery_phone": "0712345678",
+            "tracking_reference": "TRACK12345"
+        }
+    )
+    assert first.status_code == 201
+
+    second = client.post(
+        "/api/deliveries",
+        json={
+            "order_id": order.id,
+            "delivery_address": "456 Nairobi Road",
+            "delivery_phone": "0723456789",
+            "tracking_reference": "TRACK54321"
+        }
+    )
+
+    assert second.status_code == 409
+    assert second.get_json()["error"] == "Delivery already exists for this order"
+
+
+def test_create_delivery_with_invalid_status_returns_validation_error(
+    client,
+    order
+):
+    response = client.post(
+        "/api/deliveries",
+        json={
+            "order_id": order.id,
+            "delivery_address": "123 Nairobi Road",
+            "delivery_phone": "0712345678",
+            "tracking_reference": "TRACK12345",
+            "status": "INVALID"
+        }
+    )
+
+    assert response.status_code == 400
+    assert "errors" in response.get_json()

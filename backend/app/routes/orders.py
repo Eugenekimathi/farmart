@@ -25,9 +25,16 @@ many_response_schema = OrderResponseSchema(
 @authenticated
 def create_order():
 
-    data = schema.load(
-        request.get_json()
-    )
+    try:
+        data = schema.load(
+            request.get_json()
+        )
+    except Exception as err:
+        if hasattr(err, "messages"):
+            return jsonify({
+                "errors": err.messages
+            }), 400
+        raise
 
     order = Order(**data)
 

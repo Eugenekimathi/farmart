@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify
+from marshmallow import ValidationError
 
 from app.extensions import db
 from app.authz import authenticated
@@ -23,9 +24,14 @@ many_response_schema = DeliveryResponseSchema(many=True)
 @authenticated
 def create_delivery():
 
-    data = schema.load(
-        request.get_json()
-    )
+    try:
+        data = schema.load(
+            request.get_json()
+        )
+    except ValidationError as err:
+        return jsonify({
+            "errors": err.messages
+        }), 400
 
     order = db.session.get(
         Order,
@@ -36,6 +42,15 @@ def create_delivery():
         return jsonify({
             "error": "Order not found"
         }), 404
+
+    existing_delivery = Delivery.query.filter_by(
+        order_id=data["order_id"]
+    ).first()
+
+    if existing_delivery:
+        return jsonify({
+            "error": "Delivery already exists for this order"
+        }), 409
 
     delivery = Delivery(**data)
 

@@ -1,0 +1,216 @@
+WARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.
+ * Running on http://127.0.0.1:5000
+Press CTRL+C to quit
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 132-109-958
+127.0.0.1 - - [29/Aug/2026 13:12:17] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:12:17] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:12:23] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:12:25] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:12:27] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:12:29] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:47] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\jwt\api_jwt.py:147: InsecureKeyLengthWarning: The HMAC key is 28 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+  return self._jws.encode(
+127.0.0.1 - - [29/Aug/2026 13:17:48] "POST /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:48] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:48] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:48] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:49] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:56] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:57] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:57] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:17:57] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:15] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:16] "POST /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:16] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:17] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:17] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:17] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:31] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:31] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:31] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:32] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:35] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:35] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:40] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:40] "OPTIONS /api/orders HTTP/1.1" 200 -
+C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\jwt\api_jwt.py:368: InsecureKeyLengthWarning: The HMAC key is 28 bytes long, which is below the minimum recommended length of 32 bytes for SHA256. See RFC 7518 Section 3.2.
+  decoded = self.decode_complete(
+127.0.0.1 - - [29/Aug/2026 13:18:40] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:18:40] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:20:10] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:20:11] "POST /api/auth/login HTTP/1.1" 401 -
+127.0.0.1 - - [29/Aug/2026 13:21:25] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:26] "POST /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:26] "OPTIONS /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:26] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:26] "OPTIONS /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:26] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:26] "GET /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:27] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:27] "GET /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:27] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:42] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:42] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:42] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:42] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:45] "OPTIONS /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "OPTIONS /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "GET /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "GET /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:46] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:58] "OPTIONS /api/animal-types HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:58] "OPTIONS /api/breeds HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:58] "OPTIONS /api/animal-types HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:58] "OPTIONS /api/breeds HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:59] "GET /api/animal-types HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:59] "GET /api/breeds HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:59] "GET /api/animal-types HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:21:59] "GET /api/breeds HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "OPTIONS /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "OPTIONS /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "GET /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:21] "GET /api/animals?page=1&per_page=100 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:24:22] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:39] "OPTIONS /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:40] "POST /api/auth/login HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:40] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:40] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:40] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:41] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:50] "OPTIONS /api/carts HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:51] "POST /api/carts HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:51] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:51] "POST /api/carts/1/items HTTP/1.1" 409 -
+127.0.0.1 - - [29/Aug/2026 13:25:52] "POST /api/carts/1/items HTTP/1.1" 409 -
+127.0.0.1 - - [29/Aug/2026 13:25:57] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:57] "POST /api/orders HTTP/1.1" 201 -
+127.0.0.1 - - [29/Aug/2026 13:25:59] "OPTIONS /api/payments HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:25:59] "POST /api/payments HTTP/1.1" 201 -
+127.0.0.1 - - [29/Aug/2026 13:26:04] "OPTIONS /api/payments/3 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:04] "GET /api/payments/3 HTTP/1.1" 404 -
+127.0.0.1 - - [29/Aug/2026 13:26:08] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:08] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:08] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:09] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:18] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:18] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:18] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:19] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:26] "OPTIONS /api/carts/1/items/3 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:26] "DELETE /api/carts/1/items/3 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:29] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:29] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:29] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:29] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:39] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:39] "POST /api/orders HTTP/1.1" 500 -
+Traceback (most recent call last):
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask\app.py", line 1498, in __call__
+    return self.wsgi_app(environ, start_response)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask\app.py", line 1476, in wsgi_app
+    response = self.handle_exception(e)
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask\app.py", line 1473, in wsgi_app
+    response = self.full_dispatch_request()
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask\app.py", line 882, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask_cors\extension.py", line 178, in wrapped_function
+    return cors_after_request(app.make_response(f(*args, **kwargs)))
+                                                ~^^^^^^^^^^^^^^^^^
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask\app.py", line 880, in full_dispatch_request
+    rv = self.dispatch_request()
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask\app.py", line 865, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\flask_jwt_extended\view_decorators.py", line 170, in decorator
+    return current_app.ensure_sync(fn)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\riuki\OneDrive\Desktop\School Work\Assignments lab\Farmart\farmart\Backend\app\authz.py", line 11, in wrapped
+    return view(*args, **kwargs)
+  File "C:\Users\riuki\OneDrive\Desktop\School Work\Assignments lab\Farmart\farmart\Backend\app\routes\orders.py", line 28, in create_order
+    data = schema.load(
+    
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\marshmallow\schema.py", line 735, in load
+    return self._do_load(
+    
+  File "C:\Users\riuki\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\LocalCache\local-packages\Python313\site-packages\marshmallow\schema.py", line 943, in _do_load
+    raise exc
+marshmallow.exceptions.ValidationError: {'total_amount': ['Field may not be null.']}
+127.0.0.1 - - [29/Aug/2026 13:26:46] "OPTIONS /api/carts/1/items/5 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:46] "DELETE /api/carts/1/items/5 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:47] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:47] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:47] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:47] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:50] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:50] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:50] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:50] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:50] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:50] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:53] "OPTIONS /api/carts/1/items/4 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:54] "DELETE /api/carts/1/items/4 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:55] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:55] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:57] "OPTIONS /api/carts/1/items/2 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:57] "DELETE /api/carts/1/items/2 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:58] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:59] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:59] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:59] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:26:59] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:00] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:00] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:00] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:06] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:07] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:41] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "OPTIONS /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "OPTIONS /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "GET /api/orders HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:27:42] "GET /api/carts/1/items HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:11] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:11] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:11] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:11] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:29] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:30] "OPTIONS /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:30] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+127.0.0.1 - - [29/Aug/2026 13:28:30] "GET /api/animals?page=1&per_page=9 HTTP/1.1" 200 -
+ * Detected change in 'C:\\Users\\riuki\\OneDrive\\Desktop\\School Work\\Assignments lab\\Farmart\\farmart\\Backend\\tests\\routes\\test_delivery_routes.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 132-109-958
+ * Detected change in 'C:\\Users\\riuki\\OneDrive\\Desktop\\School Work\\Assignments lab\\Farmart\\farmart\\Backend\\app\\routes\\orders.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 132-109-958
+ * Detected change in 'C:\\Users\\riuki\\OneDrive\\Desktop\\School Work\\Assignments lab\\Farmart\\farmart\\Backend\\app\\routes\\delivery.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 132-109-958
+ * Detected change in 'C:\\Users\\riuki\\OneDrive\\Desktop\\School Work\\Assignments lab\\Farmart\\farmart\\Backend\\app\\routes\\delivery.py', reloading
+ * Restarting with stat
+ * Debugger is active!
+ * Debugger PIN: 132-109-958
