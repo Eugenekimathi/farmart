@@ -253,3 +253,27 @@
   color: var(--text-muted);
   font-size: 0.875rem;
 }
+
+/* Premium responsive portal cards */
+.farmer-portal__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.75rem; }
+.portal-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.125rem; box-shadow: var(--shadow-xs); }
+.portal-stat__label { display: block; color: var(--text-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.portal-stat__value { display: block; color: var(--text); font-size: 1.5rem; margin: .25rem 0; }
+.portal-stat__change { color: var(--success); font-size: .75rem; font-weight: 600; }
+@media (max-width: 640px) { .farmer-portal { padding: 1rem; } .farmer-portal__stats { grid-template-columns: 1fr 1fr; gap: .75rem; } .portal-table-wrap { overflow: visible; } .portal-table, .portal-table tbody, .portal-table tr, .portal-table td { display: block; width: 100%; } .portal-table { min-width: 0; } .portal-table thead { display: none; } .portal-table tr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: .75rem 0; box-shadow: var(--shadow-xs); } .portal-table td { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--border); } .portal-table td:last-child { border-bottom: 0; padding-bottom: 0; } .portal-table td::before { content: attr(data-label); color: var(--text-muted); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; } .portal-table__actions { justify-content: flex-end; }
+
+/* Premium responsive portal cards */
+.farmer-portal__stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 1.75rem; }
+.portal-stat { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.125rem; box-shadow: var(--shadow-xs); }
+.portal-stat__label { display: block; color: var(--text-muted); font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; }
+.portal-stat__value { display: block; color: var(--text); font-size: 1.5rem; margin: .25rem 0; }
+.portal-stat__change { color: var(--success); font-size: .75rem; font-weight: 600; }
+@media (max-width: 640px) { .farmer-portal { padding: 1rem; } .farmer-portal__stats { grid-template-columns: 1fr 1fr; gap: .75rem; } .portal-table-wrap { overflow: visible; } .portal-table, .portal-table tbody, .portal-table tr, .portal-table td { display: block; width: 100%; } .portal-table { min-width: 0; } .portal-table thead { display: none; } .portal-table tr { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem; margin: .75rem 0; box-shadow: var(--shadow-xs); } .portal-table td { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .55rem 0; border-bottom: 1px solid var(--border); } .portal-table td:last-child { border-bottom: 0; padding-bottom: 0; } .portal-table td::before { content: attr(data-label); color: var(--text-muted); font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; } .portal-table__actions { justify-content: flex-end; }
+
+.farmer-portal__mark { width: 1.35rem; height: 1.35rem; vertical-align: -.2rem; margin-right: .35rem; color: var(--primary); }
+@media (max-width: 640px) { .portal-table tbody tr td:nth-child(1)::before { content: 'Animal'; } .portal-table tbody tr td:nth-child(2)::before { content: 'Breed / Animal'; } .portal-table tbody tr td:nth-child(3)::before { content: 'Age / Amount'; } .portal-table tbody tr td:nth-child(4)::before { content: 'Price / Status'; } .portal-table tbody tr td:nth-child(5)::before { content: 'Status / Action'; } .portal-table tbody tr td:nth-child(6)::before { content: 'Actions'; }
+ }
+
+ }
+ }
+

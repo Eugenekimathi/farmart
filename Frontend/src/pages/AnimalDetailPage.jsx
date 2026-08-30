@@ -56,6 +56,8 @@ const AnimalDetailPage = () => {
     ? `KSh ${Number(selectedAnimal.price).toLocaleString()}`
     : ''
 
+  const healthSignals = [selectedAnimal.vaccination_status || (selectedAnimal.vaccinated ? 'Vaccinated' : null), selectedAnimal.kvb_certified ? 'KVB verified' : null, selectedAnimal.pasture_raised ? 'Pasture raised' : null].filter(Boolean)
+
   const savings = selectedAnimal
     ? Math.round(selectedAnimal.price * 0.2)
     : 0
@@ -181,6 +183,9 @@ const AnimalDetailPage = () => {
               </span>
             </div>
           </div>
+
+          <div className="detail-trust-badges">
+            <span className="detail-trust-badge">Health checked</span>{healthSignals.map((signal) => <span key={signal} className="detail-trust-badge">{signal}</span>)}`r`n            <span className="detail-trust-badge">Verified farmer</span>`r`n            <span className="detail-trust-badge">Direct delivery</span>`r`n          </div>
 
           {/* Description */}
           {selectedAnimal.description && (

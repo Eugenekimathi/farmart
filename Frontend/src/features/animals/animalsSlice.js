@@ -109,7 +109,7 @@ export const INITIAL_MOCK_ANIMALS = [
 
 export const getAnimals = createAsyncThunk(
   'animals/getAnimals',
-  async ({ page, search, filters }, { rejectWithValue }) => {
+  async ({ page, search, filters }) => {
     try {
       const data = await fetchAnimals({ page, search, filters })
       return data
@@ -170,7 +170,7 @@ export const getAnimalById = createAsyncThunk(
 
 export const getAnimalTypes = createAsyncThunk(
   'animals/getAnimalTypes',
-  async (_, { rejectWithValue }) => {
+  async () => {
     try {
       const data = await fetchAnimalTypes()
       return data
@@ -186,7 +186,7 @@ export const getAnimalTypes = createAsyncThunk(
 
 export const getBreeds = createAsyncThunk(
   'animals/getBreeds',
-  async (animalTypeId = null, { rejectWithValue }) => {
+  async (animalTypeId = null) => {
     try {
       const data = await fetchBreeds(animalTypeId)
       return data

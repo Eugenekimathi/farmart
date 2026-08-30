@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import ProtectedRoute from './components/ProtectedRoute'
 import Navbar from './components/Navbar'
@@ -21,7 +21,6 @@ import OrdersPage from './pages/OrdersPage'
 
 const AppContent = () => {
   const dispatch = useDispatch()
-  const location = useLocation()
   const { user, role } = useSelector((state) => state.auth)
 
   // Load cart from backend whenever user logs in
