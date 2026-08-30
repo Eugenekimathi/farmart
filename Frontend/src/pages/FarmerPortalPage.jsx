@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+﻿import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getFarmerAnimals, removeFarmerAnimal } from '../features/farmer/farmerSlice'
@@ -30,11 +30,11 @@ const FarmerPortalPage = () => {
 
   const handleDelete = async (id) => {
     if (deleteConfirmId !== id) {
-      // First click — ask for confirmation
+      // First click â€” ask for confirmation
       setDeleteConfirmId(id)
       return
     }
-    // Second click — confirmed
+    // Second click â€” confirmed
     setDeletingId(id)
     setDeleteConfirmId(null)
     await dispatch(removeFarmerAnimal(id))
@@ -73,7 +73,7 @@ const FarmerPortalPage = () => {
         <div className="farmer-portal__header-inner">
           <p className="farmer-portal__tag">// FARMER PORTAL</p>
           <h1 className="farmer-portal__title">
-            🌾 Farmer Portal
+            ðŸŒ¾ Farmer Portal
           </h1>
           <p className="farmer-portal__subtitle">
             Welcome back, {user?.full_name?.split(' ')[0] || user?.username || 'Farmer'}. Manage your
@@ -97,7 +97,7 @@ const FarmerPortalPage = () => {
 
       <div className="farmer-portal__body">
 
-        {/* ── My Active Listings ── */}
+        {/* â”€â”€ My Active Listings â”€â”€ */}
         <section className="portal-section">
           <div className="portal-section__header">
             <h2 className="portal-section__title">My Active Listings</h2>
@@ -140,12 +140,12 @@ const FarmerPortalPage = () => {
                     const badge = getStatusBadge(animal.status)
                     return (
                       <tr key={animal.id}>
-                        <td className="portal-table__name">
+                        <td className="portal-table__name" data-label="Animal">
                           {animal.name}
                         </td>
-                        <td>{animal.breed?.name || '—'}</td>
-                        <td>{animal.age} mo</td>
-                        <td className="portal-table__price">
+                        <td>{animal.breed?.name || 'â€”'}</td>
+                        <td data-label="Age">{animal.age} mo</td>
+                        <td className="portal-table__price" data-label="Price">
                           KSh {Number(animal.price).toLocaleString()}
                         </td>
                         <td>
@@ -187,7 +187,7 @@ const FarmerPortalPage = () => {
           )}
         </section>
 
-        {/* ── Incoming Orders ── */}
+        {/* â”€â”€ Incoming Orders â”€â”€ */}
         <section className="portal-section">
           <div className="portal-section__header">
             <h2 className="portal-section__title">Incoming Orders</h2>
@@ -244,7 +244,7 @@ const FarmerPortalPage = () => {
                             </div>
                           )) || <div className="portal-table__animal">{order.animal}</div>}
                         </td>
-                        <td className="portal-table__price">
+                        <td className="portal-table__price" data-label="Price">
                           KSh {Number(order.total_amount || order.amount || 0).toLocaleString()}
                         </td>
                         <td>
@@ -260,21 +260,21 @@ const FarmerPortalPage = () => {
                                 onClick={() => handleConfirm(order.id)}
                                 disabled={isActioning}
                               >
-                                {isActioning ? '...' : '✓ Confirm'}
+                                {isActioning ? '...' : 'âœ“ Confirm'}
                               </button>
                               <button
                                 className="portal-action-btn portal-action-btn--delete"
                                 onClick={() => handleReject(order.id)}
                                 disabled={isActioning}
                               >
-                                {isActioning ? '...' : '✗ Reject'}
+                                {isActioning ? '...' : 'âœ— Reject'}
                               </button>
                             </div>
                           ) : (
                             <span className="portal-table__actioned">
-                              {order.status === 'confirmed' && '✓ Confirmed'}
-                              {order.status === 'rejected' && '✗ Rejected'}
-                              {order.status === 'completed' && '✓ Completed'}
+                              {order.status === 'confirmed' && 'âœ“ Confirmed'}
+                              {order.status === 'rejected' && 'âœ— Rejected'}
+                              {order.status === 'completed' && 'âœ“ Completed'}
                             </span>
                           )}
                         </td>
@@ -293,3 +293,4 @@ const FarmerPortalPage = () => {
 }
 
 export default FarmerPortalPage
+

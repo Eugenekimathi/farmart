@@ -1,35 +1,35 @@
-import { useNavigate } from 'react-router-dom'
+﻿import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import '../styles/home.css'
 
 const features = [
   {
-    icon: '🚫',
+    icon: 'ðŸš«',
     title: 'No Middlemen',
     desc: 'Buy directly from verified farmers. Zero broker fees, zero hidden charges.',
   },
   {
-    icon: '📱',
+    icon: 'ðŸ“±',
     title: 'Pay via M-Pesa',
     desc: 'Instant mobile payments directly to the farmer. Safe, fast, and reliable.',
   },
   {
-    icon: '✅',
+    icon: 'âœ…',
     title: 'Verified Listings',
     desc: 'Every farmer and animal listing is verified before going live on the platform.',
   },
   {
-    icon: '🔍',
+    icon: 'ðŸ”',
     title: 'Search & Filter',
     desc: 'Find exactly what you need by animal type, breed, age, and location.',
   },
   {
-    icon: '🌾',
+    icon: 'ðŸŒ¾',
     title: 'For Farmers',
     desc: 'List your animals for free. Reach buyers across Kenya without leaving your farm.',
   },
   {
-    icon: '🚚',
+    icon: 'ðŸšš',
     title: 'Direct Delivery',
     desc: 'Arrange delivery directly with the farmer. No third-party logistics markup.',
   },
@@ -73,7 +73,7 @@ const HomePage = () => {
   return (
     <div className="home">
 
-      {/* ── Hero ── */}
+      {/* â”€â”€ Hero â”€â”€ */}
       <section className="hero">
         <div className="hero__inner">
           <p className="hero__eyebrow"><span className="hero__eyebrow-dot" />Direct from verified Kenyan farmers</p>
@@ -94,8 +94,8 @@ const HomePage = () => {
               onClick={handleCTA}
             >
               {user && role === 'farmer'
-                ? '🌾 Go to Farmer Portal'
-                : '🛒 Browse Livestock'}
+                ? 'ðŸŒ¾ Go to Farmer Portal'
+                : 'ðŸ›’ Browse Livestock'}
             </button>
 
             {!user && (
@@ -110,36 +110,37 @@ const HomePage = () => {
 
           {/* Trust bar */}
           <div className="hero__trust">
-            <span className="hero__trust-item">✅ Verified farmers</span>
-            <span className="hero__trust-divider">·</span>
-            <span className="hero__trust-item">💚 No broker fees</span>
-            <span className="hero__trust-divider">·</span>
-            <span className="hero__trust-item">📱 M-Pesa payments</span>
+            <span className="hero__trust-item">âœ… Verified farmers</span>
+            <span className="hero__trust-divider">Â·</span>
+            <span className="hero__trust-item">ðŸ’š No broker fees</span>
+            <span className="hero__trust-divider">Â·</span>
+            <span className="hero__trust-item">ðŸ“± M-Pesa payments</span>
           </div>
         </div>
 
         {/* Hero visual */}
         <div className="hero__visual">
           <div className="hero__visual-card">
+            <img className="hero__visual-img" src="/src/assets/Images/pure-sahiwal-cow-649.jpg" alt="Sahiwal cattle grazing on a Kenyan farm" />
             <div className="hero__visual-price">KSh 95,000</div>
             <div className="hero__visual-name">Purebred Boran Bull</div>
-            <div className="hero__visual-meta">📍 Naivasha · 24 months</div>
+            <div className="hero__visual-meta">Naivasha, Nakuru County · 24 months</div>
             <div className="hero__visual-savings">
-              💚 Save KSh 19,000 — No Broker Cut!
+              ðŸ’š Save KSh 19,000 â€” No Broker Cut!
             </div>
             <button className="btn btn--primary" style={{ width: '100%', marginTop: '0.75rem' }} onClick={() => navigate('/store')}>
               Buy Direct (M-Pesa)
             </button>
           </div>
           <div className="hero__visual-badge">
-            <span>🐄</span>
+            <span>ðŸ„</span>
             <span>Live on Farmart</span>
           </div>
         </div>
       </section>
 
 
-      {/* ── Features ── */}
+      {/* â”€â”€ Features â”€â”€ */}
       <section className="features">
         <div className="features__inner">
           <div className="section-header">
@@ -164,7 +165,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ── How it works ── */}
+      {/* â”€â”€ How it works â”€â”€ */}
       <section className="how-it-works">
         <div className="how-it-works__inner">
           <div className="section-header">
@@ -188,7 +189,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ── CTA Banner ── */}
+      {/* â”€â”€ CTA Banner â”€â”€ */}
       <section className="cta-banner">
         <div className="cta-banner__inner">
           <h2 className="cta-banner__title">
@@ -216,7 +217,7 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* ── Footer ── */}
+      {/* â”€â”€ Footer â”€â”€ */}
       <footer className="footer">
         <div className="footer__inner">
           <div className="footer__brand">
@@ -264,3 +265,4 @@ const HomePage = () => {
 }
 
 export default HomePage
+
