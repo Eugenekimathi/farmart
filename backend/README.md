@@ -16,7 +16,6 @@ pip install -r requirements.txt
 Copy-Item .env.example .env
 # Edit .env with your local values
 flask db upgrade
-python seed.py
 python run.py
 ```
 
@@ -55,3 +54,10 @@ python -m pytest -q
 ```
 
 The test suite uses an isolated in-memory SQLite database.
+
+## Database Seeding
+This application does not use seed data. All marketplace data should be created through the application:
+1. Register as a farmer
+2. Create farmer profile
+3. Add animals with real images
+4. Buyers can then browse and purchase real listings
