@@ -76,6 +76,7 @@ const HomePage = () => {
       {/* ── Hero ── */}
       <section className="hero">
         <div className="hero__inner">
+          <p className="hero__eyebrow"><span className="hero__eyebrow-dot" />Direct from verified Kenyan farmers</p>
           <h1 className="hero__title">
             Nunua Mifugo Moja Kwa Moja <br />
             <span className="hero__title-highlight">
@@ -154,7 +155,7 @@ const HomePage = () => {
           <div className="features__grid">
             {features.map((f) => (
               <div key={f.title} className="feature-card">
-                <span className="feature-card__icon">{f.icon}</span>
+                <span className="feature-card__icon-wrap">{f.icon}</span>
                 <h3 className="feature-card__title">{f.title}</h3>
                 <p className="feature-card__desc">{f.desc}</p>
               </div>

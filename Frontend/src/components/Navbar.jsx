@@ -22,30 +22,30 @@ const Navbar = () => {
   }
 
   return (
-    <header className="wireframe-navbar">
-      <div className="wireframe-navbar__container">
-        <Link to="/" className="wireframe-navbar__brand">
-          <div className="wireframe-navbar__logo-box">🌿</div>
+    <header className="navbar">
+      <div className="navbar__inner">
+        <Link to="/" className="navbar__logo">
+          <div className="navbar__logo-icon">🌿</div>
           <div>
-            <span className="wireframe-navbar__title">Farmart Kenya</span>
-            <span className="wireframe-navbar__subtitle">// Soko la Wakulima</span>
+            <span className="navbar__logo-name">Farmart Kenya</span>
+            <span className="navbar__logo-tag">// Soko la Wakulima</span>
           </div>
         </Link>
 
-        <nav className="wireframe-navbar__links">
-          <Link to="/" className="wireframe-navbar__link">Home</Link>
-          <Link to="/store" className="wireframe-navbar__link">Store</Link>
-          <div className="wireframe-mode-toggle" aria-label="Choose marketplace mode">
+        <nav className="navbar__links">
+          <Link to="/" className="navbar__link">Home</Link>
+          <Link to="/store" className="navbar__link">Store</Link>
+          <div className="navbar__mode-toggle" aria-label="Choose marketplace mode">
             <button
               type="button"
-              className={`wireframe-mode-toggle__btn ${!location.pathname.startsWith('/farmer-portal') ? 'wireframe-mode-toggle__btn--active' : ''}`}
+              className={`navbar__mode-btn ${!location.pathname.startsWith('/farmer-portal') ? 'navbar__mode-btn--active' : ''}`}
               onClick={() => handleModeChange('buyer')}
             >
               Buyer
             </button>
             <button
               type="button"
-              className={`wireframe-mode-toggle__btn ${location.pathname.startsWith('/farmer-portal') ? 'wireframe-mode-toggle__btn--active' : ''}`}
+              className={`navbar__mode-btn ${location.pathname.startsWith('/farmer-portal') ? 'navbar__mode-btn--active' : ''}`}
               onClick={() => handleModeChange('farmer')}
             >
               Farmer
@@ -53,27 +53,27 @@ const Navbar = () => {
           </div>
           
           {user && role !== 'farmer' && (
-            <Link to="/orders" className="wireframe-navbar__link">My Orders</Link>
+            <Link to="/orders" className="navbar__link">My Orders</Link>
           )}
 
           {role !== 'farmer' && (
-            <Link to="/cart" className="wireframe-navbar__cart-btn">
+            <Link to="/cart" className="navbar__cart">
               🛒 Cart
               {items.length > 0 && (
-                <span className="wireframe-navbar__cart-count">{items.length}</span>
+                <span className="navbar__cart-count">{items.length}</span>
               )}
             </Link>
           )}
 
           {!user ? (
-            <div className="wireframe-navbar__auth-group">
-              <Link to="/login" className="wireframe-btn-sm wireframe-btn-sm--outline">Login</Link>
-              <Link to="/register" className="wireframe-btn-sm wireframe-btn-sm--green">Register</Link>
+            <div className="navbar__auth">
+              <Link to="/login" className="btn btn--outline btn--sm">Login</Link>
+              <Link to="/register" className="btn btn--primary btn--sm">Register</Link>
             </div>
           ) : (
-            <div className="wireframe-navbar__auth-group">
-              <span className="wireframe-navbar__user">Hi, {user.full_name?.split(' ')[0] || 'User'}</span>
-              <button onClick={handleLogout} className="wireframe-btn-sm wireframe-btn-sm--outline">Logout</button>
+            <div className="navbar__auth">
+              <span className="navbar__user">Hi, {user.full_name?.split(' ')[0] || 'User'}</span>
+              <button onClick={handleLogout} className="btn btn--outline btn--sm">Logout</button>
             </div>
           )}
         </nav>

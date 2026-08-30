@@ -88,6 +88,13 @@ const FarmerPortalPage = () => {
         </button>
       </div>
 
+      <section className="farmer-portal__stats" aria-label="Farm summary">
+        <div className="portal-stat"><span className="portal-stat__label">Active listings</span><strong className="portal-stat__value">{listings.length}</strong><span className="portal-stat__change">Available now</span></div>
+        <div className="portal-stat"><span className="portal-stat__label">Incoming orders</span><strong className="portal-stat__value">{farmerOrders.length}</strong><span className="portal-stat__change">Manage requests</span></div>
+        <div className="portal-stat"><span className="portal-stat__label">Sold listings</span><strong className="portal-stat__value">{listings.filter((animal) => animal.status === 'sold').length}</strong><span className="portal-stat__change">Completed sales</span></div>
+        <div className="portal-stat"><span className="portal-stat__label">Pending orders</span><strong className="portal-stat__value">{farmerOrders.filter((order) => order.status === 'pending' || order.status === 'paid').length}</strong><span className="portal-stat__change">Awaiting action</span></div>
+      </section>
+
       <div className="farmer-portal__body">
 
         {/* ── My Active Listings ── */}

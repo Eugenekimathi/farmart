@@ -145,3 +145,8 @@
   background-color: var(--accent);
   color: var(--white, #fff);
 }
+
+.navbar__inner { width: 100%; display: flex; align-items: center; justify-content: space-between; }
+.navbar__mode-toggle { display: flex; align-items: center; gap: .25rem; }
+.navbar__mode-btn { border: 1px solid var(--border); background: var(--surface); color: var(--text-secondary); border-radius: var(--radius-sm); padding: .35rem .6rem; font-size: .75rem; font-weight: 600; }
+.navbar__mode-btn--active { color: var(--primary); background: var(--primary-pale); border-color: var(--primary); }
