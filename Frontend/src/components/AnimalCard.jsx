@@ -96,7 +96,7 @@ const AnimalCard = ({ animal }) => {
           />
         ) : (
           <div className="animal-card__image-placeholder">
-            <span style={{ fontSize: '3rem' }}>🐄</span>
+            <span>No image</span>
           </div>
         )}
         

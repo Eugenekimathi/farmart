@@ -48,6 +48,21 @@ const MessageIcon = () => (
   </svg>
 )
 
+const UserIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+)
+
+const ImageIcon = () => (
+  <svg className="icon icon--lg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+    <circle cx="9" cy="9" r="2" />
+    <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+  </svg>
+)
+
 const AnimalDetailPage = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
@@ -98,10 +113,6 @@ const AnimalDetailPage = () => {
   const formattedPrice = selectedAnimal
     ? `KSh ${Number(selectedAnimal.price).toLocaleString()}`
     : ''
-
-  const savings = selectedAnimal
-    ? Math.round(selectedAnimal.price * 0.2)
-    : 0
 
   // Loading state
   if (isLoading) {
@@ -161,7 +172,7 @@ const AnimalDetailPage = () => {
               />
             ) : (
               <div className="detail-gallery__placeholder">
-                <span style={{ fontSize: '5rem' }}>🐄</span>
+                <ImageIcon />
               </div>
             )}
           </div>
@@ -260,7 +271,9 @@ const AnimalDetailPage = () => {
 
           {/* Farmer card */}
           <div className="detail-farmer-card">
-            <div className="detail-farmer-avatar">👨‍🌾</div>
+            <div className="detail-farmer-avatar">
+              <UserIcon />
+            </div>
             <div className="detail-farmer-info">
               <div className="detail-farmer-name">{selectedAnimal.farmer?.farm_name || 'Verified Farmer'}</div>
               <div className="detail-farmer-verified">
@@ -295,9 +308,8 @@ const AnimalDetailPage = () => {
           {/* Price block */}
           <div className="detail-price-block">
             <p className="detail-price-block__price">{formattedPrice}</p>
-            <p className="detail-price-block__savings">
-              <ShieldCheckIcon />
-              Save KSh {savings.toLocaleString()} — No Broker Cut!
+            <p className="detail-price-block__note">
+              Direct from farmer. No broker markup.
             </p>
           </div>
 

@@ -21,16 +21,6 @@ const ScaleIcon = () => (
   </svg>
 )
 
-const SparklesIcon = () => (
-  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-    <path d="M5 3v4" />
-    <path d="M19 17v4" />
-    <path d="M3 5h4" />
-    <path d="M17 19h4" />
-  </svg>
-)
-
 const TrashIcon = () => (
   <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
     <path d="M3 6h18" />
@@ -46,6 +36,12 @@ const UserIcon = () => (
   </svg>
 )
 
+const CheckIcon = () => (
+  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+    <polyline points="20 6 9 17 4 12" />
+  </svg>
+)
+
 const CartPage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -57,7 +53,6 @@ const CartPage = () => {
     (sum, item) => sum + (Number(item.price) * (item.quantity || 1)),
     0
   )
-  const totalSavings = Math.round(subtotal * 0.2)
   const total = subtotal
 
   const handleRemove = (item) => {
@@ -137,7 +132,9 @@ const CartPage = () => {
                       className="cart-item__image"
                     />
                   ) : (
-                    <div className="cart-item__image-placeholder">🐄</div>
+                    <div className="cart-item__image-placeholder">
+                      <UserIcon />
+                    </div>
                   )}
                 </div>
 
@@ -201,10 +198,7 @@ const CartPage = () => {
                   <p className="cart-item__price">
                     KSh {(Number(item.price) * quantity).toLocaleString()}
                   </p>
-                  <p className="cart-item__savings">
-                    <SparklesIcon />
-                    Save KSh {Math.round(item.price * 0.2 * quantity).toLocaleString()}
-                  </p>
+
                   <button
                     className="cart-item__remove"
                     onClick={() => handleRemove(item)}
@@ -228,13 +222,6 @@ const CartPage = () => {
             <div className="cart-summary__row">
               <span>Subtotal ({items.length} items)</span>
               <span>KSh {subtotal.toLocaleString()}</span>
-            </div>
-            <div className="cart-summary__row cart-summary__row--savings">
-              <span>
-                <SparklesIcon />
-                Broker savings
-              </span>
-              <span>- KSh {totalSavings.toLocaleString()}</span>
             </div>
             <div className="cart-summary__row">
               <span>Delivery</span>
@@ -266,9 +253,9 @@ const CartPage = () => {
 
           {/* No broker callout */}
           <div className="cart-summary__callout">
-            <p>✅ No broker fees</p>
-            <p>✅ Pay directly to farmer via M-Pesa</p>
-            <p>✅ Verified livestock listings</p>
+            <p><CheckIcon /> No broker fees</p>
+            <p><CheckIcon /> Pay directly to farmer via M-Pesa</p>
+            <p><CheckIcon /> Verified livestock listings</p>
           </div>
 
         </div>

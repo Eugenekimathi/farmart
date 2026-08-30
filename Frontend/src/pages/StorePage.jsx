@@ -17,9 +17,8 @@ const StorePage = () => {
     <div className="store-page">
       <div className="store-page__header">
         <div className="store-page__header-inner">
-          <span className="store-page__area-tag">MARKETPLACE</span>
           <h1 className="store-page__title">
-            Nunua Mifugo Moja Kwa Moja Kutoka Kwa Wakulima
+            All Livestock
           </h1>
           <p className="store-page__subtitle">
             Browse verified livestock from Kenyan farmers
@@ -32,7 +31,7 @@ const StorePage = () => {
         <main>
           <div className="store-page__results-bar">
             <span className="store-page__count">
-              Showing {animals.length} livestock
+              {animals.length} results
             </span>
           </div>
 
@@ -43,7 +42,6 @@ const StorePage = () => {
             </div>
           ) : animals.length === 0 ? (
             <div className="store-page__empty">
-              <span className="store-page__empty-icon">🐄</span>
               <p>No livestock found matching your filters.</p>
             </div>
           ) : (

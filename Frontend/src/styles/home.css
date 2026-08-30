@@ -2,19 +2,32 @@
 
 /* ── Hero Section ── */
 .hero { 
-  display: grid; 
-  grid-template-columns: 1fr 400px; 
-  gap: 3rem; 
-  align-items: center; 
-  max-width: 1280px; 
-  margin: 0 auto; 
-  padding: var(--space-3xl) var(--space-xl) var(--space-2xl); 
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 600px;
+  padding: var(--space-3xl) var(--space-xl);
+  background: linear-gradient(135deg, rgba(27, 94, 32, 0.85) 0%, rgba(46, 125, 50, 0.75) 100%);
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: url('../assets/Images/pure-sahiwal-cow-649.jpg') center/cover;
+  opacity: 0.15;
+  z-index: 0;
 }
 
 .hero__inner {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
+  text-align: center;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
 }
 
 .hero__eyebrow { 
@@ -23,21 +36,22 @@
   gap: 0.5rem; 
   font-size: 0.75rem; 
   font-weight: 700; 
-  color: var(--primary-green); 
+  color: rgba(255, 255, 255, 0.9);
   letter-spacing: 0.1em; 
   text-transform: uppercase; 
-  background: var(--primary-green-pale); 
+  background: rgba(255, 255, 255, 0.15);
   padding: 0.4rem 1rem; 
   border-radius: var(--radius-full); 
-  border: 1px solid var(--primary-green); 
+  border: 1px solid rgba(255, 255, 255, 0.3);
   width: fit-content;
+  margin-bottom: var(--space-lg);
 }
 
 .hero__eyebrow-dot { 
   width: 6px; 
   height: 6px; 
   border-radius: 50%; 
-  background: var(--primary-green); 
+  background: #fff;
   animation: pulse 2s ease-in-out infinite; 
 }
 
@@ -48,44 +62,46 @@
 
 .hero__title { 
   font-family: var(--font-display); 
-  font-size: clamp(2rem, 4vw, 3rem); 
+  font-size: clamp(2.5rem, 5vw, 4rem); 
   font-weight: 800; 
-  color: var(--text-primary); 
-  line-height: 1.15; 
+  color: #fff; 
+  line-height: 1.1; 
   letter-spacing: -0.03em; 
+  margin-bottom: var(--space-md);
 }
 
 .hero__title-highlight { 
-  color: var(--primary-green); 
-  position: relative; 
+  color: var(--accent-orange);
 }
 
 .hero__subtitle { 
-  font-size: 1.1rem; 
-  color: var(--text-secondary); 
-  line-height: 1.7; 
-  max-width: 520px; 
+  font-size: 1.25rem; 
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.6;
+  max-width: 600px;
+  margin: 0 auto var(--space-xl);
 }
 
 .hero__actions { 
   display: flex; 
   gap: var(--space-md); 
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hero__trust { 
   display: flex; 
   align-items: center; 
   gap: var(--space-md); 
-  flex-wrap: wrap; 
-  padding-top: var(--space-md);
-  border-top: 1px solid var(--border-light);
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: var(--space-xl);
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.85);
+  font-weight: 500;
 }
 
 .hero__trust-item { 
-  font-size: 0.85rem; 
-  color: var(--text-tertiary); 
-  font-weight: 600; 
   display: flex; 
   align-items: center; 
   gap: 0.4rem; 
@@ -94,90 +110,24 @@
 .hero__trust-divider { 
   width: 1px; 
   height: 16px; 
-  background: var(--border-medium); 
+  background: rgba(255, 255, 255, 0.3);
 }
 
-/* Hero visual card */
+/* Hero visual */
 .hero__visual { 
-  position: relative; 
-}
-
-.hero__visual-card { 
-  background: var(--surface); 
-  border: 1px solid var(--border-light); 
-  border-radius: var(--radius-xl); 
-  padding: var(--space-lg); 
-  box-shadow: var(--shadow-xl); 
-  position: relative; 
-  overflow: hidden; 
-}
-
-.hero__visual-card::before { 
-  content: ''; 
-  position: absolute; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  height: 4px; 
-  background: linear-gradient(90deg, var(--primary-green) 0%, var(--primary-green-light) 100%); 
+  width: 100%;
+  max-width: 1200px;
+  margin: var(--space-xl) auto 0;
+  position: relative;
+  z-index: 1;
 }
 
 .hero__visual-img { 
-  width: 100%; 
-  height: 220px; 
-  object-fit: cover; 
-  border-radius: var(--radius-md); 
-  margin-bottom: var(--space-md); 
-}
-
-.hero__visual-price { 
-  font-family: var(--font-display); 
-  font-size: 1.75rem; 
-  font-weight: 900; 
-  color: var(--text-primary); 
-  letter-spacing: -0.03em; 
-  margin-bottom: 0.25rem; 
-}
-
-.hero__visual-name { 
-  font-size: 1rem; 
-  font-weight: 700; 
-  color: var(--text-primary); 
-  margin-bottom: 0.35rem; 
-}
-
-.hero__visual-meta { 
-  font-size: 0.85rem; 
-  color: var(--text-muted); 
-  margin-bottom: var(--space-md); 
-}
-
-.hero__visual-savings { 
-  font-size: 0.75rem; 
-  font-weight: 700; 
-  color: var(--success); 
-  background: var(--success-bg); 
-  padding: 0.3rem 0.75rem; 
-  border-radius: var(--radius-full); 
-  display: inline-block; 
-  margin-bottom: var(--space-md); 
-  border: 1px solid var(--success); 
-}
-
-.hero__visual-badge { 
-  position: absolute; 
-  top: -8px; 
-  right: -8px; 
-  background: var(--accent-orange); 
-  color: #fff; 
-  font-size: 0.7rem; 
-  font-weight: 800; 
-  padding: 0.5rem 1rem; 
-  border-radius: var(--radius-full); 
-  box-shadow: var(--shadow-lg); 
-  display: flex; 
-  align-items: center; 
-  gap: 0.3rem; 
+  width: 100%;
+  height: 500px;
+  object-fit: cover;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl);
 }
 
 /* ── Shop by Category Section ── */

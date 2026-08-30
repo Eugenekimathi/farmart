@@ -20,12 +20,6 @@ const UserIcon = () => (
   </svg>
 )
 
-const SparklesIcon = () => (
-  <svg className="icon icon--sm" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
-  </svg>
-)
-
 const CheckCircleIcon = () => (
   <svg className="icon icon--xl" viewBox="0 0 24 24" fill="none" stroke="currentColor">
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
@@ -98,7 +92,6 @@ const CheckoutPage = () => {
 
   // Totals
   const subtotal = items.reduce((sum, item) => sum + Number(item.price), 0)
-  const totalSavings = Math.round(subtotal * 0.2)
 
   // Step 1 → 2: move to delivery after review
   const handleReviewNext = () => {
@@ -247,7 +240,7 @@ const CheckoutPage = () => {
                         {img ? (
                           <img src={img.image_url} alt={item.name} />
                         ) : (
-                          <span>🐄</span>
+                          <span>No livestock in cart</span>
                         )}
                       </div>
                       <div className="checkout-review-item__info">
@@ -484,13 +477,6 @@ const CheckoutPage = () => {
           <div className="checkout-summary__row">
             <span>Subtotal</span>
             <span>KSh {subtotal.toLocaleString()}</span>
-          </div>
-          <div className="checkout-summary__row checkout-summary__row--savings">
-            <span>
-              <SparklesIcon />
-              Broker savings
-            </span>
-            <span>- KSh {totalSavings.toLocaleString()}</span>
           </div>
 
           <div className="checkout-summary__divider" />

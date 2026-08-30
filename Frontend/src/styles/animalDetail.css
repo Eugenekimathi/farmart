@@ -423,17 +423,11 @@
   margin-bottom: 0.4rem; 
   line-height: 1; 
 }
-.detail-price-block__savings { 
-  font-size: 0.9rem; 
-  font-weight: 700; 
-  color: var(--success); 
-  display: flex; 
-  align-items: center; 
-  gap: 0.4rem; 
-}
-.detail-price-block__savings svg {
-  width: 18px;
-  height: 18px;
+.detail-price-block__note { 
+  font-size: 0.85rem; 
+  color: var(--text-tertiary); 
+  font-weight: 500; 
+  line-height: 1.5;
 }
 
 /* Actions */

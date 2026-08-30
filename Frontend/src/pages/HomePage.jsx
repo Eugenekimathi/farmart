@@ -8,50 +8,44 @@ import { getAnimals } from '../features/animals/animalsSlice'
 import '../styles/home.css'
 
 const categories = [
-  { id: 'cattle', name: 'Cattle', icon: '🐄', count: 150 },
-  { id: 'goat', name: 'Goats', icon: '🐐', count: 89 },
-  { id: 'sheep', name: 'Sheep', icon: '🐑', count: 67 },
-  { id: 'poultry', name: 'Poultry', icon: '🐔', count: 234 },
-  { id: 'pigs', name: 'Pigs', icon: '🐷', count: 45 },
+  { id: 'cattle', name: 'Cattle' },
+  { id: 'goat', name: 'Goats' },
+  { id: 'sheep', name: 'Sheep' },
+  { id: 'poultry', name: 'Poultry' },
+  { id: 'pigs', name: 'Pigs' },
 ]
 
 const counties = [
-  { name: 'Nairobi', count: 89 },
-  { name: 'Nakuru', count: 76 },
-  { name: 'Kiambu', count: 65 },
-  { name: 'Machakos', count: 54 },
-  { name: 'Kisumu', count: 48 },
-  { name: 'Mombasa', count: 42 },
+  { name: 'Nairobi' },
+  { name: 'Nakuru' },
+  { name: 'Kiambu' },
+  { name: 'Machakos' },
+  { name: 'Kisumu' },
+  { name: 'Mombasa' },
 ]
 
 const features = [
   {
-    icon: '🛡️',
     title: 'No Middlemen',
     desc: 'Buy directly from verified farmers. Zero broker fees, zero hidden charges.',
   },
   {
-    icon: '📱',
     title: 'Pay via M-Pesa',
     desc: 'Instant mobile payments directly to the farmer. Safe, fast, and reliable.',
   },
   {
-    icon: '✅',
     title: 'Verified Listings',
     desc: 'Every farmer and animal listing is verified before going live on the platform.',
   },
   {
-    icon: '🔍',
     title: 'Search & Filter',
     desc: 'Find exactly what you need by animal type, breed, age, and location.',
   },
   {
-    icon: '🚜',
     title: 'For Farmers',
     desc: 'List your animals for free. Reach buyers across Kenya without leaving your farm.',
   },
   {
-    icon: '🚚',
     title: 'Direct Delivery',
     desc: 'Arrange delivery directly with the farmer. No third-party logistics markup.',
   },
@@ -154,21 +148,7 @@ const HomePage = () => {
 
         {/* Hero visual */}
         <div className="hero__visual">
-          <div className="hero__visual-card">
-            <img className="hero__visual-img" src={heroImage} alt="Sahiwal cattle grazing on a Kenyan farm" />
-            <div className="hero__visual-price">KSh 95,000</div>
-            <div className="hero__visual-name">Sahiwal Cow</div>
-            <div className="hero__visual-meta">Naivasha, Nakuru County | 24 months</div>
-            <div className="hero__visual-savings">
-              No broker cut
-            </div>
-            <button className="btn btn--primary" style={{ width: '100%' }} onClick={() => navigate('/store')}>
-              Buy Direct (M-Pesa)
-            </button>
-          </div>
-          <div className="hero__visual-badge">
-            <span className="hero__visual-badge-label">Live listing</span>
-          </div>
+          <img className="hero__visual-img" src={heroImage} alt="Kenyan livestock farm" />
         </div>
       </section>
 
@@ -190,9 +170,7 @@ const HomePage = () => {
                 href={`/store?type=${cat.id}`}
                 className="category-card"
               >
-                <div className="category-card__icon">{cat.icon}</div>
                 <div className="category-card__name">{cat.name}</div>
-                <div className="category-card__count">{cat.count} listings</div>
               </a>
             ))}
           </div>
@@ -245,7 +223,6 @@ const HomePage = () => {
                 className="county-card"
               >
                 <div className="county-card__name">{county.name}</div>
-                <div className="county-card__count">{county.count} animals</div>
               </a>
             ))}
           </div>
@@ -295,7 +272,6 @@ const HomePage = () => {
           <div className="features__grid">
             {features.map((f) => (
               <div key={f.title} className="feature-card">
-                <span className="feature-card__icon-wrap" aria-hidden="true">{f.icon}</span>
                 <h3 className="feature-card__title">{f.title}</h3>
                 <p className="feature-card__desc">{f.desc}</p>
               </div>
