@@ -43,3 +43,16 @@ class User(db.Model):
         db.DateTime,
         default=datetime.utcnow
     )
+
+    # Relationships
+    farmer = db.relationship(
+        "Farmer",
+        back_populates="user",
+        uselist=False
+    )
+
+    cart = db.relationship(
+        "Cart",
+        back_populates="user",
+        uselist=False
+    )

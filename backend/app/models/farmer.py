@@ -29,5 +29,12 @@ class Farmer(db.Model):
 
     user = db.relationship(
         "User",
-        backref=db.backref("farmer", uselist=False)
+        back_populates="farmer"
+    )
+
+    animals = db.relationship(
+        "Animal",
+        back_populates="farmer",
+        lazy=True,
+        cascade="all, delete-orphan"
     )

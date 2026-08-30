@@ -21,8 +21,13 @@ class Breed(db.Model):
         nullable=True
     )
 
+    animal_type = db.relationship(
+        "AnimalType",
+        back_populates="breeds"
+    )
+
     animals = db.relationship(
         "Animal",
-        backref="breed",
+        back_populates="breed",
         lazy=True
     )

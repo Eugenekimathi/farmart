@@ -24,3 +24,14 @@ class CartItem(db.Model):
             name="unique_cart_animal"
         ),
     )
+
+    # Relationships
+    cart = db.relationship(
+        "Cart",
+        back_populates="cart_items"
+    )
+
+    animal = db.relationship(
+        "Animal",
+        backref=db.backref("cart_items", lazy=True)
+    )

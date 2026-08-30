@@ -37,3 +37,15 @@ class Order(db.Model):
         db.DateTime,
         default=datetime.utcnow
     )
+
+    # Relationships
+    buyer = db.relationship(
+        "User",
+        backref=db.backref("orders", lazy=True)
+    )
+
+    order_items = db.relationship(
+        "OrderItem",
+        back_populates="order",
+        cascade="all, delete-orphan"
+    )

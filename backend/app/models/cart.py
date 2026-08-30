@@ -23,3 +23,15 @@ class Cart(db.Model):
         default=datetime.utcnow,
         onupdate=datetime.utcnow
     )
+
+    # Relationships
+    user = db.relationship(
+        "User",
+        back_populates="cart"
+    )
+
+    cart_items = db.relationship(
+        "CartItem",
+        back_populates="cart",
+        cascade="all, delete-orphan"
+    )

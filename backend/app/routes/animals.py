@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import get_jwt_identity
 
 from app.extensions import db
 from app.authz import require_role
 from app.models.animals import Animal
+from app.models.farmer import Farmer
 from app.schemas.animal_schema import (
     AnimalSchema,
     AnimalResponseSchema
@@ -23,16 +25,25 @@ many_response_schema = AnimalResponseSchema(
 @animal_bp.route("", methods=["POST"])
 @require_role("USER", "BUYER", "FARMER", "farmer")
 def create_animal():
-
-    data = schema.load(
-        request.get_json()
-    )
-
+    from flask_jwt_extended import get_jwt_identity
+    
+    user_id = get_jwt_identity()
+    
+    # Get farmer profile for this user
+    farmer = Farmer.query.filter_by(user_id=user_id).first()
+    if not farmer:
+        return jsonify({"error": "Farmer profile not found"}), 404
+    
+    data = schema.load(request.get_json())
+    
+    # Set farmer_id to the current user's farmer profile
+    data['farmer_id'] = farmer.id
+    
     animal = Animal(**data)
-
+    
     db.session.add(animal)
     db.session.commit()
-
+    
     return jsonify(
         response_schema.dump(animal)
     ), 201
@@ -69,6 +80,14 @@ def get_animal(animal_id):
 @animal_bp.route("/<int:animal_id>", methods=["PUT"])
 @require_role("FARMER", "farmer")
 def update_animal(animal_id):
+    from flask_jwt_extended import get_jwt_identity
+    
+    user_id = get_jwt_identity()
+    
+    # Get farmer profile for this user
+    farmer = Farmer.query.filter_by(user_id=user_id).first()
+    if not farmer:
+        return jsonify({"error": "Farmer profile not found"}), 404
 
     animal = db.session.get(
         Animal,
@@ -79,6 +98,12 @@ def update_animal(animal_id):
         return jsonify({
             "error": "Animal not found"
         }), 404
+    
+    # Verify farmer owns this animal
+    if animal.farmer_id != farmer.id:
+        return jsonify({
+            "error": "You can only edit your own animals"
+        }), 403
 
     data = schema.load(
         request.get_json()
@@ -96,6 +121,14 @@ def update_animal(animal_id):
 @animal_bp.route("/<int:animal_id>", methods=["DELETE"])
 @require_role("FARMER", "farmer")
 def delete_animal(animal_id):
+    from flask_jwt_extended import get_jwt_identity
+    
+    user_id = get_jwt_identity()
+    
+    # Get farmer profile for this user
+    farmer = Farmer.query.filter_by(user_id=user_id).first()
+    if not farmer:
+        return jsonify({"error": "Farmer profile not found"}), 404
 
     animal = db.session.get(
         Animal,
@@ -106,6 +139,12 @@ def delete_animal(animal_id):
         return jsonify({
             "error": "Animal not found"
         }), 404
+    
+    # Verify farmer owns this animal
+    if animal.farmer_id != farmer.id:
+        return jsonify({
+            "error": "You can only delete your own animals"
+        }), 403
 
     db.session.delete(animal)
     db.session.commit()

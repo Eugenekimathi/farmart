@@ -58,3 +58,19 @@ class Animal(db.Model):
         nullable=False,
         default="AVAILABLE"
     )
+
+    # Relationships
+    farmer = db.relationship(
+        "Farmer",
+        back_populates="animals"
+    )
+
+    animal_type = db.relationship(
+        "AnimalType",
+        back_populates="animals"
+    )
+
+    breed = db.relationship(
+        "Breed",
+        back_populates="animals"
+    )

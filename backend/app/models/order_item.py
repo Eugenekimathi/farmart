@@ -33,3 +33,19 @@ class OrderItem(db.Model):
         nullable=False,
         default=1
     )
+
+    # Relationships
+    order = db.relationship(
+        "Order",
+        back_populates="order_items"
+    )
+
+    animal = db.relationship(
+        "Animal",
+        backref=db.backref("order_items", lazy=True)
+    )
+
+    farmer = db.relationship(
+        "Farmer",
+        backref=db.backref("order_items", lazy=True)
+    )
