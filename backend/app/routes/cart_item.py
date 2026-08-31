@@ -35,7 +35,12 @@ def add_cart_item(cart_id):
         }), 404
     if cart.user_id != current_user_id():
         return jsonify({"error": "You can only access your own cart"}), 403
-    data = schema.load(request.get_json(silent=True) or {})
+    try:
+        raw = request.get_json(silent=True) or {}
+        raw["cart_id"] = cart_id
+        data = schema.load(raw)
+    except Exception as error:
+        return jsonify({"error": "Invalid cart item data", "details": getattr(error, "messages", str(error))}), 400
 
     animal = db.session.get(
         Animal,
@@ -70,9 +75,10 @@ def add_cart_item(cart_id):
     db.session.add(item)
     db.session.commit()
 
-    return jsonify(
-        response_schema.dump(item)
-    ), 201
+    response = response_schema.dump(item)
+    response["message"] = "Animal added to cart"
+    response["cart_item_id"] = item.id
+    return jsonify(response), 201
 
 @cart_item_bp.route(
     "/<int:cart_id>/items",
@@ -145,7 +151,12 @@ def update_cart_item(cart_id, item_id):
             "error": "Cart item not found"
         }), 404
 
-    data = schema.load(request.get_json(silent=True) or {})
+    try:
+        raw = request.get_json(silent=True) or {}
+        raw["cart_id"] = cart_id
+        data = schema.load(raw)
+    except Exception as error:
+        return jsonify({"error": "Invalid cart item data", "details": getattr(error, "messages", str(error))}), 400
 
     animal = db.session.get(
         Animal,
@@ -161,6 +172,10 @@ def update_cart_item(cart_id, item_id):
         return jsonify({
             "error": "Animal is not available"
         }), 400
+
+    duplicate = CartItem.query.filter_by(cart_id=cart_id, animal_id=animal.id).first()
+    if duplicate and duplicate.id != item.id:
+        return jsonify({"error": "Animal already exists in cart"}), 409
 
     item.animal_id = data["animal_id"]
 

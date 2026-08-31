@@ -7,6 +7,7 @@ from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.cart import Cart
 from app.models.farmer import Farmer
+from app.services.order_service import ALLOWED_TRANSITIONS
 from app.schemas.order_schema import (
     OrderSchema,
     OrderResponseSchema
@@ -34,6 +35,7 @@ def create_order():
         if hasattr(err, "messages"):
             return jsonify({"errors": err.messages}), 400
         raise
+    data.pop("buyer_id", None)
     role = (get_jwt().get("role") or "").upper()
     if role == "FARMER":
         return jsonify({"error": "Only buyers can create orders"}), 403
@@ -150,22 +152,7 @@ def update_order_status(order_id):
     if new_status == "CANCELLED" and role != "BUYER":
         return jsonify({"error": "Only buyers may cancel orders"}), 403
 
-    allowed_transitions = {
-        "PENDING": [
-            "CONFIRMED",
-            "REJECTED",
-            "CANCELLED"
-        ],
-        "CONFIRMED": [
-            "COMPLETED",
-            "CANCELLED"
-        ],
-        "REJECTED": [],
-        "CANCELLED": [],
-        "COMPLETED": []
-    }
-
-    if new_status not in allowed_transitions.get(
+    if new_status not in ALLOWED_TRANSITIONS.get(
         order.status,
         []
     ):
@@ -177,6 +164,12 @@ def update_order_status(order_id):
         }), 409
 
     order.status = new_status
+    if new_status in {"REJECTED", "CANCELLED"}:
+        for item in order.order_items:
+            item.animal.status = "AVAILABLE"
+    elif new_status == "COMPLETED":
+        for item in order.order_items:
+            item.animal.status = "SOLD"
 
     db.session.commit()
 

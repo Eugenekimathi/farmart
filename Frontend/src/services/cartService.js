@@ -5,9 +5,14 @@ const getCartId = () => localStorage.getItem('farmart.cartId')
 
 export const fetchCart = async () => {
   const cartId = getCartId()
-  if (!cartId) return { cart_items: [] }
-  const response = await api.get(`/carts/${cartId}/items`)
-  return { cart_items: response.data }
+  if (!cartId) {
+    const userId = store.getState().auth.user?.id
+    if (!userId) return { cart_items: [] }
+    const cart = await createCart(userId)
+    return cart
+  }
+  const response = await api.get(`/carts/${cartId}`)
+  return response.data
 }
 
 export const createCart = async (userId) => {

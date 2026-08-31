@@ -20,10 +20,8 @@ class FarmerSummarySchema(Schema):
 
 class AnimalSchema(Schema):
 
-    farmer_id = fields.Int(
-        required=False,
-        allow_none=True
-    )
+    # Accepted for backwards compatibility but never trusted by routes.
+    farmer_id = fields.Int(required=False, allow_none=True, load_only=True)
 
     animal_type_id = fields.Int(
         required=True
@@ -106,5 +104,3 @@ class AnimalResponseSchema(Schema):
     description = fields.Str(allow_none=True)
     location = fields.Str()
     status = fields.Str()
-    created_at = fields.DateTime(allow_none=True)
-    updated_at = fields.DateTime(allow_none=True)

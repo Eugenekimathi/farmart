@@ -6,6 +6,7 @@ from app.schemas.animal_type_schema import (
     AnimalTypeSchema,
     AnimalTypeResponseSchema
 )
+from app.authz import require_role
 
 animal_type_bp = Blueprint(
     "animal_types",
@@ -21,9 +22,12 @@ many_response_schema = AnimalTypeResponseSchema(
 
 
 @animal_type_bp.route("", methods=["POST"])
+@require_role("FARMER")
 def create_animal_type():
-
-    data = schema.load(request.get_json())
+    try:
+        data = schema.load(request.get_json(silent=True) or {})
+    except Exception as error:
+        return jsonify({"error": "Invalid animal type data", "details": getattr(error, "messages", str(error))}), 400
 
     animal_type = AnimalType(**data)
 
@@ -59,6 +63,7 @@ def get_animal_type(animal_type_id):
     ), 200
 
 @animal_type_bp.route("/<int:animal_type_id>", methods=["PUT"])
+@require_role("FARMER")
 def update_animal_type(animal_type_id):
 
     animal_type = db.session.get(AnimalType, animal_type_id)
@@ -68,7 +73,10 @@ def update_animal_type(animal_type_id):
             "error": "Animal type not found"
         }), 404
 
-    data = schema.load(request.get_json())
+    try:
+        data = schema.load(request.get_json(silent=True) or {})
+    except Exception as error:
+        return jsonify({"error": "Invalid animal type data", "details": getattr(error, "messages", str(error))}), 400
 
     for key, value in data.items():
         setattr(animal_type, key, value)
@@ -80,6 +88,7 @@ def update_animal_type(animal_type_id):
     ), 200
 
 @animal_type_bp.route("/<int:animal_type_id>", methods=["DELETE"])
+@require_role("FARMER")
 def delete_animal_type(animal_type_id):
 
     animal_type = db.session.get(AnimalType, animal_type_id)

@@ -6,6 +6,8 @@ from app.schemas.breed_schema import (
     BreedSchema,
     BreedResponseSchema
 )
+from app.authz import require_role
+from app.models.animal_type import AnimalType
 
 breed_bp = Blueprint(
     "breeds",
@@ -21,9 +23,14 @@ many_response_schema = BreedResponseSchema(
 
 
 @breed_bp.route("", methods=["POST"])
+@require_role("FARMER")
 def create_breed():
-
-    data = schema.load(request.get_json())
+    try:
+        data = schema.load(request.get_json(silent=True) or {})
+    except Exception as error:
+        return jsonify({"error": "Invalid breed data", "details": getattr(error, "messages", str(error))}), 400
+    if not db.session.get(AnimalType, data["animal_type_id"]):
+        return jsonify({"error": "Animal type not found"}), 404
 
     breed = Breed(**data)
 
@@ -60,6 +67,7 @@ def get_breed(breed_id):
     ), 200
 
 @breed_bp.route("/<int:breed_id>", methods=["PUT"])
+@require_role("FARMER")
 def update_breed(breed_id):
 
     breed = db.session.get(Breed, breed_id)
@@ -69,7 +77,12 @@ def update_breed(breed_id):
             "error": "Breed not found"
         }), 404
 
-    data = schema.load(request.get_json())
+    try:
+        data = schema.load(request.get_json(silent=True) or {})
+    except Exception as error:
+        return jsonify({"error": "Invalid breed data", "details": getattr(error, "messages", str(error))}), 400
+    if not db.session.get(AnimalType, data["animal_type_id"]):
+        return jsonify({"error": "Animal type not found"}), 404
 
     for key, value in data.items():
         setattr(breed, key, value)
@@ -82,6 +95,7 @@ def update_breed(breed_id):
 
 
 @breed_bp.route("/<int:breed_id>", methods=["DELETE"])
+@require_role("FARMER")
 def delete_breed(breed_id):
 
     breed = db.session.get(Breed, breed_id)

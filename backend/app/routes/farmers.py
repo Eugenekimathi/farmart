@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
-from app.authz import require_role
+from app.authz import require_role, current_user_id
 from app.models.farmer import Farmer
 from app.schemas.farmer_schema import (
     FarmerSchema,
@@ -22,12 +22,16 @@ farmers_response_schema = FarmerResponseSchema(
 
 
 @farmer_bp.route("", methods=["POST"])
-@require_role("USER", "FARMER", "farmer")
+@require_role("FARMER")
 def create_farmer():
-
-    data = farmer_schema.load(
-        request.get_json()
-    )
+    try:
+        data = farmer_schema.load(request.get_json(silent=True) or {})
+    except Exception as error:
+        return jsonify({"error": "Invalid farmer data", "details": getattr(error, "messages", str(error))}), 400
+    if data["user_id"] != current_user_id():
+        return jsonify({"error": "You can only create your own farmer profile"}), 403
+    if Farmer.query.filter_by(user_id=current_user_id()).first():
+        return jsonify({"error": "Farmer profile already exists"}), 409
 
     farmer = Farmer(**data)
 
@@ -68,7 +72,7 @@ def get_farmer(farmer_id):
 
 
 @farmer_bp.route("/<int:farmer_id>", methods=["PUT"])
-@require_role("USER", "FARMER", "farmer")
+@require_role("FARMER")
 def update_farmer(farmer_id):
 
     farmer = db.session.get(Farmer, farmer_id)
@@ -77,8 +81,15 @@ def update_farmer(farmer_id):
         return jsonify({
             "error": "Farmer not found"
         }), 404
+    if farmer.user_id != current_user_id():
+        return jsonify({"error": "You can only update your own farmer profile"}), 403
 
-    data = farmer_schema.load(request.get_json())
+    try:
+        data = farmer_schema.load(request.get_json(silent=True) or {})
+    except Exception as error:
+        return jsonify({"error": "Invalid farmer data", "details": getattr(error, "messages", str(error))}), 400
+    if data["user_id"] != farmer.user_id:
+        return jsonify({"error": "A farmer profile cannot be reassigned"}), 400
 
     for key, value in data.items():
         setattr(farmer, key, value)
@@ -91,7 +102,7 @@ def update_farmer(farmer_id):
 
 
 @farmer_bp.route("/<int:farmer_id>", methods=["DELETE"])
-@require_role("USER", "FARMER", "farmer")
+@require_role("FARMER")
 def delete_farmer(farmer_id):
 
     farmer = db.session.get(Farmer, farmer_id)
@@ -100,6 +111,8 @@ def delete_farmer(farmer_id):
         return jsonify({
             "error": "Farmer not found"
         }), 404
+    if farmer.user_id != current_user_id():
+        return jsonify({"error": "You can only delete your own farmer profile"}), 403
 
     db.session.delete(farmer)
     db.session.commit()

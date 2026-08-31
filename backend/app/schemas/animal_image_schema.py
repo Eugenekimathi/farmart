@@ -6,10 +6,6 @@ ma = Marshmallow()
 
 class AnimalImageSchema(ma.Schema):
 
-    animal_id = fields.Integer(
-        required=True
-    )
-
     image_url = fields.String(
         required=True,
         validate=validate.Length(

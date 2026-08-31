@@ -2,20 +2,9 @@ import api from './api'
 
 export const createOrder = async (orderData) => {
   const response = await api.post('/orders', orderData)
-  const order = response.data
-  // The backend creates order and order items separately.
-  if (orderData.items?.length) {
-    await Promise.all(orderData.items.map((item) =>
-      api.post(`/orders/${order.id}/items`, {
-        order_id: order.id,
-        animal_id: item.animal_id,
-        farmer_id: item.farmer_id,
-        price: item.price,
-        quantity: 1,
-      })
-    ))
-  }
-  return order
+  // Checkout is atomic on the server: it snapshots cart items, reserves the
+  // animals, and creates order items in one transaction.
+  return response.data
 }
 
 export const createOrderItem = async (orderId, itemData) => {

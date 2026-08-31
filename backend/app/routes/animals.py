@@ -72,6 +72,7 @@ def create_animal():
         else:
             data = schema.load(request.get_json(silent=True) or {})
             files = []
+        data.pop("farmer_id", None)
         data["farmer_id"] = farmer.id
         animal_type = db.session.get(AnimalType, data["animal_type_id"])
         if not animal_type:
@@ -103,6 +104,25 @@ def get_animals():
     page = max(request.args.get("page", 1, type=int), 1)
     per_page = min(max(request.args.get("per_page", 9, type=int), 1), 100)
     pagination = Animal.query.paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "animals": many_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200
+
+
+@animal_bp.route("/mine", methods=["GET"])
+@require_role("FARMER")
+def get_my_animals():
+    farmer = Farmer.query.filter_by(user_id=get_jwt_identity()).first()
+    if not farmer:
+        return jsonify({"error": "Farmer profile not found"}), 404
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 9, type=int), 1), 100)
+    pagination = Animal.query.filter_by(farmer_id=farmer.id).paginate(
+        page=page, per_page=per_page, error_out=False
+    )
     return jsonify({
         "animals": many_response_schema.dump(pagination.items),
         "total_pages": pagination.pages,
@@ -155,9 +175,20 @@ def update_animal(animal_id):
             "error": "You can only edit your own animals"
         }), 403
 
-    data = schema.load(
-        request.get_json()
-    )
+    try:
+        data = schema.load(request.get_json(silent=True) or {})
+    except ValidationError as error:
+        return jsonify({"error": "Invalid animal data", "details": error.messages}), 400
+    data.pop("farmer_id", None)
+
+    animal_type = db.session.get(AnimalType, data["animal_type_id"])
+    if not animal_type:
+        return jsonify({"error": "Animal type not found"}), 400
+    breed_id = data.get("breed_id")
+    if breed_id is not None:
+        breed = db.session.get(Breed, breed_id)
+        if not breed or breed.animal_type_id != animal_type.id:
+            return jsonify({"error": "Breed does not belong to the selected animal type"}), 400
 
     for key, value in data.items():
         setattr(animal, key, value)
@@ -258,4 +289,3 @@ def search_animals():
         "total_count": pagination.total,
         "current_page": pagination.page,
     }), 200
-

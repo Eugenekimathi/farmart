@@ -3,8 +3,6 @@ from flask import Blueprint, request, jsonify
 from app.extensions import db
 from app.authz import authenticated, current_user_id
 from app.models.cart import Cart
-from app.models.cart_item import CartItem
-from app.models.animals import Animal
 from app.schemas.cart_schema import (
     CartResponseSchema
 )
@@ -78,74 +76,3 @@ def get_cart(cart_id):
         cart_response_schema.dump(cart)
     ), 200
 
-
-@cart_bp.route(
-    "/<int:cart_id>/items",
-    methods=["POST"]
-)
-@authenticated
-def add_to_cart(cart_id):
-
-    data = request.get_json() or {}
-
-    animal_id = data.get("animal_id")
-
-    if not animal_id:
-        return jsonify({
-            "error": "animal_id is required"
-        }), 400
-
-    # Check if cart exists
-    cart = db.session.get(
-        Cart,
-        cart_id
-    )
-
-    if not cart:
-        return jsonify({
-            "error": "Cart not found"
-        }), 404
-    if cart.user_id != current_user_id():
-        return jsonify({"error": "You can only access your own cart"}), 403
-
-    # Check if animal exists
-    animal = db.session.get(
-        Animal,
-        animal_id
-    )
-
-    if not animal:
-        return jsonify({
-            "error": "Animal not found"
-        }), 404
-
-    # Check if animal is available
-    if animal.status != "AVAILABLE":
-        return jsonify({
-            "error": "Animal is not available"
-        }), 400
-
-    # Check if animal already exists in cart
-    existing_item = CartItem.query.filter_by(
-        cart_id=cart_id,
-        animal_id=animal_id
-    ).first()
-
-    if existing_item:
-        return jsonify({
-            "error": "Animal already exists in cart"
-        }), 409
-
-    # Create cart item
-    item = CartItem(
-        cart_id=cart_id,
-        animal_id=animal_id
-    )
-
-    db.session.add(item)
-    db.session.commit()
-
-    return jsonify({
-        "message": "Animal added to cart",
-        "cart_item_id": item.id
-    }), 201

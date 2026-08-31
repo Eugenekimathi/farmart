@@ -1,21 +1,11 @@
 from app.extensions import db
 from app.models.delivery import Delivery
+from datetime import datetime
 
 
 ALLOWED_TRANSITIONS = {
-    "PENDING": [
-        "PROCESSING",
-        "CANCELLED"
-    ],
-    "PROCESSING": [
-        "OUT_FOR_DELIVERY",
-        "CANCELLED"
-    ],
-    "OUT_FOR_DELIVERY": [
-        "DELIVERED"
-    ],
-    "DELIVERED": [],
-    "CANCELLED": []
+    status: ["PENDING", "PROCESSING", "OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
+    for status in ["PENDING", "PROCESSING", "OUT_FOR_DELIVERY", "DELIVERED", "CANCELLED"]
 }
 
 
@@ -51,6 +41,8 @@ def update_status(
         )
 
     delivery.status = new_status
+    if new_status == "DELIVERED":
+        delivery.delivered_at = datetime.utcnow()
 
     db.session.commit()
 

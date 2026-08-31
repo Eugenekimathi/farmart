@@ -15,11 +15,8 @@ class OrderItemResponseSchema(Schema):
 
 class OrderSchema(Schema):
 
-    buyer_id = fields.Int(
-        required=False,
-        allow_none=True,
-        load_default=None
-    )
+    # The authenticated identity is authoritative; retained for older clients.
+    buyer_id = fields.Int(required=False, allow_none=True, load_only=True)
 
     total_amount = fields.Decimal(
         required=True,
@@ -69,5 +66,4 @@ class OrderResponseSchema(Schema):
     delivery_address = fields.Str()
     delivery_phone = fields.Str()
     created_at = fields.DateTime()
-    updated_at = fields.DateTime(allow_none=True)
     order_items = fields.Nested(OrderItemResponseSchema, many=True)

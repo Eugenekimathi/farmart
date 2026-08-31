@@ -1,6 +1,7 @@
 from functools import wraps
 from flask import jsonify
 from flask_jwt_extended import get_jwt, get_jwt_identity, jwt_required
+from app.models.farmer import Farmer
 
 def authenticated(view):
     @wraps(view)
@@ -32,3 +33,8 @@ def current_user_id():
 
 def owns_user(resource_user_id):
     return int(resource_user_id) == current_user_id()
+
+
+def current_farmer():
+    """Return the farmer profile belonging to the authenticated user."""
+    return Farmer.query.filter_by(user_id=current_user_id()).first()

@@ -1,4 +1,5 @@
 from marshmallow import Schema, fields
+from app.schemas.cart_item_schema import CartItemResponseSchema
 
 
 class CartSchema(Schema):
@@ -14,3 +15,4 @@ class CartResponseSchema(Schema):
     user_id = fields.Int()
     created_at = fields.DateTime()
     updated_at = fields.DateTime()
+    cart_items = fields.Nested(CartItemResponseSchema, many=True)

@@ -1,11 +1,11 @@
 from marshmallow import Schema, fields
+from app.schemas.animal_schema import AnimalResponseSchema
 
 
 class CartItemSchema(Schema):
 
-    cart_id = fields.Int(
-        required=True
-    )
+    # The path is authoritative; retained for older clients.
+    cart_id = fields.Int(required=True, load_only=True)
 
     animal_id = fields.Int(
         required=True
@@ -17,4 +17,4 @@ class CartItemResponseSchema(Schema):
     id = fields.Int()
     cart_id = fields.Int()
     animal_id = fields.Int()
-    created_at = fields.DateTime()
+    animal = fields.Nested(AnimalResponseSchema)

@@ -84,4 +84,3 @@ def delete_animal_image(animal_id, image_id):
         "message": "Animal image deleted successfully"
     }), 200
 
-

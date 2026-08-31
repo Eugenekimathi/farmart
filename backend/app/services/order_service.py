@@ -40,6 +40,9 @@ def update_status(order_id, new_status):
         )
 
     order.status = new_status
+    if new_status in {"REJECTED", "CANCELLED"}:
+        for item in order.order_items:
+            item.animal.status = "AVAILABLE"
 
     db.session.commit()
 
