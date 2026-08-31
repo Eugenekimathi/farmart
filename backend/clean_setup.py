@@ -29,6 +29,8 @@ with app.app_context():
         AnimalType(name="Goat", description="Caprine livestock including dairy and meat goats"),
         AnimalType(name="Pigs", description="Porcine livestock"),
         AnimalType(name="Chicken", description="Poultry including layers and broilers"),
+        AnimalType(name="Rabbits", description="Domestic rabbits for meat, breeding, and pets"),
+        AnimalType(name="Other", description="Other livestock not covered by the standard categories"),
     ]
     db.session.add_all(animal_types)
     db.session.flush()
@@ -38,6 +40,8 @@ with app.app_context():
     cattle = next(t for t in animal_types if t.name == "Cattle")
     sheep = next(t for t in animal_types if t.name == "Sheep")
     goat = next(t for t in animal_types if t.name == "Goat")
+    chicken = next(t for t in animal_types if t.name == "Chicken")
+    rabbits = next(t for t in animal_types if t.name == "Rabbits")
 
     breeds = [
         # Cattle breeds
@@ -58,6 +62,16 @@ with app.app_context():
         Breed(name="Alpine", animal_type_id=goat.id, description="Dairy goat breed"),
         Breed(name="Boer", animal_type_id=goat.id, description="Meat goat breed"),
         Breed(name="Other", animal_type_id=goat.id, description="Other or mixed goat breeds"),
+        # Chicken breeds
+        Breed(name="Broiler", animal_type_id=chicken.id, description="Meat chicken"),
+        Breed(name="Kienyeji", animal_type_id=chicken.id, description="Indigenous free-range chicken"),
+        Breed(name="Layers", animal_type_id=chicken.id, description="Egg-producing chicken"),
+        Breed(name="Other", animal_type_id=chicken.id, description="Other chicken breed"),
+        # Rabbit breeds
+        Breed(name="New Zealand White", animal_type_id=rabbits.id, description="Popular meat rabbit"),
+        Breed(name="Californian", animal_type_id=rabbits.id, description="Meat rabbit breed"),
+        Breed(name="Rex", animal_type_id=rabbits.id, description="Fur and companion rabbit"),
+        Breed(name="Other", animal_type_id=rabbits.id, description="Other rabbit breed"),
     ]
     db.session.add_all(breeds)
     db.session.commit()

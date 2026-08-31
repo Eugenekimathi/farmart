@@ -1,8 +1,6 @@
-"Allow animals without a known breed.
-
-Revision ID: 7b8f1d2c3e4a
-Revises: 414b2690c06e
-""
+# Allow animals without a known breed.
+# Revision ID: 7b8f1d2c3e4a
+# Revises: 414b2690c06e
 from alembic import op
 import sqlalchemy as sa
 revision = "7b8f1d2c3e4a"
