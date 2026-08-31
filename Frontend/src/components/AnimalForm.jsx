@@ -51,9 +51,15 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files)
     if (files.length === 0) return
+    const validFiles = files.filter((file) =>
+      ['image/jpeg', 'image/png'].includes(file.type) && file.size <= 5 * 1024 * 1024
+    )
+    if (validFiles.length !== files.length) {
+      setFormErrors((prev) => ({ ...prev, images: 'Use JPG or PNG images up to 5MB each' }))
+    }
 
     // Limit to 5 images
-    const selected = files.slice(0, 5)
+    const selected = validFiles.slice(0, 5)
     setImageFiles(selected)
 
     // Generate preview URLs
@@ -66,7 +72,6 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
     const errors = {}
     if (!formData.name.trim()) errors.name = 'Animal name is required'
     if (!formData.animal_type_id) errors.animal_type_id = 'Select an animal type'
-    if (!formData.breed_id) errors.breed_id = 'Select a breed'
     if (!formData.gender) errors.gender = 'Select gender'
     if (!formData.age) errors.age = 'Age is required'
     else if (isNaN(formData.age) || Number(formData.age) <= 0)
@@ -173,7 +178,7 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
           >
             <option value="">
               {formData.animal_type_id
-                ? 'Select breed'
+                ? 'Not specified'
                 : 'Select type first'}
             </option>
             {filteredBreeds.map((breed) => (
@@ -307,10 +312,13 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
           <span className="form-label__optional">(up to 5 images)</span>
         </label>
 
+        {formErrors.images && (
+          <span className="form-error">{formErrors.images}</span>
+        )}
         <label className="image-upload-box">
           <input
             type="file"
-            accept="image/*"
+            accept="image/jpeg,image/png"
             multiple
             onChange={handleImageChange}
             className="image-upload-box__input"
