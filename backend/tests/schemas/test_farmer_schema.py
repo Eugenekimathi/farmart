@@ -23,7 +23,7 @@ def test_valid_farmer():
     assert result["farm_name"] == "Green Valley Farm"
 
 
-def test_farmer_user_id_is_required():
+def test_farmer_user_id_is_optional_for_authenticated_profile_creation():
     schema = FarmerSchema()
 
     data = {
@@ -31,8 +31,8 @@ def test_farmer_user_id_is_required():
         "farm_location": "Nairobi"
     }
 
-    with pytest.raises(ValidationError):
-        schema.load(data)
+    result = schema.load(data)
+    assert result["user_id"] is None
 
 
 def test_farmer_farm_name_is_required():

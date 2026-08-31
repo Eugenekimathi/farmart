@@ -177,6 +177,13 @@ def update_order_status(order_id):
         }), 409
 
     order.status = new_status
+    if new_status in {"REJECTED", "CANCELLED"}:
+        for item in order.order_items:
+            if item.animal.status == "RESERVED":
+                item.animal.status = "AVAILABLE"
+    elif new_status == "COMPLETED":
+        for item in order.order_items:
+            item.animal.status = "SOLD"
 
     db.session.commit()
 

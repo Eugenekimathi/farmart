@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
-from app.authz import require_role
+from app.authz import require_role, current_user_id
 from app.models.farmer import Farmer
 from app.schemas.farmer_schema import (
     FarmerSchema,
@@ -25,10 +25,11 @@ farmers_response_schema = FarmerResponseSchema(
 @require_role("USER", "FARMER", "farmer")
 def create_farmer():
 
-    data = farmer_schema.load(
-        request.get_json()
-    )
-
+    data = farmer_schema.load(request.get_json(silent=True) or {})
+    existing = Farmer.query.filter_by(user_id=current_user_id()).first()
+    if existing:
+        return jsonify({"error": "Farmer profile already exists"}), 409
+    data["user_id"] = current_user_id()
     farmer = Farmer(**data)
 
     db.session.add(farmer)
@@ -77,8 +78,10 @@ def update_farmer(farmer_id):
         return jsonify({
             "error": "Farmer not found"
         }), 404
-
-    data = farmer_schema.load(request.get_json())
+    if farmer.user_id != current_user_id():
+        return jsonify({"error": "You can only update your own farmer profile"}), 403
+    data = farmer_schema.load(request.get_json(silent=True) or {})
+    data.pop("user_id", None)
 
     for key, value in data.items():
         setattr(farmer, key, value)
@@ -100,7 +103,8 @@ def delete_farmer(farmer_id):
         return jsonify({
             "error": "Farmer not found"
         }), 404
-
+    if farmer.user_id != current_user_id():
+        return jsonify({"error": "You can only delete your own farmer profile"}), 403
     db.session.delete(farmer)
     db.session.commit()
 

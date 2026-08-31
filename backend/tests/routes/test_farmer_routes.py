@@ -21,7 +21,6 @@ def test_create_farmer(client, session):
     response = client.post(
         "/api/farmers",
         json={
-            "user_id": user.id,
             "farm_name": "Green Farm",
             "farm_location": "Nairobi",
             "description": "Test farm"

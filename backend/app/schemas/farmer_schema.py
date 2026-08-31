@@ -3,7 +3,9 @@ from marshmallow import Schema, fields, validate
 
 class FarmerSchema(Schema):
     user_id = fields.Int(
-        required=True
+        required=False,
+        allow_none=True,
+        load_default=None
     )
 
     farm_name = fields.Str(
