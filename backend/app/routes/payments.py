@@ -1,10 +1,13 @@
 from flask import Blueprint, request, jsonify
+from flask_jwt_extended import get_jwt
 from marshmallow import ValidationError
 
 from app.extensions import db
-from app.authz import authenticated
+from app.authz import authenticated, current_user_id
 from app.models.payment import Payment
 from app.models.order import Order
+from app.models.order_item import OrderItem
+from app.models.farmer import Farmer
 from app.schemas.payment_schema import (
     PaymentSchema,
     PaymentResponseSchema
@@ -38,7 +41,8 @@ def initiate_stk_push():
     order = db.session.get(Order, order_id)
     if not order:
         return jsonify({"error": "Order not found"}), 404
-
+    if order.buyer_id != current_user_id():
+        return jsonify({"error": "You can only pay for your own orders"}), 403
     # Format phone number
     formatted_phone = mpesa_service.format_phone_number(phone_number)
 
@@ -96,7 +100,8 @@ def create_payment():
         return jsonify({
             "error": "Order not found"
         }), 404
-
+    if order.buyer_id != current_user_id():
+        return jsonify({"error": "You can only pay for your own orders"}), 403
     if float(data["amount"]) != float(
         order.total_amount
     ):
@@ -127,7 +132,12 @@ def create_payment():
 @authenticated
 def get_payments():
 
-    payments = Payment.query.all()
+    role = (get_jwt().get("role") or "").upper()
+    if role == "FARMER":
+        farmer = Farmer.query.filter_by(user_id=current_user_id()).first()
+        payments = Payment.query.join(Order).join(OrderItem).filter(OrderItem.farmer_id == farmer.id).all() if farmer else []
+    else:
+        payments = Payment.query.join(Order).filter(Order.buyer_id == current_user_id()).all()
 
     return jsonify(
         many_response_schema.dump(payments)
@@ -147,7 +157,8 @@ def get_payment(payment_id):
         return jsonify({
             "error": "Payment not found"
         }), 404
-
+    if payment.order.buyer_id != current_user_id():
+        return jsonify({"error": "You can only view your own payments"}), 403
     return jsonify(
         response_schema.dump(payment)
     ), 200
@@ -168,8 +179,9 @@ def update_payment_status(payment_id):
         return jsonify({
             "error": "Payment not found"
         }), 404
-
-    data = request.get_json()
+    if payment.order.buyer_id != current_user_id():
+        return jsonify({"error": "You can only update your own payments"}), 403
+    data = request.get_json(silent=True) or {}
 
     status = data.get("status")
 

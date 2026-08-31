@@ -60,6 +60,7 @@ def create_cart():
     "/<int:cart_id>",
     methods=["GET"]
 )
+@authenticated
 def get_cart(cart_id):
 
     cart = db.session.get(
@@ -71,7 +72,8 @@ def get_cart(cart_id):
         return jsonify({
             "error": "Cart not found"
         }), 404
-
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
     return jsonify(
         cart_response_schema.dump(cart)
     ), 200

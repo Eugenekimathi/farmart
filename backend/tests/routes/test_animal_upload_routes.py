@@ -47,6 +47,18 @@ def test_farmer_can_create_animal_with_primary_image(client, farmer, animal_type
     assert images[1]["image_url"].endswith(".png")
     assert images[1]["is_primary"] is True
 
+def test_farmer_can_upload_webp_image(client, farmer, animal_type):
+    response = client.post(
+        "/api/animals",
+        data=multipart_animal(
+            animal_type,
+            images=[(BytesIO(b"webp image"), "animal.webp")],
+        ),
+        content_type="multipart/form-data",
+    )
+    assert response.status_code == 201
+    assert response.get_json()["images"][0]["image_url"].endswith(".webp")
+
 def test_rejects_breed_from_a_different_animal_type(client, farmer, animal_type, session):
     from app.models.animal_type import AnimalType
     from app.models.breed import Breed

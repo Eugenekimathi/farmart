@@ -1,6 +1,6 @@
-def test_create_order(client, user):
+def test_create_order(buyer_client, user):
 
-    response = client.post(
+    response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -22,10 +22,10 @@ def test_create_order(client, user):
     assert data["status"] == "PENDING"
 
 
-def test_get_orders(client, user):
+def test_get_orders(buyer_client, user):
 
     # Create an order first
-    create_response = client.post(
+    create_response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -37,7 +37,7 @@ def test_get_orders(client, user):
 
     assert create_response.status_code == 201
 
-    response = client.get(
+    response = buyer_client.get(
         "/api/orders"
     )
 
@@ -51,9 +51,9 @@ def test_get_orders(client, user):
     assert data["total_count"] >= 1
 
 
-def test_get_order(client, user):
+def test_get_order(buyer_client, user):
 
-    create_response = client.post(
+    create_response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -67,7 +67,7 @@ def test_get_order(client, user):
 
     order_id = create_response.get_json()["id"]
 
-    response = client.get(
+    response = buyer_client.get(
         f"/api/orders/{order_id}"
     )
 
@@ -96,9 +96,9 @@ def test_get_nonexistent_order(client):
     assert data["error"] == "Order not found"
 
 
-def test_update_order_status(client, user):
+def test_update_order_status(buyer_client, farmer_client, user, cart_item):
 
-    create_response = client.post(
+    create_response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -112,7 +112,7 @@ def test_update_order_status(client, user):
 
     order_id = create_response.get_json()["id"]
 
-    response = client.patch(
+    response = farmer_client.patch(
         f"/api/orders/{order_id}/status",
         json={
             "status": "CONFIRMED"
@@ -127,9 +127,9 @@ def test_update_order_status(client, user):
     assert data["status"] == "CONFIRMED"
 
 
-def test_update_order_status_to_rejected(client, user):
+def test_update_order_status_to_rejected(buyer_client, farmer_client, user, cart_item):
 
-    create_response = client.post(
+    create_response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -143,7 +143,7 @@ def test_update_order_status_to_rejected(client, user):
 
     order_id = create_response.get_json()["id"]
 
-    response = client.patch(
+    response = farmer_client.patch(
         f"/api/orders/{order_id}/status",
         json={
             "status": "REJECTED"
@@ -187,9 +187,9 @@ def test_update_order_status_to_cancelled(buyer_client, user):
     assert data["status"] == "CANCELLED"
 
 
-def test_update_order_invalid_status(client, user):
+def test_update_order_invalid_status(buyer_client, farmer_client, user, cart_item):
 
-    create_response = client.post(
+    create_response = buyer_client.post(
         "/api/orders",
         json={
             "buyer_id": user.id,
@@ -203,7 +203,7 @@ def test_update_order_invalid_status(client, user):
 
     order_id = create_response.get_json()["id"]
 
-    response = client.patch(
+    response = farmer_client.patch(
         f"/api/orders/{order_id}/status",
         json={
             "status": "INVALID"

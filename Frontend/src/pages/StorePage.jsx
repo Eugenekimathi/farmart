@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAnimals } from '../features/animals/animalsSlice'
 import FilterSidebar from '../components/FilterSidebar'
@@ -7,11 +8,15 @@ import Footer from '../components/Footer'
 
 const StorePage = () => {
   const dispatch = useDispatch()
+  const [searchParams] = useSearchParams()
   const { animals, searchQuery, filters, isLoading } = useSelector((state) => state.animals)
-
+  const category = searchParams.get('type') || ''
+  const requestFilters = category && !filters.animal_type
+    ? { ...filters, animal_type: category }
+    : filters
   useEffect(() => {
-    dispatch(getAnimals({ page: 1, search: searchQuery, filters }))
-  }, [dispatch, searchQuery, filters])
+    dispatch(getAnimals({ page: 1, search: searchQuery, filters: requestFilters }))
+  }, [dispatch, searchQuery, filters, category])
 
   return (
     <div className="store-page">

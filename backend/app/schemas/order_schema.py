@@ -1,10 +1,24 @@
 from marshmallow import Schema, fields, validate
+class OrderAnimalSchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+    location = fields.Str()
+    price = fields.Decimal(as_string=True)
 
+class OrderItemResponseSchema(Schema):
+    id = fields.Int()
+    animal_id = fields.Int()
+    farmer_id = fields.Int()
+    price = fields.Decimal(as_string=True)
+    quantity = fields.Int()
+    animal = fields.Nested(OrderAnimalSchema)
 
 class OrderSchema(Schema):
 
     buyer_id = fields.Int(
-        required=True
+        required=False,
+        allow_none=True,
+        load_default=None
     )
 
     total_amount = fields.Decimal(
@@ -56,3 +70,4 @@ class OrderResponseSchema(Schema):
     delivery_phone = fields.Str()
     created_at = fields.DateTime()
     updated_at = fields.DateTime(allow_none=True)
+    order_items = fields.Nested(OrderItemResponseSchema, many=True)

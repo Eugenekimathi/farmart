@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 
 from app.extensions import db
-from app.authz import authenticated
+from app.authz import authenticated, current_user_id
 from app.models.cart import Cart
 from app.models.cart_item import CartItem
 from app.models.animals import Animal
@@ -33,8 +33,9 @@ def add_cart_item(cart_id):
         return jsonify({
             "error": "Cart not found"
         }), 404
-
-    data = schema.load(request.get_json())
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
+    data = schema.load(request.get_json(silent=True) or {})
 
     animal = db.session.get(
         Animal,
@@ -86,7 +87,8 @@ def get_cart_items(cart_id):
         return jsonify({
             "error": "Cart not found"
         }), 404
-
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
     items = CartItem.query.filter_by(
         cart_id=cart_id
     ).all()
@@ -102,6 +104,11 @@ def get_cart_items(cart_id):
 @authenticated
 def get_cart_item(cart_id, item_id):
 
+    cart = db.session.get(Cart, cart_id)
+    if not cart:
+        return jsonify({"error": "Cart not found"}), 404
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
     item = CartItem.query.filter_by(
         id=item_id,
         cart_id=cart_id
@@ -123,6 +130,11 @@ def get_cart_item(cart_id, item_id):
 @authenticated
 def update_cart_item(cart_id, item_id):
 
+    cart = db.session.get(Cart, cart_id)
+    if not cart:
+        return jsonify({"error": "Cart not found"}), 404
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
     item = CartItem.query.filter_by(
         id=item_id,
         cart_id=cart_id
@@ -133,7 +145,7 @@ def update_cart_item(cart_id, item_id):
             "error": "Cart item not found"
         }), 404
 
-    data = schema.load(request.get_json())
+    data = schema.load(request.get_json(silent=True) or {})
 
     animal = db.session.get(
         Animal,
@@ -165,6 +177,11 @@ def update_cart_item(cart_id, item_id):
 @authenticated
 def delete_cart_item(cart_id, item_id):
 
+    cart = db.session.get(Cart, cart_id)
+    if not cart:
+        return jsonify({"error": "Cart not found"}), 404
+    if cart.user_id != current_user_id():
+        return jsonify({"error": "You can only access your own cart"}), 403
     item = CartItem.query.filter_by(
         id=item_id,
         cart_id=cart_id

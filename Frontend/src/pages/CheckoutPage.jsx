@@ -119,7 +119,6 @@ const CheckoutPage = () => {
     // Create the order on the backend
     const result = await dispatch(
       placeOrder({
-        buyer_id: user.id,
         total_amount: subtotal,
         delivery_address: deliveryForm.delivery_address,
         delivery_phone: deliveryForm.delivery_phone,

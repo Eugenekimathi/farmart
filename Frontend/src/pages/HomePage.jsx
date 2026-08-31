@@ -4,16 +4,22 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import Footer from '../components/Footer'
 import AnimalCard from '../components/AnimalCard'
-import { getAnimals } from '../features/animals/animalsSlice'
+import { getAnimals, getAnimalTypes } from '../features/animals/animalsSlice'
 import '../styles/home.css'
 
-const categories = [
-  { id: 'cattle', name: 'Cattle' },
-  { id: 'goat', name: 'Goats' },
-  { id: 'sheep', name: 'Sheep' },
-  { id: 'poultry', name: 'Poultry' },
-  { id: 'pigs', name: 'Pigs' },
-]
+const categoryVisuals = {
+  cattle: '🐄',
+  goat: '🐐',
+  goats: '🐐',
+  sheep: '🐑',
+  poultry: '🐔',
+  chicken: '🐔',
+  rabbit: '🐇',
+  rabbits: '🐇',
+  pig: '🐖',
+  pigs: '🐖',
+  other: '🐾',
+}
 
 const counties = [
   { name: 'Nairobi' },
@@ -78,12 +84,21 @@ const HomePage = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { user, role } = useSelector((state) => state.auth)
-  const { animals } = useSelector((state) => state.animals)
+  const { animals, animalTypes } = useSelector((state) => state.animals)
 
-  // Load featured animals
+  // Keep homepage categories aligned with the same backend records used by forms and filters.
   useEffect(() => {
-    dispatch(getAnimals({ page: 1, limit: 8 }))
+    dispatch(getAnimals({ page: 1 }))
+    dispatch(getAnimalTypes())
   }, [dispatch])
+
+  const categories = animalTypes.length > 0
+    ? animalTypes.map((type) => ({
+      id: type.id,
+      name: type.name,
+      visual: categoryVisuals[type.name.toLowerCase()] || categoryVisuals.other,
+    }))
+    : [{ id: 'all', name: 'All Livestock', visual: categoryVisuals.other }]
 
   const handleCTA = () => {
     if (user && role === 'farmer') {
@@ -167,9 +182,10 @@ const HomePage = () => {
             {categories.map((cat) => (
               <a
                 key={cat.id}
-                href={`/store?type=${cat.id}`}
+                href={cat.id === 'all' ? '/store' : `/store?type=${cat.id}`}
                 className="category-card"
               >
+                <span className="category-card__icon" aria-hidden="true">{cat.visual}</span>
                 <div className="category-card__name">{cat.name}</div>
               </a>
             ))}

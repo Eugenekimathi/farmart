@@ -8,7 +8,7 @@ from app.models.animal_image import AnimalImage
 from app.models.animal_type import AnimalType
 from app.models.breed import Breed
 UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
-ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png"}
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
 MAX_IMAGE_SIZE = 5 * 1024 * 1024
 
 def save_uploaded_image(file_storage):
@@ -16,14 +16,14 @@ def save_uploaded_image(file_storage):
         raise ValueError("Each image must have a filename")
     extension = os.path.splitext(file_storage.filename)[1].lower()
     if file_storage.mimetype not in ALLOWED_IMAGE_TYPES:
-        if file_storage.mimetype != "application/octet-stream" or extension not in {".jpg", ".jpeg", ".png"}:
+        if file_storage.mimetype != "application/octet-stream" or extension not in {".jpg", ".jpeg", ".png", ".webp"}:
             raise ValueError("Only JPG and PNG images are allowed")
     file_storage.stream.seek(0, os.SEEK_END)
     size = file_storage.stream.tell()
     file_storage.stream.seek(0)
     if size > MAX_IMAGE_SIZE:
         raise ValueError("Each image must be 5MB or smaller")
-    extension = ".jpg" if extension in {".jpg", ".jpeg"} else ".png"
+    extension = ".jpg" if extension in {".jpg", ".jpeg"} else (".webp" if extension == ".webp" else ".png")
     filename = f"{uuid.uuid4().hex}{extension}"
     os.makedirs(UPLOAD_DIR, exist_ok=True)
     file_storage.save(os.path.join(UPLOAD_DIR, filename))
@@ -206,15 +206,10 @@ def delete_animal(animal_id):
 @animal_bp.route("/search", methods=["GET"])
 def search_animals():
 
-    animal_type_id = request.args.get(
-        "animal_type_id",
-        type=int
-    )
-
-    breed_id = request.args.get(
-        "breed_id",
-        type=int
-    )
+    animal_type_value = request.args.get("animal_type_id")
+    breed_value = request.args.get("breed_id")
+    animal_type_id = int(animal_type_value) if animal_type_value and animal_type_value.isdigit() else None
+    breed_id = int(breed_value) if breed_value and breed_value.isdigit() else None
 
     min_age = request.args.get(
         "min_age",
@@ -229,14 +224,14 @@ def search_animals():
     query = Animal.query
 
     if animal_type_id:
-        query = query.filter_by(
-            animal_type_id=animal_type_id
-        )
+        query = query.filter_by(animal_type_id=animal_type_id)
+    elif animal_type_value:
+        query = query.join(Animal.animal_type).filter(AnimalType.name.ilike(animal_type_value))
 
     if breed_id:
-        query = query.filter_by(
-            breed_id=breed_id
-        )
+        query = query.filter_by(breed_id=breed_id)
+    elif breed_value:
+        query = query.join(Animal.breed).filter(Breed.name.ilike(breed_value))
 
     if min_age is not None:
         query = query.filter(
@@ -244,9 +239,13 @@ def search_animals():
         )
 
     if max_age is not None:
-        query = query.filter(
-            Animal.age <= max_age
-        )
+        query = query.filter(Animal.age <= max_age)
+    max_price = request.args.get("max_price", type=float)
+    if max_price is not None:
+        query = query.filter(Animal.price <= max_price)
+    location = request.args.get("county") or request.args.get("location")
+    if location:
+        query = query.filter(Animal.location.ilike(f"%{location}%"))
 
     page = max(request.args.get("page", 1, type=int), 1)
     per_page = min(max(request.args.get("per_page", 9, type=int), 1), 100)

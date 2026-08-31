@@ -52,10 +52,10 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
     const files = Array.from(e.target.files)
     if (files.length === 0) return
     const validFiles = files.filter((file) =>
-      ['image/jpeg', 'image/png'].includes(file.type) && file.size <= 5 * 1024 * 1024
+      ['image/jpeg', 'image/png', 'image/webp'].includes(file.type) && file.size <= 5 * 1024 * 1024
     )
     if (validFiles.length !== files.length) {
-      setFormErrors((prev) => ({ ...prev, images: 'Use JPG or PNG images up to 5MB each' }))
+      setFormErrors((prev) => ({ ...prev, images: 'Use JPG, PNG, or WEBP images up to 5MB each' }))
     }
 
     // Limit to 5 images
@@ -318,7 +318,7 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
         <label className="image-upload-box">
           <input
             type="file"
-            accept="image/jpeg,image/png"
+            accept="image/jpeg,image/png,image/webp"
             multiple
             onChange={handleImageChange}
             className="image-upload-box__input"

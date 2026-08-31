@@ -43,6 +43,9 @@ def client(app):
 
 
 @pytest.fixture
+def farmer_client(client):
+    return client
+@pytest.fixture
 def buyer_client(app):
     from flask_jwt_extended import create_access_token
     with app.app_context():
@@ -182,9 +185,9 @@ def cart_item(session, cart, animal):
     return cart_item
 
 @pytest.fixture
-def order(session, user):
+def order(session, user, animal, farmer):
     from app.models.order import Order
-
+    from app.models.order_item import OrderItem
     order = Order(
         buyer_id=user.id,
         total_amount=100000,
@@ -192,8 +195,15 @@ def order(session, user):
         delivery_address="Nairobi",
         delivery_phone="0712345678"
     )
-
     session.add(order)
+    session.flush()
+    session.add(OrderItem(
+        order_id=order.id,
+        animal_id=animal.id,
+        farmer_id=farmer.id,
+        price=100000,
+        quantity=1,
+    ))
     session.commit()
 
     return order

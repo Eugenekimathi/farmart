@@ -6,6 +6,8 @@ export const fetchAnimals = async ({ page = 1, search = '', filters = {} }) => {
     ...(filters.animal_type && { animal_type_id: filters.animal_type }),
     ...(filters.min_age && { min_age: filters.min_age }),
     ...(filters.max_age && { max_age: filters.max_age }),
+    ...(filters.max_price && { max_price: filters.max_price }),
+    ...(filters.county && { county: filters.county }),
   }
   const response = await api.get(search || Object.keys(params).length ? '/animals/search' : '/animals', { params: { ...params, page, per_page: 9 } })
   const animals = Array.isArray(response.data) ? response.data : response.data.animals || []
