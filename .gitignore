@@ -16,6 +16,8 @@ __pycache__/
 venv/
 .venv/
 *.egg-info/
+# Runtime logs and temporary QA output
+*.log
 # OS files
 .DS_Store
 Thumbs.db
