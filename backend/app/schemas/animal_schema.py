@@ -1,10 +1,28 @@
 from marshmallow import Schema, fields, validate
+class AnimalImageResponseSchema(Schema):
+    id = fields.Int()
+    image_url = fields.Str()
+    is_primary = fields.Bool()
+    created_at = fields.DateTime(allow_none=True)
 
+class AnimalTypeSummarySchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+
+class BreedSummarySchema(Schema):
+    id = fields.Int()
+    name = fields.Str()
+
+class FarmerSummarySchema(Schema):
+    id = fields.Int()
+    farm_name = fields.Str()
+    farm_location = fields.Str()
 
 class AnimalSchema(Schema):
 
     farmer_id = fields.Int(
-        required=True
+        required=False,
+        allow_none=True
     )
 
     animal_type_id = fields.Int(
@@ -12,7 +30,9 @@ class AnimalSchema(Schema):
     )
 
     breed_id = fields.Int(
-        required=True
+        required=False,
+        allow_none=True,
+        load_default=None
     )
 
     name = fields.Str(
@@ -74,7 +94,11 @@ class AnimalResponseSchema(Schema):
     id = fields.Int()
     farmer_id = fields.Int()
     animal_type_id = fields.Int()
-    breed_id = fields.Int()
+    breed_id = fields.Int(allow_none=True)
+    animal_type = fields.Nested(AnimalTypeSummarySchema)
+    breed = fields.Nested(BreedSummarySchema, allow_none=True)
+    farmer = fields.Nested(FarmerSummarySchema)
+    images = fields.Nested(AnimalImageResponseSchema, many=True)
     name = fields.Str()
     gender = fields.Str()
     age = fields.Int()

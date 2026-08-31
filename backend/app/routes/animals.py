@@ -1,7 +1,34 @@
+import os
+import uuid
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity
-
+from marshmallow import ValidationError
 from app.extensions import db
+from app.models.animal_image import AnimalImage
+from app.models.animal_type import AnimalType
+from app.models.breed import Breed
+UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
+ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png"}
+MAX_IMAGE_SIZE = 5 * 1024 * 1024
+
+def save_uploaded_image(file_storage):
+    if not file_storage or not file_storage.filename:
+        raise ValueError("Each image must have a filename")
+    extension = os.path.splitext(file_storage.filename)[1].lower()
+    if file_storage.mimetype not in ALLOWED_IMAGE_TYPES:
+        if file_storage.mimetype != "application/octet-stream" or extension not in {".jpg", ".jpeg", ".png"}:
+            raise ValueError("Only JPG and PNG images are allowed")
+    file_storage.stream.seek(0, os.SEEK_END)
+    size = file_storage.stream.tell()
+    file_storage.stream.seek(0)
+    if size > MAX_IMAGE_SIZE:
+        raise ValueError("Each image must be 5MB or smaller")
+    extension = ".jpg" if extension in {".jpg", ".jpeg"} else ".png"
+    filename = f"{uuid.uuid4().hex}{extension}"
+    os.makedirs(UPLOAD_DIR, exist_ok=True)
+    file_storage.save(os.path.join(UPLOAD_DIR, filename))
+    return f"{request.host_url.rstrip('/')}/uploads/{filename}"
+
 from app.authz import require_role
 from app.models.animals import Animal
 from app.models.farmer import Farmer
@@ -23,30 +50,53 @@ many_response_schema = AnimalResponseSchema(
 )
 
 @animal_bp.route("", methods=["POST"])
-@require_role("USER", "BUYER", "FARMER", "farmer")
+@require_role("FARMER", "farmer")
 def create_animal():
     from flask_jwt_extended import get_jwt_identity
-    
+
     user_id = get_jwt_identity()
-    
+
     # Get farmer profile for this user
     farmer = Farmer.query.filter_by(user_id=user_id).first()
     if not farmer:
         return jsonify({"error": "Farmer profile not found"}), 404
-    
-    data = schema.load(request.get_json())
-    
-    # Set farmer_id to the current user's farmer profile
-    data['farmer_id'] = farmer.id
-    
-    animal = Animal(**data)
-    
-    db.session.add(animal)
-    db.session.commit()
-    
-    return jsonify(
-        response_schema.dump(animal)
-    ), 201
+
+    try:
+        if request.content_type and "multipart/form-data" in request.content_type:
+            raw = request.form.to_dict()
+            raw.pop("primary_image_index", None)
+            raw["breed_id"] = request.form.get("breed_id") or None
+            raw["gender"] = (request.form.get("gender") or "").upper()
+            data = schema.load(raw)
+            files = request.files.getlist("images")
+        else:
+            data = schema.load(request.get_json(silent=True) or {})
+            files = []
+        data["farmer_id"] = farmer.id
+        animal_type = db.session.get(AnimalType, data["animal_type_id"])
+        if not animal_type:
+            return jsonify({"error": "Animal type not found"}), 400
+        if data.get("breed_id") is not None:
+            breed = db.session.get(Breed, data["breed_id"])
+            if not breed or breed.animal_type_id != animal_type.id:
+                return jsonify({"error": "Breed does not belong to the selected animal type"}), 400
+        if len(files) > 5:
+            return jsonify({"error": "You can upload a maximum of 5 images"}), 400
+        animal = Animal(**data)
+        db.session.add(animal)
+        db.session.flush()
+        primary_index = int(request.form.get("primary_image_index", 0)) if files else 0
+        for index, file_storage in enumerate(files):
+            db.session.add(AnimalImage(
+                animal_id=animal.id,
+                image_url=save_uploaded_image(file_storage),
+                is_primary=index == primary_index,
+            ))
+        db.session.commit()
+    except (ValidationError, ValueError, TypeError) as error:
+        db.session.rollback()
+        return jsonify({"error": "Invalid animal data", "details": getattr(error, "messages", str(error))}), 400
+    return jsonify(response_schema.dump(animal)), 201
 
 @animal_bp.route("", methods=["GET"])
 def get_animals():
@@ -81,9 +131,9 @@ def get_animal(animal_id):
 @require_role("FARMER", "farmer")
 def update_animal(animal_id):
     from flask_jwt_extended import get_jwt_identity
-    
+
     user_id = get_jwt_identity()
-    
+
     # Get farmer profile for this user
     farmer = Farmer.query.filter_by(user_id=user_id).first()
     if not farmer:
@@ -98,7 +148,7 @@ def update_animal(animal_id):
         return jsonify({
             "error": "Animal not found"
         }), 404
-    
+
     # Verify farmer owns this animal
     if animal.farmer_id != farmer.id:
         return jsonify({
@@ -122,9 +172,9 @@ def update_animal(animal_id):
 @require_role("FARMER", "farmer")
 def delete_animal(animal_id):
     from flask_jwt_extended import get_jwt_identity
-    
+
     user_id = get_jwt_identity()
-    
+
     # Get farmer profile for this user
     farmer = Farmer.query.filter_by(user_id=user_id).first()
     if not farmer:
@@ -139,7 +189,7 @@ def delete_animal(animal_id):
         return jsonify({
             "error": "Animal not found"
         }), 404
-    
+
     # Verify farmer owns this animal
     if animal.farmer_id != farmer.id:
         return jsonify({

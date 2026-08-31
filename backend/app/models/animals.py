@@ -20,7 +20,7 @@ class Animal(db.Model):
     breed_id = db.Column(
         db.Integer,
         db.ForeignKey("breeds.id"),
-        nullable=False
+        nullable=True
     )
 
     name = db.Column(

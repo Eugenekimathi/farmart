@@ -13,6 +13,8 @@ def create_app(config=None):
 
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "uploads")
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     if config:
         app.config.update(config)
     app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-change-me")
@@ -24,6 +26,11 @@ def create_app(config=None):
         "http://localhost:5173,http://127.0.0.1:5173"
     ).split(",")
     CORS(app, resources={r"/api/*": {"origins": frontend_origins}}, supports_credentials=True)
+
+    @app.route("/uploads/<path:filename>")
+    def uploaded_file(filename):
+        from flask import send_from_directory
+        return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
     if config:
         app.config.update(config)
