@@ -1,4 +1,4 @@
-from marshmallow import Schema, fields, validate
+from marshmallow import Schema, fields, validate, validates_schema, ValidationError
 
 
 class UserRegisterSchema(Schema):
@@ -35,6 +35,18 @@ class UserRegisterSchema(Schema):
         allow_none=True,
         validate=validate.Length(max=150)
     )
+
+    farm_name = fields.Str(required=False, validate=validate.Length(min=2, max=150))
+    farm_location = fields.Str(required=False, validate=validate.Length(min=2, max=150))
+    farm_description = fields.Str(required=False, allow_none=True)
+
+    @validates_schema
+    def validate_farmer_profile(self, data, **kwargs):
+        if data.get("role") == "FARMER":
+            required = ("farm_name", "farm_location")
+            errors = {field: ["This field is required for farmer registration."] for field in required if not data.get(field)}
+            if errors:
+                raise ValidationError(errors)
 
 
 class UserResponseSchema(Schema):

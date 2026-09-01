@@ -1,5 +1,3 @@
-import os
-import uuid
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import get_jwt_identity
 from marshmallow import ValidationError
@@ -7,27 +5,7 @@ from app.extensions import db
 from app.models.animal_image import AnimalImage
 from app.models.animal_type import AnimalType
 from app.models.breed import Breed
-UPLOAD_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
-ALLOWED_IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp"}
-MAX_IMAGE_SIZE = 5 * 1024 * 1024
-
-def save_uploaded_image(file_storage):
-    if not file_storage or not file_storage.filename:
-        raise ValueError("Each image must have a filename")
-    extension = os.path.splitext(file_storage.filename)[1].lower()
-    if file_storage.mimetype not in ALLOWED_IMAGE_TYPES:
-        if file_storage.mimetype != "application/octet-stream" or extension not in {".jpg", ".jpeg", ".png", ".webp"}:
-            raise ValueError("Only JPG and PNG images are allowed")
-    file_storage.stream.seek(0, os.SEEK_END)
-    size = file_storage.stream.tell()
-    file_storage.stream.seek(0)
-    if size > MAX_IMAGE_SIZE:
-        raise ValueError("Each image must be 5MB or smaller")
-    extension = ".jpg" if extension in {".jpg", ".jpeg"} else (".webp" if extension == ".webp" else ".png")
-    filename = f"{uuid.uuid4().hex}{extension}"
-    os.makedirs(UPLOAD_DIR, exist_ok=True)
-    file_storage.save(os.path.join(UPLOAD_DIR, filename))
-    return f"{request.host_url.rstrip('/')}/uploads/{filename}"
+from app.services.image_storage_service import upload_animal_image
 
 from app.authz import require_role
 from app.models.animals import Animal
@@ -67,6 +45,7 @@ def create_animal():
             raw.pop("primary_image_index", None)
             raw["breed_id"] = request.form.get("breed_id") or None
             raw["gender"] = (request.form.get("gender") or "").upper()
+            raw["status"] = (request.form.get("status") or "AVAILABLE").upper()
             data = schema.load(raw)
             files = request.files.getlist("images")
         else:
@@ -89,7 +68,7 @@ def create_animal():
         for index, file_storage in enumerate(files):
             db.session.add(AnimalImage(
                 animal_id=animal.id,
-                image_url=save_uploaded_image(file_storage),
+                image_url=upload_animal_image(file_storage),
                 is_primary=index == primary_index,
             ))
         db.session.commit()
@@ -258,4 +237,3 @@ def search_animals():
         "total_count": pagination.total,
         "current_page": pagination.page,
     }), 200
-

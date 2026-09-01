@@ -14,6 +14,9 @@ def create_app(config=None):
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "uploads")
+    app.config["CLOUDINARY_CLOUD_NAME"] = os.getenv("CLOUDINARY_CLOUD_NAME")
+    app.config["CLOUDINARY_API_KEY"] = os.getenv("CLOUDINARY_API_KEY")
+    app.config["CLOUDINARY_API_SECRET"] = os.getenv("CLOUDINARY_API_SECRET")
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     if config:
         app.config.update(config)
@@ -52,6 +55,7 @@ def create_app(config=None):
     from app.routes.order_item import order_item_bp
     from app.routes.payments import payment_bp
     from app.routes.delivery import delivery_bp
+    from app.routes.assistant import assistant_bp
 
 
     app.register_blueprint(auth_bp)
@@ -66,5 +70,6 @@ def create_app(config=None):
     app.register_blueprint(order_item_bp)
     app.register_blueprint(payment_bp)
     app.register_blueprint(delivery_bp)
+    app.register_blueprint(assistant_bp)
 
     return app

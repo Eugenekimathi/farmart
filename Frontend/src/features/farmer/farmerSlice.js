@@ -24,7 +24,9 @@ export const addFarmerAnimal = createAsyncThunk(
       return await createAnimal(formData)
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || 'Failed to add animal.'
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        'Failed to add animal.'
       )
     }
   }
@@ -37,7 +39,9 @@ export const editFarmerAnimal = createAsyncThunk(
       return await updateAnimal(id, formData)
     } catch (error) {
       return rejectWithValue(
-        error.response?.data?.message || 'Failed to update animal.'
+        error.response?.data?.error ||
+        error.response?.data?.message ||
+        'Failed to update animal.'
       )
     }
   }

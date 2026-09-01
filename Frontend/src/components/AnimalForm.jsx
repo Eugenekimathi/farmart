@@ -14,7 +14,7 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
     price: '',
     location: '',
     description: '',
-    status: 'available',
+    status: 'AVAILABLE',
   })
 
   const [formErrors, setFormErrors] = useState({})
@@ -34,7 +34,7 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
         price: initialData.price || '',
         location: initialData.location || '',
         description: initialData.description || '',
-        status: initialData.status || 'available',
+        status: initialData.status || 'AVAILABLE',
       })
     }
   }, [initialData])
@@ -280,9 +280,10 @@ const AnimalForm = ({ initialData = null, onSubmit, isLoading, error }) => {
               onChange={handleChange}
               className="form-input"
             >
-              <option value="available">Available</option>
-              <option value="pending">Pending</option>
-              <option value="sold">Sold</option>
+              <option value="AVAILABLE">Available</option>
+              <option value="RESERVED">Reserved</option>
+              <option value="SOLD">Sold</option>
+              <option value="INACTIVE">Inactive</option>
             </select>
           </div>
         )}

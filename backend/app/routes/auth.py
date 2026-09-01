@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_jwt_extended import create_access_token
 from app.extensions import db
 from app.models.user import User
+from app.models.farmer import Farmer
 from app.schemas.user_schema import (
     UserRegisterSchema,
     UserResponseSchema
@@ -64,6 +65,14 @@ def register():
 
     db.session.add(user)
     try:
+        db.session.flush()
+        if data["role"] == "FARMER":
+            db.session.add(Farmer(
+                user_id=user.id,
+                farm_name=data["farm_name"],
+                farm_location=data["farm_location"],
+                description=data.get("farm_description"),
+            ))
         db.session.commit()
     except Exception:
         db.session.rollback()
@@ -90,4 +99,3 @@ def login():
             "message": "Invalid email or password"
         }), 401
     return _auth_payload(user)
-

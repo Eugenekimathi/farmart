@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { sendAssistantMessage } from '../services/assistantService'
 
 const quickQuestions = [
   'What animals are available?',
@@ -13,6 +14,8 @@ const FarmartAssistant = () => {
     { role: 'assistant', content: 'Hi! I can help you find livestock and use Farmart.' },
   ])
   const [isLoading, setIsLoading] = useState(false)
+  const [conversationId, setConversationId] = useState(null)
+  const [error, setError] = useState('')
 
   const askQuestion = async (question) => {
     const trimmedQuestion = question.trim()
@@ -20,21 +23,15 @@ const FarmartAssistant = () => {
 
     setMessages((current) => [...current, { role: 'user', content: trimmedQuestion }])
     setMessage('')
+    setError('')
     setIsLoading(true)
 
     try {
-      // The Flask API has no AI route. Keep the assistant useful without
-      // making a request that is guaranteed to return 404.
-      const lowerQuestion = trimmedQuestion.toLowerCase()
-      let answer = 'Browse the Store to compare available livestock, then sign in to add an animal to your cart.'
-      if (lowerQuestion.includes('buy') || lowerQuestion.includes('order')) {
-        answer = 'Choose an available animal, add it to your cart, complete delivery details, and pay from Checkout.'
-      } else if (lowerQuestion.includes('check')) {
-        answer = 'Before buying, check the breed, age, health records, location, price, and farmer details.'
-      } else if (lowerQuestion.includes('available')) {
-        answer = 'Open the Store page to see the latest available animals and use the search and filters.'
-      }
-      setMessages((current) => [...current, { role: 'assistant', content: answer }])
+      const response = await sendAssistantMessage({ message: trimmedQuestion, conversationId })
+      setConversationId(response.conversation_id)
+      setMessages((current) => [...current, { role: 'assistant', content: response.message }])
+    } catch (requestError) {
+      setError(requestError.response?.data?.error || 'The assistant is unavailable. Please try again.')
     } finally {
       setIsLoading(false)
     }
@@ -64,6 +61,7 @@ const FarmartAssistant = () => {
               </p>
             ))}
             {isLoading && <p className="farmart-assistant__message farmart-assistant__message--assistant">Thinking...</p>}
+            {error && <p className="farmart-assistant__message farmart-assistant__message--error" role="alert">{error}</p>}
           </div>
 
           <div className="farmart-assistant__quick-actions">
