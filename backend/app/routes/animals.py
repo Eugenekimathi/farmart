@@ -237,3 +237,20 @@ def search_animals():
         "total_count": pagination.total,
         "current_page": pagination.page,
     }), 200
+
+
+@animal_bp.route("/mine", methods=["GET"])
+@require_role("FARMER", "farmer")
+def get_my_animals():
+    farmer = Farmer.query.filter_by(user_id=get_jwt_identity()).first()
+    if not farmer:
+        return jsonify({"animals": [], "total_pages": 0, "total_count": 0, "current_page": 1}), 200
+    page = max(request.args.get("page", 1, type=int), 1)
+    per_page = min(max(request.args.get("per_page", 100, type=int), 1), 100)
+    pagination = Animal.query.filter_by(farmer_id=farmer.id).paginate(page=page, per_page=per_page, error_out=False)
+    return jsonify({
+        "animals": many_response_schema.dump(pagination.items),
+        "total_pages": pagination.pages,
+        "total_count": pagination.total,
+        "current_page": pagination.page,
+    }), 200

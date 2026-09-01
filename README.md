@@ -1,4 +1,4 @@
-﻿# Farmart
+# Farmart
 
 Farmart is a Kenyan livestock marketplace connecting farmers and buyers directly. Farmers can publish real animal listings with photos, while buyers can browse, filter, inspect, cart, checkout, pay through the configured payment flow, and track orders.
 
@@ -51,7 +51,7 @@ CORS on the backend allows http://localhost:5173 by default (configurable via CO
 ## Running Tests
 
 ```bash
-cd backend && python -m pytest          # 190 tests
+cd backend && python -m pytest          # 192 tests
 cd Frontend && npm test                 # 35 tests
 ```
 

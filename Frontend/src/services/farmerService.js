@@ -1,9 +1,8 @@
 import api from './api'
 
-export const fetchFarmerAnimals = async (farmerId) => {
-  const response = await api.get('/animals', { params: { page: 1, per_page: 100 } })
-  const animals = Array.isArray(response.data) ? response.data : response.data.animals || []
-  return animals.filter((animal) => !farmerId || String(animal.farmer_id) === String(farmerId))
+export const fetchFarmerAnimals = async () => {
+  const response = await api.get('/animals/mine', { params: { page: 1, per_page: 100 } })
+  return Array.isArray(response.data) ? response.data : response.data.animals || []
 }
 
 export const createAnimal = async (formData) => {
