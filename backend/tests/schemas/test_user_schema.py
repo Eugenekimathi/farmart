@@ -100,3 +100,15 @@ def test_user_response_does_not_include_password():
     result = schema.dump(data)
 
     assert "password" not in result
+
+
+def test_farmer_registration_requires_farm_fields():
+    schema = UserRegisterSchema()
+    with pytest.raises(ValidationError):
+        schema.load({
+            "full_name": "Jane Farmer",
+            "email": "jane@example.com",
+            "phone": "0722222222",
+            "password": "password123",
+            "role": "FARMER",
+        })

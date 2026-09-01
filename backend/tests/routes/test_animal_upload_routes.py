@@ -23,6 +23,17 @@ def test_farmer_can_create_animal_without_breed(client, farmer, animal_type):
     assert response.status_code == 201
     assert response.get_json()["breed_id"] is None
 
+
+def test_farmer_can_create_animal_with_lowercase_form_status(client, farmer, animal_type):
+    response = client.post(
+        "/api/animals",
+        data=multipart_animal(animal_type, status="available"),
+        content_type="multipart/form-data",
+    )
+
+    assert response.status_code == 201
+    assert response.get_json()["status"] == "AVAILABLE"
+
 def test_farmer_can_create_animal_with_primary_image(client, farmer, animal_type, breed):
     data = multipart_animal(
         animal_type,

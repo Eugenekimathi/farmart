@@ -54,6 +54,46 @@ def test_register_duplicate_email(client):
 
     assert data["error"] == "Email already exists"
 
+
+def test_register_farmer_creates_linked_farmer_profile(client, app):
+    response = client.post(
+        "/api/auth/register",
+        json={
+            "full_name": "Jane Farmer",
+            "email": "jane@example.com",
+            "phone": "0722222222",
+            "password": "password123",
+            "role": "FARMER",
+            "location": "Nakuru",
+            "farm_name": "Green Valley Farm",
+            "farm_location": "Naivasha, Nakuru",
+            "farm_description": "Dairy and livestock farm",
+        },
+    )
+
+    assert response.status_code == 201
+    with app.app_context():
+        from app.models.farmer import Farmer
+        farmer = Farmer.query.filter_by(user_id=response.get_json()["user"]["id"]).one()
+        assert farmer.farm_name == "Green Valley Farm"
+        assert farmer.farm_location == "Naivasha, Nakuru"
+
+
+def test_register_farmer_requires_farm_details(client):
+    response = client.post(
+        "/api/auth/register",
+        json={
+            "full_name": "Jane Farmer",
+            "email": "jane@example.com",
+            "phone": "0722222222",
+            "password": "password123",
+            "role": "FARMER",
+        },
+    )
+
+    assert response.status_code == 400
+    assert "farm_name" in response.get_json()["errors"]
+
 def test_login_success(client):
     client.post(
         "/api/auth/register",

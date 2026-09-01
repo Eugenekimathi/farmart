@@ -43,6 +43,9 @@ const RegisterPage = () => {
     confirmPassword: '',
     role: 'buyer',
     location: '',
+    farm_name: '',
+    farm_location: '',
+    farm_description: '',
   })
 
   const [formErrors, setFormErrors] = useState({})
@@ -76,6 +79,10 @@ const RegisterPage = () => {
     else if (formData.password.length < 8) errors.password = 'At least 8 characters'
     if (formData.confirmPassword !== formData.password) errors.confirmPassword = 'Passwords do not match'
     if (!formData.location.trim()) errors.location = 'Location is required'
+    if (formData.role === 'farmer') {
+      if (!formData.farm_name.trim()) errors.farm_name = 'Farm name is required'
+      if (!formData.farm_location.trim()) errors.farm_location = 'Farm location is required'
+    }
     return errors
   }
 
@@ -93,6 +100,9 @@ const RegisterPage = () => {
       phone: formData.phone.trim(),
       full_name: formData.full_name.trim(),
       location: formData.location.trim(),
+      farm_name: formData.farm_name.trim(),
+      farm_location: formData.farm_location.trim(),
+      farm_description: formData.farm_description.trim() || null,
     }
     delete payload.confirmPassword
     dispatch(register(payload))
@@ -140,6 +150,27 @@ const RegisterPage = () => {
               </button>
             </div>
           </div>
+
+          {formData.role === 'farmer' && (
+            <>
+              <div className="form-row">
+                <div className="form-group">
+                  <label className="form-label">Farm Name</label>
+                  <input type="text" name="farm_name" value={formData.farm_name} onChange={handleChange} placeholder="e.g. Green Valley Farm" className={`form-input ${formErrors.farm_name ? 'form-input--error' : ''}`} />
+                  {formErrors.farm_name && <span className="form-error">{formErrors.farm_name}</span>}
+                </div>
+                <div className="form-group">
+                  <label className="form-label">Farm Location</label>
+                  <input type="text" name="farm_location" value={formData.farm_location} onChange={handleChange} placeholder="e.g. Naivasha, Nakuru" className={`form-input ${formErrors.farm_location ? 'form-input--error' : ''}`} />
+                  {formErrors.farm_location && <span className="form-error">{formErrors.farm_location}</span>}
+                </div>
+              </div>
+              <div className="form-group">
+                <label className="form-label">Farm Description <span className="form-label__optional">(optional)</span></label>
+                <textarea name="farm_description" value={formData.farm_description} onChange={handleChange} placeholder="Tell buyers about your farm" rows={3} className="form-input form-textarea" />
+              </div>
+            </>
+          )}
 
           <div className="form-row">
             <div className="form-group">

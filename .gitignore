@@ -24,3 +24,4 @@ Thumbs.db
 .idea/
 # Local database
 backend/instance/*.db
+backend/app/uploads/
