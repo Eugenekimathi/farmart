@@ -51,7 +51,7 @@ CORS on the backend allows http://localhost:5173 by default (configurable via CO
 ## Running Tests
 
 ```bash
-cd backend && python -m pytest          # 183 tests
+cd backend && python -m pytest          # 190 tests
 cd Frontend && npm test                 # 35 tests
 ```
 
