@@ -4,6 +4,18 @@ class OrderAnimalSchema(Schema):
     name = fields.Str()
     location = fields.Str()
     price = fields.Decimal(as_string=True)
+    images = fields.Nested("OrderAnimalImageSchema", many=True)
+
+
+class OrderAnimalImageSchema(Schema):
+    image_url = fields.Str()
+    is_primary = fields.Bool()
+
+
+class OrderFarmerSchema(Schema):
+    id = fields.Int()
+    farm_name = fields.Str()
+    farm_location = fields.Str()
 
 class OrderItemResponseSchema(Schema):
     id = fields.Int()
@@ -12,6 +24,7 @@ class OrderItemResponseSchema(Schema):
     price = fields.Decimal(as_string=True)
     quantity = fields.Int()
     animal = fields.Nested(OrderAnimalSchema)
+    farmer = fields.Nested(OrderFarmerSchema)
 
 class OrderSchema(Schema):
 
