@@ -2,8 +2,11 @@
 import os
 import re
 import uuid
+import logging
 
 from app.models.animals import Animal
+
+logger = logging.getLogger(__name__)
 
 
 def _marketplace_context(message):
@@ -39,7 +42,8 @@ def respond(message, conversation_id=None):
                 input=f"You are Farmart's helpful livestock marketplace assistant. Use this verified marketplace context: {context}\n\nCustomer: {message}",
             )
             answer = response.output_text
-        except Exception:
+        except Exception as exc:
+            logger.warning("OpenAI assistant request failed; using marketplace fallback: %s", type(exc).__name__)
             answer = _fallback_answer(message, listings)
     else:
         answer = _fallback_answer(message, listings)

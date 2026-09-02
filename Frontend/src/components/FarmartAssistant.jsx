@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { sendAssistantMessage } from '../services/assistantService'
 
 const quickQuestions = [
@@ -16,6 +16,18 @@ const FarmartAssistant = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [conversationId, setConversationId] = useState(null)
   const [error, setError] = useState('')
+  const launcherRef = useRef(null)
+
+  useEffect(() => {
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape' && isOpen) {
+        setIsOpen(false)
+        launcherRef.current?.focus()
+      }
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [isOpen])
 
   const askQuestion = async (question) => {
     const trimmedQuestion = question.trim()
@@ -45,7 +57,7 @@ const FarmartAssistant = () => {
   return (
     <div className="farmart-assistant">
       {isOpen && (
-        <section className="farmart-assistant__panel" aria-label="Farmart Assistant">
+        <section id="farmart-assistant-panel" className="farmart-assistant__panel" aria-label="Farmart Assistant">
           <header className="farmart-assistant__header">
             <div>
               <strong>Farmart Assistant</strong>
@@ -82,7 +94,7 @@ const FarmartAssistant = () => {
         </section>
       )}
 
-      <button className="farmart-assistant__launcher" type="button" onClick={() => setIsOpen((open) => !open)}>
+      <button ref={launcherRef} className="farmart-assistant__launcher" type="button" onClick={() => setIsOpen((open) => !open)} aria-expanded={isOpen} aria-controls="farmart-assistant-panel">
         <span aria-hidden="true">✦</span> Ask Farmart
       </button>
     </div>
