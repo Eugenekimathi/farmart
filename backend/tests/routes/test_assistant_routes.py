@@ -10,3 +10,8 @@ def test_assistant_chat_returns_marketplace_response(client, animal):
 def test_assistant_chat_validates_message(client):
     response = client.post("/api/assistant/chat", json={"message": ""})
     assert response.status_code == 400
+
+
+def test_assistant_chat_rejects_whitespace_message(client):
+    response = client.post("/api/assistant/chat", json={"message": "   "})
+    assert response.status_code == 400
