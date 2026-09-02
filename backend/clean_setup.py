@@ -66,6 +66,11 @@ with app.app_context():
         Breed(name="Broiler", animal_type_id=chicken.id, description="Meat chicken"),
         Breed(name="Kienyeji", animal_type_id=chicken.id, description="Indigenous free-range chicken"),
         Breed(name="Layers", animal_type_id=chicken.id, description="Egg-producing chicken"),
+        Breed(name="Improved Kienyeji", animal_type_id=chicken.id, description="Improved indigenous dual-purpose chicken"),
+        Breed(name="Kuroiler", animal_type_id=chicken.id, description="Hardy dual-purpose meat and egg chicken"),
+        Breed(name="Kenbro", animal_type_id=chicken.id, description="Fast-growing dual-purpose chicken"),
+        Breed(name="Rainbow Rooster", animal_type_id=chicken.id, description="Dual-purpose free-range chicken"),
+        Breed(name="Rhode Island Red", animal_type_id=chicken.id, description="Reliable brown-egg laying chicken"),
         Breed(name="Other", animal_type_id=chicken.id, description="Other chicken breed"),
         # Rabbit breeds
         Breed(name="New Zealand White", animal_type_id=rabbits.id, description="Popular meat rabbit"),
@@ -87,4 +92,3 @@ with app.app_context():
     print("3. Add animals (using the available types and breeds)")
     print("4. Register a buyer account")
     print("5. Buyers can browse and purchase")
-
