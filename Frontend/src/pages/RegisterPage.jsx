@@ -100,9 +100,15 @@ const RegisterPage = () => {
       phone: formData.phone.trim(),
       full_name: formData.full_name.trim(),
       location: formData.location.trim(),
-      farm_name: formData.farm_name.trim(),
-      farm_location: formData.farm_location.trim(),
-      farm_description: formData.farm_description.trim() || null,
+    }
+    if (formData.role === 'farmer') {
+      payload.farm_name = formData.farm_name.trim()
+      payload.farm_location = formData.farm_location.trim()
+      payload.farm_description = formData.farm_description.trim() || null
+    } else {
+      delete payload.farm_name
+      delete payload.farm_location
+      delete payload.farm_description
     }
     delete payload.confirmPassword
     dispatch(register(payload))

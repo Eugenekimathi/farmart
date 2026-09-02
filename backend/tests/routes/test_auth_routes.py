@@ -25,6 +25,23 @@ def test_register_user(client):
     assert "password_hash" not in user
 
 
+def test_register_buyer_ignores_empty_legacy_farm_fields(client):
+    response = client.post(
+        "/api/auth/register",
+        json={
+            "full_name": "Buyer With Legacy Form",
+            "email": "legacy-buyer@test.com",
+            "phone": "0791234567",
+            "password": "password123",
+            "role": "BUYER",
+            "farm_name": "",
+            "farm_location": "",
+        },
+    )
+    assert response.status_code == 201
+    assert response.get_json()["user"]["role"] == "buyer"
+
+
 def test_register_duplicate_email(client):
     client.post(
         "/api/auth/register",
