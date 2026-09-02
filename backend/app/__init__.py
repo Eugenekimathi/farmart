@@ -17,6 +17,20 @@ def create_app(config=None):
     app.config["CLOUDINARY_CLOUD_NAME"] = os.getenv("CLOUDINARY_CLOUD_NAME")
     app.config["CLOUDINARY_API_KEY"] = os.getenv("CLOUDINARY_API_KEY")
     app.config["CLOUDINARY_API_SECRET"] = os.getenv("CLOUDINARY_API_SECRET")
+    # M-Pesa configuration
+    app.config["MPESA_CONSUMER_KEY"] = os.getenv("MPESA_CONSUMER_KEY")
+    app.config["MPESA_CONSUMER_SECRET"] = os.getenv("MPESA_CONSUMER_SECRET")
+    app.config["MPESA_PASSKEY"] = os.getenv("MPESA_PASSKEY")
+    app.config["MPESA_SHORTCODE"] = os.getenv("MPESA_SHORTCODE")
+    app.config["MPESA_ENVIRONMENT"] = os.getenv("MPESA_ENVIRONMENT", "sandbox")
+    app.config["MPESA_CALLBACK_URL"] = os.getenv("MPESA_CALLBACK_URL")
+    # Email (Gmail SMTP) configuration
+    app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+    app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", "587"))
+    app.config["MAIL_USE_TLS"] = os.getenv("MAIL_USE_TLS", "true").lower() == "true"
+    app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+    app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+    app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     if config:
         app.config.update(config)
