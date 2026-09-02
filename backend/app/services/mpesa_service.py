@@ -362,6 +362,23 @@ class MpesaService:
 
         db.session.commit()
 
+        # Notifications are intentionally best-effort.  A delivery failure must
+        # never roll back a confirmed payment, and duplicate callbacks return
+        # before this point so they cannot send duplicate receipts.
+        from app.email_utils import (
+            send_buyer_transaction_email,
+            send_farmer_transaction_email,
+        )
+
+        send_buyer_transaction_email(order.buyer, transaction, order)
+        notified_farmer_ids = set()
+        for item in order.order_items:
+            if item.farmer_id in notified_farmer_ids:
+                continue
+            notified_farmer_ids.add(item.farmer_id)
+            if item.farmer and item.farmer.user:
+                send_farmer_transaction_email(item.farmer.user, transaction, order)
+
 
 # Singleton instance
 mpesa_service = MpesaService()
