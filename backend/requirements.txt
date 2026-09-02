@@ -12,6 +12,7 @@ flask_marshmallow
 marshmallow-sqlalchemy
 cloudinary
 flask-login
+flask-mail
 python-dotenv
 requests
 openai
