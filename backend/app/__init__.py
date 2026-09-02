@@ -5,6 +5,7 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 from app.extensions import db
+from app.email_utils import mail
 load_dotenv()
 
 def create_app(config=None):
@@ -53,6 +54,7 @@ def create_app(config=None):
         app.config.update(config)
 
     db.init_app(app)
+    mail.init_app(app)
     migrate = Migrate(app, db)
 
     from app import models
