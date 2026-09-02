@@ -79,13 +79,13 @@ const CheckoutPage = () => {
 
   // Watch payment status changes
   useEffect(() => {
-    if (paymentStatus === 'paid') {
+    if (paymentStatus === 'SUCCESS') {
       // Payment confirmed — clear cart and show success
       dispatch(clearCart())
       startTransition(() => setStep(STEPS.SUCCESS))
       if (pollRef.current) clearInterval(pollRef.current)
     }
-    if (paymentStatus === 'failed') {
+    if (['FAILED', 'CANCELLED', 'TIMEOUT'].includes(paymentStatus)) {
       if (pollRef.current) clearInterval(pollRef.current)
     }
   }, [paymentStatus, dispatch])
@@ -147,13 +147,14 @@ const CheckoutPage = () => {
       startPayment({
         order_id: currentOrder.id,
         phone_number: mpesaPhone,
-        amount: subtotal,
       })
     )
     if (result.meta.requestStatus === 'fulfilled') {
       // Start polling every 5 seconds to check if user confirmed on phone
       pollRef.current = setInterval(() => {
-        dispatch(pollPaymentStatus(currentOrder.id))
+        if (result.payload.checkout_request_id) {
+          dispatch(pollPaymentStatus(result.payload.checkout_request_id))
+        }
       }, 5000)
     }
   }
@@ -392,7 +393,7 @@ const CheckoutPage = () => {
                     placeholder="0712345678"
                     className={`form-input ${mpesaError ? 'form-input--error' : ''}`}
                     disabled={
-                      paymentStatus === 'stk_sent' || isPaymentLoading
+                      paymentStatus === 'PENDING' || isPaymentLoading
                     }
                   />
                   {mpesaError && (
@@ -438,12 +439,12 @@ const CheckoutPage = () => {
                     onClick={handlePayment}
                     disabled={
                       isPaymentLoading ||
-                      paymentStatus === 'stk_sent'
+                      paymentStatus === 'PENDING'
                     }
                   >
                     {isPaymentLoading
                       ? 'Sending prompt...'
-                      : paymentStatus === 'stk_sent'
+                      : paymentStatus === 'PENDING'
                       ? 'Waiting for confirmation...'
                       : 'Send M-Pesa Prompt'}
                   </button>

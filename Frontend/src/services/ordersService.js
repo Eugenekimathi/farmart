@@ -24,17 +24,15 @@ export const createOrderItem = async (orderId, itemData) => {
 }
 
 export const initiatePayment = async (paymentData) => {
-  const response = await api.post('/payments', {
+  const response = await api.post('/payments/stkpush', {
     order_id: paymentData.order_id,
-    amount: paymentData.amount,
-    payment_method: paymentData.payment_method || 'MPESA',
-    transaction_reference: paymentData.transaction_reference,
+    phone_number: paymentData.phone_number,
   })
   return response.data
 }
 
-export const checkPaymentStatus = async (paymentId) => {
-  const response = await api.get(`/payments/${paymentId}`)
+export const checkPaymentStatus = async (checkoutRequestId) => {
+  const response = await api.get(`/payments/status/${checkoutRequestId}`)
   return response.data
 }
 

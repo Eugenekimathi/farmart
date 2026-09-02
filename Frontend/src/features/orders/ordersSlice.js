@@ -41,9 +41,9 @@ export const startPayment = createAsyncThunk(
 
 export const pollPaymentStatus = createAsyncThunk(
   'orders/pollPaymentStatus',
-  async (orderId, { rejectWithValue }) => {
+  async (checkoutRequestId, { rejectWithValue }) => {
     try {
-      return await checkPaymentStatus(orderId)
+      return await checkPaymentStatus(checkoutRequestId)
     } catch (error) {
       return rejectWithValue('Could not check payment status.')
     }
@@ -105,6 +105,7 @@ const initialState = {
   farmerOrders: [],
   currentOrder: null,
   paymentStatus: null,
+  checkoutRequestId: null,
   isLoading: false,
   isFarmerOrdersLoading: false,
   isPaymentLoading: false,
@@ -119,6 +120,7 @@ const ordersSlice = createSlice({
     resetCheckout: (state) => {
       state.currentOrder = null
       state.paymentStatus = null
+      state.checkoutRequestId = null
       state.error = null
       state.paymentError = null
     },
@@ -149,9 +151,10 @@ const ordersSlice = createSlice({
         state.paymentError = null
         state.paymentStatus = 'pending'
       })
-      .addCase(startPayment.fulfilled, (state) => {
+      .addCase(startPayment.fulfilled, (state, action) => {
         state.isPaymentLoading = false
-        state.paymentStatus = 'stk_sent'
+        state.paymentStatus = 'PENDING'
+        state.checkoutRequestId = action.payload?.checkout_request_id || null
       })
       .addCase(startPayment.rejected, (state, action) => {
         state.isPaymentLoading = false
