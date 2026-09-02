@@ -22,6 +22,7 @@ describe('ordersSlice', () => {
     farmerOrders: [],
     currentOrder: null,
     paymentStatus: null,
+    checkoutRequestId: null,
     isLoading: false,
     isFarmerOrdersLoading: false,
     isPaymentLoading: false,
@@ -91,11 +92,15 @@ describe('ordersSlice', () => {
     expect(state.error).toBe('Failed to place order.')
   })
 
-  it('should set paymentStatus to stk_sent when startPayment is fulfilled', () => {
-    const action = { type: 'orders/startPayment/fulfilled' }
+  it('should store the checkout request ID when STK push is accepted', () => {
+    const action = {
+      type: 'orders/startPayment/fulfilled',
+      payload: { checkout_request_id: 'ws-co-123' },
+    }
     const state = ordersReducer(initialState, action)
 
-    expect(state.paymentStatus).toBe('stk_sent')
+    expect(state.paymentStatus).toBe('PENDING')
+    expect(state.checkoutRequestId).toBe('ws-co-123')
     expect(state.isPaymentLoading).toBe(false)
   })
 
