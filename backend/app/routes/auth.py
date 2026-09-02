@@ -39,6 +39,12 @@ def register():
     # The API stores roles as uppercase; accept either frontend casing.
     if isinstance(payload.get("role"), str):
         payload["role"] = payload["role"].upper()
+    # Buyer forms do not require farm profile fields. Ignore legacy empty
+    # values so client versions that still submit them can register safely.
+    if payload.get("role") == "BUYER":
+        for field in ("farm_name", "farm_location", "farm_description"):
+            if not str(payload.get(field) or "").strip():
+                payload.pop(field, None)
     try:
         data = register_schema.load(payload)
     except ValidationError as error:
