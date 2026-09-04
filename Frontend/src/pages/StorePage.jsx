@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useMemo } from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getAnimals } from '../features/animals/animalsSlice'
@@ -11,12 +11,14 @@ const StorePage = () => {
   const [searchParams] = useSearchParams()
   const { animals, searchQuery, filters, isLoading } = useSelector((state) => state.animals)
   const category = searchParams.get('type') || ''
-  const requestFilters = category && !filters.animal_type
-    ? { ...filters, animal_type: category }
-    : filters
+  const requestFilters = useMemo(() => (
+    category && !filters.animal_type
+      ? { ...filters, animal_type: category }
+      : filters
+  ), [category, filters])
   useEffect(() => {
     dispatch(getAnimals({ page: 1, search: searchQuery, filters: requestFilters }))
-  }, [dispatch, searchQuery, filters, category])
+  }, [dispatch, searchQuery, requestFilters])
 
   return (
     <div className="store-page">

@@ -16,7 +16,7 @@ farmart/
 | Layer | Technologies |
 |---|---|
 | Backend | Flask, Flask-SQLAlchemy, Marshmallow, Flask-JWT-Extended, Flask-CORS, Flask-Migrate |
-| Database | SQLite (dev) via DATABASE_URL env var |
+| Database | SQLite locally; PostgreSQL in production |
 | Frontend | React 19, Vite, Redux Toolkit, React Router v7, Axios, Jest + Testing Library |
 | Testing | pytest (backend), Jest (frontend) |
 
@@ -51,7 +51,7 @@ CORS on the backend allows http://localhost:5173 by default (configurable via CO
 ## Running Tests
 
 ```bash
-cd backend && python -m pytest          # 192 tests
+cd backend && python -m pytest          # 205 tests
 cd Frontend && npm test                 # 35 tests
 ```
 
@@ -78,6 +78,36 @@ All endpoints are prefixed with /api:
 - /api/carts, /api/carts/<id>/items
 - /api/orders, /api/orders/<id>/items, /api/orders/<id>/status
 - /api/payments (+ status updates), /api/deliveries (+ status updates)
+
+## Render deployment
+
+The repository includes a [Render Blueprint](render.yaml) that creates a
+PostgreSQL database, a Flask web service, and a Vite static site. Connect the
+repository in Render using **New + → Blueprint**, then set the values marked
+as needing manual configuration. Render deploys from Git directly, so the old
+Vercel deployment workflow has been removed; GitHub Actions remains CI only.
+
+Set these values in Render without committing their contents:
+
+- Backend: `CORS_ORIGINS`, `FRONTEND_URL`, `CLOUDINARY_CLOUD_NAME`,
+  `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`, `OPENAI_API_KEY`,
+  `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET`, `MPESA_PASSKEY`,
+  `MPESA_SHORTCODE`, `MPESA_CALLBACK_URL`, `MAIL_USERNAME`, `MAIL_PASSWORD`,
+  and `MAIL_DEFAULT_SENDER`.
+- Frontend: `VITE_API_URL`, set to the deployed backend URL with `/api`
+  appended (for example, `https://your-api.onrender.com/api`).
+
+`DATABASE_URL` and `JWT_SECRET_KEY` are created by the Blueprint. Set
+`CORS_ORIGINS`, `FRONTEND_URL`, and `MPESA_CALLBACK_URL` only after the
+frontend/backend service URLs are known. Use `MPESA_ENVIRONMENT=live` only
+with production Daraja credentials and the live shortcode/passkey. The
+backend health check is available at `/health`; database migrations run before
+each backend deploy.
+
+For local and production variable descriptions, see
+[backend/.env.example](backend/.env.example) and
+[Frontend/.env.example](Frontend/.env.example). No seed data is deployed;
+migrations preserve the Render PostgreSQL database across service restarts.
 
 ## Git Workflow
 

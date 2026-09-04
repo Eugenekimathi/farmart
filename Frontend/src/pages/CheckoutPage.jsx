@@ -402,7 +402,7 @@ const CheckoutPage = () => {
                 </div>
 
                 {/* STK push sent — waiting for user to confirm */}
-                {paymentStatus === 'stk_sent' && (
+                {paymentStatus === 'PENDING' && (
                   <div className="mpesa-waiting">
                     <div className="spinner" />
                     <div>
@@ -429,7 +429,7 @@ const CheckoutPage = () => {
                     className="btn btn--outline"
                     onClick={() => setStep(STEPS.DELIVERY)}
                     disabled={
-                      paymentStatus === 'stk_sent' || isPaymentLoading
+                      paymentStatus === 'PENDING' || isPaymentLoading
                     }
                   >
                     ← Back

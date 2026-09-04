@@ -32,17 +32,23 @@ def create_app(config=None):
     app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
     app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
     app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
+    app.config["FRONTEND_URL"] = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    app.config["CORS_ORIGINS"] = os.getenv(
+        "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    )
     os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
     if config:
         app.config.update(config)
-    app.config["JWT_SECRET_KEY"] = os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-change-me")
+    app.config["JWT_SECRET_KEY"] = (
+        app.config.get("JWT_SECRET_KEY")
+        or os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-change-me")
+    )
     JWTManager(app)
 
     # Allow the Vite React frontend to call the API
-    frontend_origins = os.getenv(
-        "CORS_ORIGINS",
-        "http://localhost:5173,http://127.0.0.1:5173"
-    ).split(",")
+    frontend_origins = app.config["CORS_ORIGINS"]
+    if isinstance(frontend_origins, str):
+        frontend_origins = [origin.strip() for origin in frontend_origins.split(",") if origin.strip()]
     CORS(app, resources={r"/api/*": {"origins": frontend_origins}}, supports_credentials=True)
 
     @app.route("/uploads/<path:filename>")
@@ -50,8 +56,10 @@ def create_app(config=None):
         from flask import send_from_directory
         return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
-    if config:
-        app.config.update(config)
+    @app.route("/health")
+    def health():
+        from flask import jsonify
+        return jsonify({"status": "ok"}), 200
 
     db.init_app(app)
     mail.init_app(app)

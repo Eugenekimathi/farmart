@@ -1,5 +1,4 @@
 import api from './api'
-import { store } from '../app/store'
 
 const getCartId = () => localStorage.getItem('farmart.cartId')
 
@@ -16,10 +15,9 @@ export const createCart = async (userId) => {
   return response.data
 }
 
-export const addToCart = async (animalId) => {
+export const addToCart = async (animalId, userId) => {
   let cartId = getCartId()
   if (!cartId) {
-    const userId = store.getState().auth.user?.id
     if (!userId) throw new Error('You must be logged in')
     const cart = await createCart(userId)
     cartId = cart.id

@@ -21,9 +21,9 @@ export const getCart = createAsyncThunk(
 // Sync add to backend after adding locally
 export const syncAddToCart = createAsyncThunk(
   'cart/syncAdd',
-  async (animalId, { rejectWithValue }) => {
+  async (animalId, { rejectWithValue, getState }) => {
     try {
-      const data = await addToCart(animalId)
+      const data = await addToCart(animalId, getState().auth.user?.id)
       return data
     } catch {
       return rejectWithValue({

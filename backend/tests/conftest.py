@@ -10,7 +10,7 @@ def app():
         "TESTING": True,
         "SQLALCHEMY_DATABASE_URI": "sqlite:///:memory:",
         "SQLALCHEMY_TRACK_MODIFICATIONS": False,
-        "JWT_SECRET_KEY": "test-secret-key-that-is-long-enough",
+        "JWT_SECRET_KEY": "test-secret-key-that-is-long-enough-32bytes",
     })
 
     with app.app_context():
