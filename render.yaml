@@ -7,8 +7,10 @@ services:
     branch: main
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    preDeployCommand: flask --app run:app db upgrade
-    startCommand: gunicorn run:app
+    # Render Free does not support preDeployCommand. Alembic upgrades are
+    # repeatable and run before the application accepts traffic; a failure
+    # safely prevents startup instead of risking a partially updated service.
+    startCommand: flask --app run:app db upgrade && gunicorn run:app
     healthCheckPath: /health
     envVars:
       - key: PYTHON_VERSION
