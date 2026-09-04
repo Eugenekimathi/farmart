@@ -94,8 +94,9 @@ Set these values in Render without committing their contents:
   `MPESA_CONSUMER_KEY`, `MPESA_CONSUMER_SECRET`, `MPESA_PASSKEY`,
   `MPESA_SHORTCODE`, `MPESA_CALLBACK_URL`, `MAIL_USERNAME`, `MAIL_PASSWORD`,
   and `MAIL_DEFAULT_SENDER`.
-- Frontend: `VITE_API_URL`, set to the deployed backend URL with `/api`
-  appended (for example, `https://your-api.onrender.com/api`).
+- Frontend: no API URL needs to be entered in Render. The Blueprint reads the
+  backend's Render-assigned public URL and supplies Vite with that URL plus
+  `/api` during the static build.
 
 `DATABASE_URL` and `JWT_SECRET_KEY` are created by the Blueprint. Set
 `CORS_ORIGINS`, `FRONTEND_URL`, and `MPESA_CALLBACK_URL` only after the
