@@ -1,0 +1,99 @@
+import os
+from flask_migrate import Migrate
+from flask import Flask
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
+from dotenv import load_dotenv
+from app.extensions import db
+from app.email_utils import mail
+load_dotenv()
+
+def create_app(config=None):
+
+    app = Flask(__name__)
+
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+    app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+    app.config["UPLOAD_FOLDER"] = os.path.join(app.root_path, "uploads")
+    app.config["CLOUDINARY_CLOUD_NAME"] = os.getenv("CLOUDINARY_CLOUD_NAME")
+    app.config["CLOUDINARY_API_KEY"] = os.getenv("CLOUDINARY_API_KEY")
+    app.config["CLOUDINARY_API_SECRET"] = os.getenv("CLOUDINARY_API_SECRET")
+    # M-Pesa configuration
+    app.config["MPESA_CONSUMER_KEY"] = os.getenv("MPESA_CONSUMER_KEY")
+    app.config["MPESA_CONSUMER_SECRET"] = os.getenv("MPESA_CONSUMER_SECRET")
+    app.config["MPESA_PASSKEY"] = os.getenv("MPESA_PASSKEY")
+    app.config["MPESA_SHORTCODE"] = os.getenv("MPESA_SHORTCODE")
+    app.config["MPESA_ENVIRONMENT"] = os.getenv("MPESA_ENVIRONMENT", "sandbox")
+    app.config["MPESA_CALLBACK_URL"] = os.getenv("MPESA_CALLBACK_URL")
+    # Email (Gmail SMTP) configuration
+    app.config["MAIL_SERVER"] = os.getenv("MAIL_SERVER", "smtp.gmail.com")
+    app.config["MAIL_PORT"] = int(os.getenv("MAIL_PORT", "587"))
+    app.config["MAIL_USE_TLS"] = os.getenv("MAIL_USE_TLS", "true").lower() == "true"
+    app.config["MAIL_USERNAME"] = os.getenv("MAIL_USERNAME")
+    app.config["MAIL_PASSWORD"] = os.getenv("MAIL_PASSWORD")
+    app.config["MAIL_DEFAULT_SENDER"] = os.getenv("MAIL_DEFAULT_SENDER")
+    app.config["FRONTEND_URL"] = os.getenv("FRONTEND_URL", "http://localhost:5173")
+    app.config["CORS_ORIGINS"] = os.getenv(
+        "CORS_ORIGINS", "http://localhost:5173,http://127.0.0.1:5173"
+    )
+    os.makedirs(app.config["UPLOAD_FOLDER"], exist_ok=True)
+    if config:
+        app.config.update(config)
+    app.config["JWT_SECRET_KEY"] = (
+        app.config.get("JWT_SECRET_KEY")
+        or os.getenv("JWT_SECRET_KEY", "dev-jwt-secret-change-me")
+    )
+    JWTManager(app)
+
+    # Allow the Vite React frontend to call the API
+    frontend_origins = app.config["CORS_ORIGINS"]
+    if isinstance(frontend_origins, str):
+        frontend_origins = [origin.strip() for origin in frontend_origins.split(",") if origin.strip()]
+    CORS(app, resources={r"/api/*": {"origins": frontend_origins}}, supports_credentials=True)
+
+    @app.route("/uploads/<path:filename>")
+    def uploaded_file(filename):
+        from flask import send_from_directory
+        return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
+
+    @app.route("/health")
+    def health():
+        from flask import jsonify
+        return jsonify({"status": "ok"}), 200
+
+    db.init_app(app)
+    mail.init_app(app)
+    migrate = Migrate(app, db)
+
+    from app import models
+
+    from app.routes.auth import auth_bp
+    from app.routes.farmers import farmer_bp
+    from app.routes.animal_type import animal_type_bp
+    from app.routes.breed import breed_bp
+    from app.routes.animals import animal_bp
+    from app.routes.animal_image import animal_image_bp
+    from app.routes.cart import cart_bp
+    from app.routes.cart_item import cart_item_bp
+    from app.routes.orders import order_bp
+    from app.routes.order_item import order_item_bp
+    from app.routes.payments import payment_bp
+    from app.routes.delivery import delivery_bp
+    from app.routes.assistant import assistant_bp
+
+
+    app.register_blueprint(auth_bp)
+    app.register_blueprint(farmer_bp)
+    app.register_blueprint(animal_type_bp)
+    app.register_blueprint(breed_bp)
+    app.register_blueprint(animal_bp)
+    app.register_blueprint(animal_image_bp)
+    app.register_blueprint(cart_bp)
+    app.register_blueprint(cart_item_bp)
+    app.register_blueprint(order_bp)
+    app.register_blueprint(order_item_bp)
+    app.register_blueprint(payment_bp)
+    app.register_blueprint(delivery_bp)
+    app.register_blueprint(assistant_bp)
+
+    return app
