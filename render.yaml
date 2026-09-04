@@ -4,6 +4,7 @@ services:
     runtime: python
     plan: free
     region: oregon
+    branch: main
     rootDir: backend
     buildCommand: pip install -r requirements.txt
     preDeployCommand: flask --app run:app db upgrade
@@ -60,6 +61,7 @@ services:
   - type: web
     name: farmart-web
     runtime: static
+    branch: main
     rootDir: Frontend
     buildCommand: npm ci && VITE_API_URL="$FARMART_API_ORIGIN/api" npm run build
     staticPublishPath: dist
