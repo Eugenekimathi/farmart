@@ -102,8 +102,9 @@ Set these values in Render without committing their contents:
 `CORS_ORIGINS`, `FRONTEND_URL`, and `MPESA_CALLBACK_URL` only after the
 frontend/backend service URLs are known. Use `MPESA_ENVIRONMENT=live` only
 with production Daraja credentials and the live shortcode/passkey. The
-backend health check is available at `/health`; database migrations run before
-each backend deploy.
+backend health check is available at `/health`; database migrations run at
+backend startup before Gunicorn accepts traffic. Alembic upgrades are applied
+to the persistent PostgreSQL database and never reset or reseed it.
 
 For local and production variable descriptions, see
 [backend/.env.example](backend/.env.example) and
